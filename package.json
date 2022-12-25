@@ -11,7 +11,7 @@
     "compile": "turbo compile",
     "build": "turbo build",
     "watch": "turbo watch",
-    "deploy": "docker stack deploy -c docker/stack-dev.yml gjsx",
+    "deploy": "docker stack deploy -c docker/stack-dev.yml xdesk",
     "push": "turbo push",
     "broadway": "turbo broadway",
     "log": "cat docker/log/broadway.log; cat docker/log/watch*.log;",

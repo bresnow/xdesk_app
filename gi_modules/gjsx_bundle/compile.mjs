@@ -33,7 +33,7 @@ if (watch) {
     )
   });
   scope.on("change", () => {
-    deploy && updateService()
+    deploy && updateService("xdesk")
   })
 }
 else {

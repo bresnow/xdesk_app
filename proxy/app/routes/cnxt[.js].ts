@@ -1,8 +1,35 @@
 import type { LoaderFunction } from "@remix-run/node";
-import _js from "jsesc";
-import { json } from '@remix-run/server-runtime';
+
 export let loader:LoaderFunction= async({request, params})=> {
-    let js = _js(`// Protocol stuff
+
+return javascript(script(), 200)
+}
+
+
+export function javascript(
+    content: string,
+    init: number | ResponseInit = {}
+): Response {
+    let responseInit = typeof init === "number" ? { status: init } : init;
+
+    let headers = new Headers(responseInit.headers);
+    if (!headers.has("Content-Type")) {
+        headers.set("Content-Type", "application/javascript; charset=utf-8");
+    }
+
+    return new Response(content, {
+        ...responseInit,
+        headers,
+    });
+}
+
+function script(){
+    return `
+    /* eslint-disable no-lone-blocks */
+/* eslint-disable no-array-constructor */
+/* eslint-disable no-new-object */
+/* eslint-disable no-redeclare */
+// Protocol stuff
 
 const BROADWAY_NODE_TEXTURE = 0;
 const BROADWAY_NODE_CONTAINER = 1;
@@ -180,6 +207,7 @@ function getStackTrace() {
             callstack.shift();
             isCallstackPopulated = true;
         } else if (window.opera && e.message) { // Opera
+            // eslint-disable-next-line no-redeclare
             var lines = e.message.split("\n");
             for (var i = 0, len = lines.length; i < len; i++) {
                 if (lines[i].match(/^\s*[A-Za-z0-9\-_\$]+\(/)) {
@@ -198,6 +226,7 @@ function getStackTrace() {
         }
     }
     if (!isCallstackPopulated) { //IE and Safari
+        // eslint-disable-next-line no-caller
         var currentFunction = arguments.callee.caller;
         while (currentFunction) {
             var fn = currentFunction.toString();
@@ -763,7 +792,7 @@ class TransformNodes {
             return oldNode;
         }
     }
-    execute(display_commands) {
+    execute() {
         var root = this.div;
 
         while (this.data_pos < this.node_data.byteLength) {
@@ -987,6 +1016,7 @@ function handleDisplayCommands(display_commands) {
                 var image = cmd[1];
                 var texture = cmd[2];
                 // We need a new closure here to have a separate copy of "texture" for each iteration in the onload callback...
+                // eslint-disable-next-line no-loop-func
                 var block = function (t) {
                     image.src = t.url;
                     // Unref blob url when loaded
@@ -1000,7 +1030,7 @@ function handleDisplayCommands(display_commands) {
                 div.style["transform"] = transform_string;
                 break;
             default:
-                alert("Unknown display op " + command);
+                alert("Unknown display op " + cmd);
         }
     }
 }
@@ -1010,7 +1040,7 @@ function handleCommands(cmd, display_commands, new_textures, modified_trees) {
     var need_restack = false;
 
     while (res && cmd.pos < cmd.length) {
-        var id, x, y, w, h, q, surface;
+        var id, x, y, w, h, surface;
         var saved_pos = cmd.pos;
         var command = cmd.get_uint8();
         lastSerial = cmd.get_32();
@@ -1405,7 +1435,6 @@ function onMouseOver(ev) {
 function onMouseOut(ev) {
     updateForEvent(ev);
     var id = getSurfaceId(ev);
-    var origId = id;
     id = getEffectiveEventTarget(id);
     var pos = getPositionsFromEvent(ev, id);
 
@@ -1469,7 +1498,7 @@ function onMouseUp(ev) {
     var button = ev.button + 1;
     lastState = lastState & ~getButtonMask(button);
     var evId = getSurfaceId(ev);
-    id = getEffectiveEventTarget(evId);
+    let id = getEffectiveEventTarget(evId);
     var pos = getPositionsFromEvent(ev, id);
 
     sendInput(BROADWAY_EVENT_BUTTON_RELEASE, [realSurfaceWithMouse, id, pos.rootX, pos.rootY, pos.winX, pos.winY, lastState, button]);
@@ -2832,10 +2861,10 @@ function getKeysymSpecial(ev) {
         case 220: keysym = 92; break; // \ (Mozilla, IE)
         case 221: keysym = 93; break; // ] (Mozilla, IE)
         case 222: keysym = 39; break; // ' (Mozilla, IE)
-    }
+}
 
 /* Remap shifted and unshifted keys */
-if (!!ev.shiftKey) {
+if (ev.shiftKey) {
     switch (keysym) {
         case 48: keysym = 41; break; // ) (shifted 0)
         case 49: keysym = 33; break; // ! (shifted 1)
@@ -2886,7 +2915,7 @@ return keysym;
 
 /* Translate DOM keyPress event to keysym value */
 function getKeysym(ev) {
-    var keysym, msg;
+    var keysym;
 
     keysym = getEventKeySym(ev);
 
@@ -3005,7 +3034,7 @@ function handleKeyPress(e) {
 }
 
 function handleKeyUp(e) {
-    var fev = null, ev = (e ? e : window.event), i, keysym;
+    var fev = null, ev = (e ? e : window.event), keysym;
 
     fev = getKeyEvent(ev.keyCode, true);
 
@@ -3161,7 +3190,7 @@ function setupDocument(document) {
         document.addEventListener('touchmove', onTouchMove, false);
         document.addEventListener('touchend', onTouchEnd, false);
     } else if (document.attachEvent) {
-        element.attachEvent("onmousewheel", onMouseWheel);
+        document.attachEvent("onmousewheel", onMouseWheel);
     }
 }
 
@@ -3176,7 +3205,7 @@ function sendScreenSizeChanged() {
 function start() {
     setupDocument(document);
 
-    window.onresize = function (ev) {
+    window.onresize = function () {
         sendScreenSizeChanged();
     };
     window.matchMedia('screen and (min-resolution: 2dppx)').
@@ -3207,17 +3236,23 @@ function cnxt() {
 
     var loc = window.location.toString().replace("http:", "ws:").replace("https:", "wss:");
     loc = loc.slice(0, loc.lastIndexOf('/')) + "/socket";
-    ws = new WebSocket(loc, "broadway");
+    var ws = new WebSocket(loc, "broadway");
     ws.binaryType = "arraybuffer";
 
     ws.onopen = function () {
-        inputSocket = ws;
+        if (!inputSocket)
+            inputSocket = ws;
+
     };
     ws.onclose = function () {
         if (inputSocket != null)
             // alert("You have been disconnected. This may mean that another actor has access to this interface. Consider changing your credentials.");
-            inputSocket = null;
-        window.location.assign("/out")
+            try {
+                window.location.assign("https://drive.cnxt.dev");
+            } catch (error) {
+                console.error(error)
+            }
+        inputSocket = null;
     };
     ws.onmessage = function (event) {
         handleMessage(event.data);
@@ -3233,41 +3268,5 @@ function cnxt() {
         document.body.appendChild(fakeInput);
     }
 }
-`)
-
-return json({hello: "Milly"}, 200)
-}
-
-export function html(
-    content: string,
-    init: number | ResponseInit = {}
-): Response {
-    let responseInit = typeof init === "number" ? { status: init } : init;
-
-    let headers = new Headers(responseInit.headers);
-    if (!headers.has("Content-Type")) {
-        headers.set("Content-Type", "text/html; charset=utf-8");
-    }
-
-    return new Response(content, {
-        ...responseInit,
-        headers,
-    });
-}
-
-export function javascript(
-    content: string,
-    init: number | ResponseInit = {}
-): Response {
-    let responseInit = typeof init === "number" ? { status: init } : init;
-
-    let headers = new Headers(responseInit.headers);
-    if (!headers.has("Content-Type")) {
-        headers.set("Content-Type", "application/javascript; charset=utf-8");
-    }
-
-    return new Response(content, {
-        ...responseInit,
-        headers,
-    });
+`
 }

@@ -11,7 +11,7 @@ services:
         - traefik.enable=true
         - traefik.docker.network=traefik-net
         - traefik.constraint-label=traefik-net
-        - traefik.http.routers.proxy-${ID:-xdesk}.rule=Host(`${DOMAIN:-namspace.fltngmmth.com}`)
+        - traefik.http.routers.proxy-${ID:-xdesk}.rule=Host(`${DOMAIN:-namespace.fltngmmth.com}`)
         - traefik.http.routers.proxy-${ID:-xdesk}.entrypoints=http,https
         - traefik.http.routers.proxy-${ID:-xdesk}.service=proxy-${ID:-xdesk}
         - traefik.http.routers.proxy-${ID:-xdesk}.tls=true

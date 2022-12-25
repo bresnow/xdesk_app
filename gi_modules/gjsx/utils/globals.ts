@@ -18,6 +18,7 @@ const _current = () => {
     return GLib.path_get_dirname(filename);
 }
 const __dirname = GLib.get_current_dir();
+// Environment variables reduced into an cinstant global object
 let arr = GLib.get_environ()
 let env: Record<string, string | undefined> = arr.reduce((acc,curr)=>{
     let [key, value]= curr.split("=")

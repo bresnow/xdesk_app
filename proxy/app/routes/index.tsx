@@ -8,18 +8,7 @@ export function ImageCard({ src }: { src?: string }) {
     <div className='p-8 w-full min-h-full flex items-center justify-center'>
       <div className='w-full h-auto overflow-hidden shadow-lg flex items-start justify-start flex-col  rounded-lg'>
         <div className='w-full flex items-center justify-center border-b dark:border-gray-800 relative'>
-          <img
-            alt='Forest'
-            src={src ?? 'https://source.unsplash.com/1200x630/?forest'}
-            width='1200'
-            height='630'
-            className={`w-full h-auto transition-opacity duration-200 ${loading ? 'opacity-0' : 'opacity-100'
-              }`}
-            onLoad={() => {
-              setLoading(false);
-            }}
-          />
-          <div className='absolute bg-gradient-to-b bg-opacity-60 from-transparent to-black w-full p-4 bottom-0'>
+          <div className='absolute bg-gradient-to-b opacity-60 from-transparent to-black w-full p-4 bottom-0'>
             <div className='flex justify-between'>
               <p className='text-sm text-gray-300 flex items-center'></p>
               <p className='text-sm text-gray-300 flex items-center'>

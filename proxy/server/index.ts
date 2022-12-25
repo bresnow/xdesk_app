@@ -153,6 +153,7 @@ if (NODE_ENV === "development") {
 
 let gunServer = createServer(app)
 // Gun Database Server
+
 const gun = Gun({
   web: gunServer.listen(PROXY_PORT + 1, ()=> { console.log("Relay Server on port " + parseInt(PROXY_PORT +1))}), radisk: true, file: 'db'
 })
