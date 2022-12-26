@@ -1,0 +1,42 @@
+# docker run -d -p "8000:8000" --name stellar stellar/quickstart --pubnet
+version: "3.9"
+
+services:
+  ephemeral:
+    image: stellar/quickstart 
+    command:
+      - --testnet
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+      labels:
+        - traefik.enable=true
+        - traefik.docker.network=traefik-net
+        - traefik.constraint-label=traefik-net
+        - traefik.http.routers.stellar-${ID:-horizon-test}.rule=Host(`${DOMAIN:-horizon-testnet.cnxt.dev}`)
+        - traefik.http.routers.stellar-${ID:-horizon-test}.entrypoints=http,https
+        - traefik.http.routers.stellar-${ID:-horizon-test}.service=stellar-${ID:-horizon-test}
+        - traefik.http.routers.stellar-${ID:-horizon-test}.tls=true
+        - traefik.http.routers.stellar-${ID:-horizon-test}.tls.certresolver=${TLS:-letsencrypt}
+        - traefik.http.services.stellar-${ID:-horizon-test}.loadbalancer.server.port=8000
+    networks:
+      - traefik-net
+      - edge
+      - socket-proxy
+    volumes:
+      - stellar_volume:/opt/stellar
+volumes:
+  stellar_volume:
+    driver: local-persist
+    driver_opts:
+      mountpoint: ${project_mountpoint:-/home/administrator/stellar/volumes/dev}
+
+
+networks:
+  traefik-net:
+    external: true
+  edge:
+    external: true
+  socket-proxy:
+    external: true

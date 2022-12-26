@@ -1,20 +1,28 @@
 import type { LoaderFunction } from "@remix-run/node";
+import { json } from "@remix-run/node";
 import React from "react";
 import Iframe from "~/components/Iframe";
+import { useLoaderData } from '@remix-run/react';
 
-// export let loader: LoaderFunction = async ({ request, params }) => {
+export let loader: LoaderFunction = async ({ request, params }) => {
+    var namespace: string | null;
+    var { origin, protocol } = new URL(request.url);
+    console.log(origin);
 
-//     let _html = `
-// <!DOCTYPE html>
-// <html>
-//     <body>
-//        <script>
-//        window.location.assign("https://${params?.domain}.fltngmmth.com")
-//        </script>
-//     </body>
-// </html>`
-//     return html(_html, 200)
-// }
+    (typeof params?.namespace === "string") ? namespace = params?.namespace : namespace = null
+    if (!namespace) {
+        throw new Error("Invalid namespace parameter")
+    }
+    var HTML =
+        (` <html>
+            <head>
+                <script type="text/javascript">
+location = "https://${namespace}.${origin.replace(protocol+"//", "")}";
+    </script>
+  </body>
+</html>`)
+    return json({ namespace, srcdoc: HTML }, 200)
+}
 
 export function html(
     content: string,
@@ -51,12 +59,15 @@ export function javascript(
 }
 
 
+
+
 export function ImageCard({ src }: { src?: string }) {
     const [loading, setLoading] = React.useState(true);
-
+    let { srcdoc, namespace } = useLoaderData<{ srcdoc: string; namespace: string }>()
     return (
         <div className='p-8 w-full min-h-full flex items-center justify-center'>
             <div className='w-full h-auto overflow-hidden shadow-lg flex items-start justify-start flex-col  rounded-lg'>
+                <Iframe scrolling={"no"} overflow={'hidden'}srcdocument={srcdoc} onLoad={() => setLoading(false)} className={'flex min-w-full min-h-screen'} />
                 <div className='w-full flex items-center justify-center border-b dark:border-gray-800 relative'>
                     <div className='absolute bg-gradient-to-b opacity-60 from-transparent to-black w-full p-4 bottom-0'>
                         <div className='flex justify-between'>
@@ -76,12 +87,9 @@ export function ImageCard({ src }: { src?: string }) {
                             </p>
                         </div>
                     </div>
-                    {loading && (
-                        <div className='absolute w-full h-full top-0 left-0 animate-pulse bg-gray-100 dark:bg-gray-900' />
-                        )}
-                        <Iframe src="https://namespace.fltngmmth.com" onLoad={() => {
-                            setLoading(false);
-                        }} />
+                    {loading ?
+                        <div className='absolute w-full h-full top-0 left-0 animate-pulse bg-gray-100 dark:bg-gray-900' /> : null
+                    }
                 </div>
                 <div className='p-4 w-full flex items-center justify-start flex-row-reverse'>
                     <button
@@ -95,9 +103,9 @@ export function ImageCard({ src }: { src?: string }) {
         </div>
     );
 }
-export default function IndexRoute ()  {
+export default function IndexRoute() {
     return (
-        <div className="flex overflow-hidden relative flex-col justify-center py-6 min-h-screen bg-gray-50 sm:py-12">
+        <div className="flex overflow-hidden relative flex-col justify-center py-6 min-h-screen bg-slate-700 sm:py-12">
             <ImageCard />
         </div>
     );

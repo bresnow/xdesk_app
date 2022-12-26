@@ -63,17 +63,12 @@ export function MainWindow({
   ];
   return (
     <AppWindow application={app}>
-      <Gtk.HeaderBar >
-        <Gtk.StackSwitcher name={"viewStack"} />
-      </Gtk.HeaderBar>
       <BoxContainer style={{ padding: "15px", background: "rgba(0, 0, 50, 0.8)", color: "#fff" }}>
         <Gtk.Label style={{ fontSize: "30px", fontWeight: "bold" }} label="X://ProgramaticAssets" />
         <Gtk.Separator orientation={Gtk.Orientation.VERTICAL} />
         <Gtk.Label style={{ fontSize: "30px", fontWeight: "bold" }} label="Title Of Contract" />
-        <WebViewer url={"http://localhost:1060/hello"} />
         <Gtk.Separator orientation={Gtk.Orientation.VERTICAL} />
         <StackSwitch orientation={Gtk.Orientation.VERTICAL} spacing={10}>
-          <Gtk.Entry style={{ marginLeft: "130px" }} />
         </StackSwitch>
         <HeadLayout services={panel} />
       </BoxContainer>

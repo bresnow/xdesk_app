@@ -9,7 +9,6 @@ const asset = imports.gi.Gio.File.new_for_uri(import.meta.url)
   .resolve_relative_path("../assets/images/icons/white/check.svg")
   .get_uri()
   .replace("file://", "");
-import { WebViewer } from "./widgets/webviewer.js";
 const MenuTemplate = /* @__PURE__ */ Gjsx.createWidget(
   "interface",
   null,
@@ -109,13 +108,6 @@ export function MainWindow({ app, reference }) {
     AppWindow,
     { application: app },
     /* @__PURE__ */ Gjsx.createWidget(
-      Gtk.HeaderBar,
-      null,
-      /* @__PURE__ */ Gjsx.createWidget(Gtk.StackSwitcher, {
-        name: "viewStack",
-      })
-    ),
-    /* @__PURE__ */ Gjsx.createWidget(
       BoxContainer,
       {
         style: {
@@ -135,19 +127,13 @@ export function MainWindow({ app, reference }) {
         style: { fontSize: "30px", fontWeight: "bold" },
         label: "Title Of Contract",
       }),
-      /* @__PURE__ */ Gjsx.createWidget(WebViewer, {
-        url: "http://localhost:1060/hello",
-      }),
       /* @__PURE__ */ Gjsx.createWidget(Gtk.Separator, {
         orientation: Gtk.Orientation.VERTICAL,
       }),
-      /* @__PURE__ */ Gjsx.createWidget(
-        StackSwitch,
-        { orientation: Gtk.Orientation.VERTICAL, spacing: 10 },
-        /* @__PURE__ */ Gjsx.createWidget(Gtk.Entry, {
-          style: { marginLeft: "130px" },
-        })
-      ),
+      /* @__PURE__ */ Gjsx.createWidget(StackSwitch, {
+        orientation: Gtk.Orientation.VERTICAL,
+        spacing: 10,
+      }),
       /* @__PURE__ */ Gjsx.createWidget(HeadLayout, { services: panel })
     )
   );

@@ -1,9 +1,11 @@
 import React from "react";
+import Iframe from "~/components/Iframe";
+import { useLoaderData } from '@remix-run/react';
 
 
 export function ImageCard({ src }: { src?: string }) {
   const [loading, setLoading] = React.useState(true);
-
+let SourceDoc = useLoaderData()
   return (
     <div className='p-8 w-full min-h-full flex items-center justify-center'>
       <div className='w-full h-auto overflow-hidden shadow-lg flex items-start justify-start flex-col  rounded-lg'>
@@ -26,9 +28,9 @@ export function ImageCard({ src }: { src?: string }) {
               </p>
             </div>
           </div>
-          {loading && (
-            <div className='absolute w-full h-full top-0 left-0 animate-pulse bg-gray-100 dark:bg-gray-900' />
-          )}
+          {loading ? 
+            <div className='absolute w-full h-full top-0 left-0 animate-pulse bg-gray-100 dark:bg-gray-900' />: null
+          }
         </div>
         <div className='p-4 w-full flex items-center justify-start flex-row-reverse'>
           <button

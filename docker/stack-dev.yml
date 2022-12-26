@@ -1,7 +1,7 @@
 version: "3.9"
 
 services:
-  gjsx_dev:
+  gjsx_xdesk:
     image: bresnow/gjsx-dev:${VERSION:-latest}
     deploy:
       placement:
@@ -11,24 +11,25 @@ services:
         - traefik.enable=true
         - traefik.docker.network=traefik-net
         - traefik.constraint-label=traefik-net
-        - traefik.http.routers.proxy-${ID:-xdesk}.rule=Host(`${DOMAIN:-namespace.fltngmmth.com}`)
-        - traefik.http.routers.proxy-${ID:-xdesk}.entrypoints=http,https
-        - traefik.http.routers.proxy-${ID:-xdesk}.service=proxy-${ID:-xdesk}
-        - traefik.http.routers.proxy-${ID:-xdesk}.tls=true
-        - traefik.http.routers.proxy-${ID:-xdesk}.tls.certresolver=${TLS:-letsencrypt}
-        - traefik.http.services.proxy-${ID:-xdesk}.loadbalancer.server.port=8087
-        - traefik.http.routers.gjsx-${ID:-xdesk}.rule=Host(`${INTERFACE_DOMAIN:-sys.product.fltngmmth.com}`)
-        - traefik.http.routers.gjsx-${ID:-xdesk}.entrypoints=http,https
-        - traefik.http.routers.gjsx-${ID:-xdesk}.service=gjsx-${ID:-xdesk}
-        - traefik.http.routers.gjsx-${ID:-xdesk}.tls=true
-        - traefik.http.routers.gjsx-${ID:-xdesk}.tls.certresolver=${TLS:-letsencrypt}
-        - traefik.http.services.gjsx-${ID:-xdesk}.loadbalancer.server.port=8086
+        - traefik.http.routers.proxy-$ID.rule=Host(`${DOMAIN:-cnxt.dev}`) # add dot after subdomain if applicable
+        - traefik.http.routers.proxy-$ID.entrypoints=http,https
+        - traefik.http.routers.proxy-$ID.service=proxy-$ID
+        - traefik.http.routers.proxy-$ID.tls=true
+        - traefik.http.routers.proxy-$ID.tls.certresolver=${TLS:-letsencrypt}
+        - traefik.http.services.proxy-$ID.loadbalancer.server.port=8087
+        - traefik.http.routers.gjsx-$ID.rule=Host(`${INTERFACE}.${DOMAIN:-cnxt.dev}`) # add dot after subdomain if applicable
+        - traefik.http.routers.gjsx-$ID.entrypoints=http,https
+        - traefik.http.routers.gjsx-$ID.service=gjsx-$ID
+        - traefik.http.routers.gjsx-$ID.tls=true
+        - traefik.http.routers.gjsx-$ID.tls.certresolver=${TLS:-letsencrypt}
+        - traefik.http.services.gjsx-$ID.loadbalancer.server.port=8086
     networks:
       - traefik-net
       - edge
       - socket-proxy
     volumes:
       - project:/gjsx
+      - logs:/gjsx/docker/log
     environment:
       C99_API_KEY: ${C99_API_KEY}
 
@@ -37,6 +38,10 @@ volumes:
     driver: local-persist
     driver_opts:
       mountpoint: ${project_mountpoint:-/home/administrator/app.xdesk}
+  logs:
+    driver: local-persist
+    driver_opts:
+      mountpoint: ${project_mountpoint:-/home/administrator/app.xdesk/docker/log/$ID
 
 
 networks:

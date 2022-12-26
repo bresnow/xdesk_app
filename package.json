@@ -15,7 +15,7 @@
     "push": "turbo push",
     "broadway": "turbo broadway",
     "log": "cat docker/log/broadway.log; cat docker/log/watch*.log;",
-    "log-clear": "sudo rm docker/log/*"
+    "log-clear": "sudo rm -rf docker/log/**/*"
   },
   "keywords": [
     "typescript",
