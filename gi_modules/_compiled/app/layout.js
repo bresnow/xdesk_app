@@ -42,10 +42,7 @@ export function HeadLayout({ services }) {
       style: { marginLeft: "5px" },
       pixel_size: 65,
     }),
-    services.map(({ name, icon_path, icon_name }, i) => {
-      function clickHandler(self) {
-        log("Executing");
-      }
+    services.map(({ name, icon_path, icon_name, clickHandler }, i) => {
       return /* @__PURE__ */ Gjsx.createWidget(
         Gtk.Button,
         {

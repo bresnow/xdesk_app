@@ -1,7 +1,7 @@
 import Gtk from "gi://Gtk?version=4.0";
 import GObject from "gi://GObject";
 import Gjsx from "../../gjsx/index.js";
-const { build, builder } = Gjsx;
+const { build, useBuilder, builder } = Gjsx;
 const grid_resource = /* @__PURE__ */ Gjsx.createWidget(
   "interface",
   null,
@@ -14,11 +14,6 @@ const grid_resource = /* @__PURE__ */ Gjsx.createWidget(
       /* @__PURE__ */ Gjsx.createWidget(
         "object",
         { class: "GtkLabel", id: "description" },
-        /* @__PURE__ */ Gjsx.createWidget(
-          "property",
-          { name: "label" },
-          "Description"
-        ),
         /* @__PURE__ */ Gjsx.createWidget(
           "layout",
           null,
@@ -118,7 +113,7 @@ const stack_resource = /* @__PURE__ */ Gjsx.createWidget(
           { name: "child" },
           /* @__PURE__ */ Gjsx.createWidget(
             "object",
-            { class: "GtkLabel" },
+            { class: "GtkLabel", id: "stack-label" },
             /* @__PURE__ */ Gjsx.createWidget(
               "property",
               { name: "label" },
@@ -161,12 +156,12 @@ const stack_resource = /* @__PURE__ */ Gjsx.createWidget(
     )
   )
 );
-var json = JSON.stringify;
+var __json = JSON.stringify;
 export const StackSwitch = GObject.registerClass(
   {
     Signals: {
       fetch: {
-        handler: "onFetch",
+        handler: "fetchHandler",
       },
     },
   },
@@ -176,41 +171,37 @@ export const StackSwitch = GObject.registerClass(
       const { Align, Orientation, EntryIconPosition } = Gtk;
       this.valign = Align.FILL;
       this.orientation = Orientation.VERTICAL;
-      let [builderStack, stack, getStackObject] = build(
-        "viewStack",
-        builder(stack_resource)
-      );
-      let [builderGrid, grid, getGridObject] = build(
-        "grid_root",
-        builder(grid_resource)
-      );
+      let [stack, getStackObject] = useBuilder(stack_resource, "stack-switch");
+      let [grid, getGridObject] = build("grid_root", builder(grid_resource));
+      let label = getGridObject("description"),
+        label2 = getStackObject("stack-label");
       this.gridSettings(grid);
       let entry = getGridObject("tag_search");
       grid.attach(stack, 1, 1, 1, 1);
       this.append(grid);
-      let label = new Gtk.Label(),
-        pic = new Gtk.Image({
-          file: "http://digitalnativestudios.com/textmeshpro/docs/rich-text/line-indent.png",
-        });
       this.connect("fetch", async (_box) => {
-        var res;
-        log(json({ env }));
+        var res, _hres;
+        log(__json({ env }));
         try {
           const response = await fetch(
             `https://api.c99.nl/textparser?key=${env.C99_API_KEY}&url=http://digitalnativestudios.com/textmeshpro/docs/rich-text/line-indent.png`
           );
           res = await response.text();
-          log(json({ response, res }));
-          label.set_label(JSON.stringify(res));
+          const horizonres = await fetch(
+            "https://horizon-testnet.cnxt.dev/fee_stats"
+          );
+          _hres = await horizonres.json();
+          log(__json(_hres));
+          label.set_label(JSON.stringify(_hres));
+          label2.set_label(__json(_hres));
         } catch (err) {
           logError(err);
         }
       });
-      this._fetch();
-      this.append(pic);
+      this.fetchHandler();
       this.append(label);
     }
-    _fetch() {
+    fetchHandler() {
       this.emit("fetch");
     }
     gridSettings(grid) {

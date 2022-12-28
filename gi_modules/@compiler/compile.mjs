@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import { transformSync, buildSync } from "esbuild";
 import { argv, chalk, fs, glob, cd, $ } from "zx";
+import { exit } from "process"
 import Gun from "gun";
 import { join, dirname } from "path";
 import chokidar from "chokidar";
@@ -15,20 +16,18 @@ const _curdir_ = dirname("./package.json");
 let { red, green, blue, yellow } = chalk;
 const { createElement: xml } = pkg;
 let watch = argv.watch !== undefined, deploy = argv.deploy !== undefined;
-let entryPoints = await glob([`${_curdir_}/**/*.{ts,tsx}`],{
-  ignore: [`${_curdir_}/types/**/*`, `${_curdir_}/node_modules/**/*`]
-});
+let entryPoints = await glob([`gjsx/**/*.ts`, `app/**/*.{ts,tsx}`]);
 // console.log(entryPoints)
 let scope = chokidar.watch(entryPoints, {
   persistent: true,
 });
 if (watch) {
-  ["add", "change", "unlink"].forEach( (e) => {
+  ["add", "change", "unlink"].forEach((e) => {
     scope.on(e, async (path) => {
       console.log(
         green(`Compiling ${blue(path)} after ${yellow(e)} event`)
       );
-       compile(path)
+      compile(path)
     }
     )
   });
@@ -37,30 +36,26 @@ if (watch) {
   })
 }
 else {
-for (let i = 0; i < entryPoints.length; i++) {
-let entryPoint = entryPoints[i];
-try {
-  compile(entryPoint)
- } catch (error) {
-  console.error(red(error))
- }
+  for (let i = 0; i < entryPoints.length; i++) {
+    let entryPoint = entryPoints[i];
+    compile(entryPoint)
+  }
+  exit(0)
 }
-
-}
- function compile(_path) {
-  var entryPoint = _path,{ dots, path, extension, basename } = deconstruct_path(entryPoint)
-    let content = get_content(entryPoint, dots)
-    let { code } = transformSync(content, {
-      loader: extension,
-      tsconfigRaw: JSON.stringify({ compilerOptions })
-    })
-    var compiled_path = ["_compiled", path].join("/");
-    var output = join(compiled_path, basename + ".js");
-    if (!fs.existsSync(compiled_path)) {
-      fs.mkdirpSync(compiled_path)
-    }
+function compile(_path) {
+  var entryPoint = _path, { dots, path, extension, basename } = deconstruct_path(entryPoint)
+  let content = get_content(entryPoint, dots)
+  let { code } = transformSync(content, {
+    loader: extension,
+    tsconfigRaw: JSON.stringify({ compilerOptions })
+  })
+  var compiled_path = ["_compiled", path].join("/");
+  var output = join(compiled_path, basename + ".js");
+  if (!fs.existsSync(compiled_path)) {
+    fs.mkdirpSync(compiled_path)
+  }
   //  !watch && console.log(output, "Output")
-    fs.writeFileSync(output, format(code, { semi: true, singleQuote: false, parser: "babel" }), { encoding: "utf8" })
+  fs.writeFileSync(output, format(code, { semi: true, singleQuote: false, parser: "babel" }), { encoding: "utf8" })
 
 
 }
@@ -106,7 +101,7 @@ function get_content(entryPoint, dots) {
         if (type === "file") {
           return `const ${name} = imports.gi.Gio.File.new_for_uri(import.meta.url).get_parent().resolve_relative_path("${_imported}")`;
         }
-        if (!type){
+        if (!type) {
           return `const ${name} = imports.gi.Gio.File.new_for_uri(import.meta.url).get_parent().resolve_relative_path("${_imported}").get_uri().replace("file://","")`;
         }
         if (type) {
@@ -125,7 +120,7 @@ function get_content(entryPoint, dots) {
 
 function copyAsset(source) {
   let src_path = source;
-  var {path, extension, basename } = deconstruct_path(src_path)
+  var { path, extension, basename } = deconstruct_path(src_path)
   path = src_path.replace('../', "").replace(`/${basename}.${extension}`, "")
   var compiled_path = ["_compiled", path].join("/")
   if (!fs.existsSync(compiled_path)) {

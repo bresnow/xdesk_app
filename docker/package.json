@@ -9,10 +9,14 @@
     "scripts": {
         "build": "docker-compose build",
         "push": "docker-compose push",
-        "deploy": "docker stack deploy -c stack-dev.yml gjsx"
+        "traefik": "docker stack deploy -c stacks/traefik.yml traefik",
+        "deploy": "docker stack deploy -c stacks/stack-dev.yml gjsx"
     },
     "devDependencies": {
         "concurrently": "^7.6.0",
         "zx": "^7.1.1"
+    },
+    "dependencies": {
+        "gun": "^0.2020.1239"
     }
 }

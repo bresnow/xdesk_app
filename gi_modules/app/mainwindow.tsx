@@ -6,35 +6,14 @@ import { Demo } from "./widgets/demo.js";
 import { StackSwitch } from './widgets/stackswitch.js';
 import { BoxContainer } from './widgets/box_container.js';
 //@ts-expect-error
-import asset from "../assets/images/icons/white/check.svg";
+import micIcon from "../assets/images/icons/blue/mic.svg";
+//@ts-expect-error
+import listAdd from "../assets/images/icons/blue/list_add.svg";
+//@ts-expect-error
+import checkIcon from "../assets/images/icons/blue/check.svg";
 import { WebViewer } from "./widgets/webviewer.js";
+const { build, builder } = Gjsx;
 
-const MenuTemplate =
-  <interface>
-    <object class="GtkMenuButton">
-      <property name="menu-model">menu</property>
-    </object>
-    <menu id="menu">
-      <section>
-        <attribute name="display-hint">horizontal-buttons</attribute>
-        <item>
-          <attribute name="label">Copy</attribute>
-          <attribute name="action">app.copy</attribute>
-          <attribute name="verb-icon">edit-copy-symbolic</attribute>
-        </item>
-        <item>
-          <attribute name="label">Paste</attribute>
-          <attribute name="action">app.paste</attribute>
-        </item>
-      </section>
-      <section>
-        <item>
-          <attribute name="label">Close</attribute>
-          <attribute name="action">win.close</attribute>
-        </item>
-      </section>
-    </menu>
-  </interface>
 
 export function MainWindow({
   app,
@@ -47,18 +26,26 @@ export function MainWindow({
   const panel = [
     {
       name: "Gtk4-Demo",
-      icon_path: "/gjsx/gi_modules/assets/images/icons/blue/settings.svg",
-      executable: "gnome-tour",
+      icon_path: checkIcon,
+      clickHandler(_button: Gtk.Button) {
+        log("Clicked1")
+      }
     },
     {
       name: "Gtk4 Tour",
-      icon_path: "/gjsx/gi_modules/assets/images/icons/blue/list_add.svg",
-      executable: "gnome-calculator",
+      icon_path: listAdd,
+      clickHandler(_button: Gtk.Button) {
+
+        log("Clicked2")
+      }
     },
     {
       name: "Demo App",
-      icon_path: "/gjsx/gi_modules/assets/images/icons/blue/mic.svg",
-      executable: "gnome-calendar"
+      icon_path: micIcon,
+      clickHandler(_button: Gtk.Button) {
+
+        log("Clicked3")
+      }
     },
   ];
   return (
@@ -68,8 +55,6 @@ export function MainWindow({
         <Gtk.Separator orientation={Gtk.Orientation.VERTICAL} />
         <Gtk.Label style={{ fontSize: "30px", fontWeight: "bold" }} label="Title Of Contract" />
         <Gtk.Separator orientation={Gtk.Orientation.VERTICAL} />
-        <StackSwitch orientation={Gtk.Orientation.VERTICAL} spacing={10}>
-        </StackSwitch>
         <HeadLayout services={panel} />
       </BoxContainer>
     </AppWindow>

@@ -1,5 +1,5 @@
 import Gtk from "gi://Gtk?version=4.0";
-import { builder, build, getObject } from "./builder.js";
+import { builder, build, getObject, useBuilder } from "./builder.js";
 import * as Utils from "./utils/index.js";
 import { installGlobals } from "./utils/globals.js";
 let uiregex =
@@ -144,6 +144,7 @@ export default {
   builder,
   build,
   getObject,
+  useBuilder,
   render,
   createWidget,
   isConstructor,

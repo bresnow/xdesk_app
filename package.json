@@ -3,15 +3,16 @@
   "private": true,
   "type": "module",
   "workspaces": [
+    "./gi_modules/*",
     "./gi_modules",
-    "./proxy",
+    "./frontend",
     "./docker"
   ],
   "scripts": {
     "compile": "turbo compile",
     "build": "turbo build",
     "watch": "turbo watch",
-    "deploy": "docker stack deploy -c docker/stack-dev.yml xdesk",
+    "deploy": "docker stack deploy -c docker/stacks/stack-dev.yml gjsx",
     "push": "turbo push",
     "broadway": "turbo broadway",
     "log": "cat docker/log/broadway.log; cat docker/log/watch*.log;",
@@ -35,5 +36,8 @@
     "semver": "^7.3.8",
     "turbo": "^1.6.3",
     "typescript": "4.8.2"
+  },
+  "dependencies": {
+    "@changesets/cli": "^2.26.0"
   }
 }

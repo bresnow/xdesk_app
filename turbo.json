@@ -4,36 +4,31 @@
         "broadway": {},
         "build":{
             "dependsOn": [
-                "^compile"
+                "^build",
+                "compile"
             ],
             "outputs": [
-                "gi_modules/_compiled/*",
                 "broadway-proxy/build/*",
                 "broadway-proxy/public/build/**/*"
             ]
         },
         "compile": {
             "outputs": [
-                "gi_modules/_compiled/*"
+                "gi_modules/_compiled/**/*"
             ]
         },
         "deploy": {
             "dependsOn": [
-                "^push",
-                "^build",
-                "^compile"
+                "build",
+                "push"
             ]
         },
         "push": {
             "dependsOn": [
-                "^build",
-                "^compile"
+                "build"
             ]
         },
         "watch": {
-            "dependsOn": [
-                "^broadway"
-            ],
             "outputs": [
                 "gi_modules/_compiled/**/*",
                 "broadway-proxy/build/**/*",

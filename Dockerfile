@@ -2,12 +2,23 @@ ARG ALPINE_VERSION=3.16
 
 FROM alpine:${ALPINE_VERSION} as base
 
-COPY ./docker/bin /usr/bin/
+ADD docker/bin/* /usr/bin/
+# add supervisor commands along/ specific to each build layer
+ADD docker/supervisor/unified.conf /etc/supervisord.conf
+ENV HOME=/home \
+    GDK_BACKEND=broadway \  
+    BROADWAY_DISPLAY=:5 \
+    XDG_RUNTIME_DIR=/home\
+    GTK_THEME=McOS-CTLina-Mint-Dark
 RUN  \
     echo "https://dl-cdn.alpinelinux.org/alpine/v3.16/main" > /etc/apk/repositories; \
     echo "https://dl-cdn.alpinelinux.org/alpine/v3.16/community" >> /etc/apk/repositories; \
     chmod +x -R /usr/bin/;
-FROM base as gtk_deps
+
+
+
+
+FROM base as packages
 WORKDIR /tmp
 RUN addpkg  \
     bash \
@@ -52,6 +63,8 @@ RUN addpkg  \
     mesa-demos \
     meson \
     ninja \
+    nodejs \
+    npm \
     python3 \
     py3-opengl \
     py3-pip \
@@ -80,28 +93,29 @@ RUN \
 RUN \
     git clone https://github.com/paullinuxthemer/Mc-OS-themes.git; \
     mkdir -p /usr/share/themes/; \
-    rsync -av --progress 'Mc-OS-themes/McOS-CTLina-Mint-Dark' /usr/share/themes/; \
+    rsync -av --progress "Mc-OS-themes/$GTK_THEME" /usr/share/themes/; \
     rm -rf /tmp/* /tmp/.[!.]* ; \
     delpkg rsync
+# TODO: Config YAML file to add theme url and theme name
 
-
-FROM gtk_deps as dev
-ENV HOME=/home \
-    GDK_BACKEND=broadway \  
-    BROADWAY_DISPLAY=:5 \
-    XDG_RUNTIME_DIR=/home
+FROM packages as development
+ADD docker/supervisor/layered/* /etc/supervisord/
 WORKDIR /gjsx
 COPY . /gjsx
-COPY docker/supervisord.conf /etc/
+
 # nodejs environment
 RUN \
-    addpkg nodejs npm;\
-    npm i -g yarn nodemon; \
+    npm i -g yarn nodemon zx; \
     yarn
+
+#  Prune workspaces
+RUN yarn turbo prune --scope gi_modules --scope frontend --out-dir /pruned --docker 
+
 
 CMD ["/usr/bin/supervisord","-c","/etc/supervisord.conf"]
 
-FROM dev as gjsx-broadway
-COPY --from=dev /gjsx/gi_modules/_compiled /_compiled
-WORKDIR /_compiled
+FROM packages as installer
+COPY --from=development /pruned/json /gjsx
+WORKDIR /gjsx
+
 

@@ -255,10 +255,9 @@ export function basename(filename) {
   return [name, basename2, extension];
 }
 export function gtkSystemTheme() {
-  let gtkSettings;
-  const theme = GLib.getenv("GTK_THEME");
-  gtkSettings = Gtk.Settings.get_default();
-  gtkSettings.gtk_application_prefer_dark_theme = false;
+  const theme = env["GTK_THEME"] ?? "McOS-CTLina-Mint-Dark";
+  let gtkSettings = Gtk.Settings.get_default();
+  gtkSettings.gtk_application_prefer_dark_theme = true;
   gtkSettings.gtk_theme_name = theme;
 }
 export * from "./subprocess.js";

@@ -2,106 +2,45 @@ import Gjsx from "../gjsx/index.js";
 import Gtk from "gi://Gtk?version=4.0";
 import { HeadLayout } from "./layout.js";
 import { AppWindow } from "./widgets/appwindow.js";
-import { StackSwitch } from "./widgets/stackswitch.js";
 import { BoxContainer } from "./widgets/box_container.js";
-const asset = imports.gi.Gio.File.new_for_uri(import.meta.url)
+const micIcon = imports.gi.Gio.File.new_for_uri(import.meta.url)
   .get_parent()
-  .resolve_relative_path("../assets/images/icons/white/check.svg")
+  .resolve_relative_path("../assets/images/icons/blue/mic.svg")
   .get_uri()
   .replace("file://", "");
-const MenuTemplate = /* @__PURE__ */ Gjsx.createWidget(
-  "interface",
-  null,
-  /* @__PURE__ */ Gjsx.createWidget(
-    "object",
-    { class: "GtkMenuButton" },
-    /* @__PURE__ */ Gjsx.createWidget(
-      "property",
-      { name: "menu-model" },
-      "menu"
-    )
-  ),
-  /* @__PURE__ */ Gjsx.createWidget(
-    "menu",
-    { id: "menu" },
-    /* @__PURE__ */ Gjsx.createWidget(
-      "section",
-      null,
-      /* @__PURE__ */ Gjsx.createWidget(
-        "attribute",
-        { name: "display-hint" },
-        "horizontal-buttons"
-      ),
-      /* @__PURE__ */ Gjsx.createWidget(
-        "item",
-        null,
-        /* @__PURE__ */ Gjsx.createWidget(
-          "attribute",
-          { name: "label" },
-          "Copy"
-        ),
-        /* @__PURE__ */ Gjsx.createWidget(
-          "attribute",
-          { name: "action" },
-          "app.copy"
-        ),
-        /* @__PURE__ */ Gjsx.createWidget(
-          "attribute",
-          { name: "verb-icon" },
-          "edit-copy-symbolic"
-        )
-      ),
-      /* @__PURE__ */ Gjsx.createWidget(
-        "item",
-        null,
-        /* @__PURE__ */ Gjsx.createWidget(
-          "attribute",
-          { name: "label" },
-          "Paste"
-        ),
-        /* @__PURE__ */ Gjsx.createWidget(
-          "attribute",
-          { name: "action" },
-          "app.paste"
-        )
-      )
-    ),
-    /* @__PURE__ */ Gjsx.createWidget(
-      "section",
-      null,
-      /* @__PURE__ */ Gjsx.createWidget(
-        "item",
-        null,
-        /* @__PURE__ */ Gjsx.createWidget(
-          "attribute",
-          { name: "label" },
-          "Close"
-        ),
-        /* @__PURE__ */ Gjsx.createWidget(
-          "attribute",
-          { name: "action" },
-          "win.close"
-        )
-      )
-    )
-  )
-);
+const listAdd = imports.gi.Gio.File.new_for_uri(import.meta.url)
+  .get_parent()
+  .resolve_relative_path("../assets/images/icons/blue/list_add.svg")
+  .get_uri()
+  .replace("file://", "");
+const checkIcon = imports.gi.Gio.File.new_for_uri(import.meta.url)
+  .get_parent()
+  .resolve_relative_path("../assets/images/icons/blue/check.svg")
+  .get_uri()
+  .replace("file://", "");
+const { build, builder } = Gjsx;
 export function MainWindow({ app, reference }) {
   const panel = [
     {
       name: "Gtk4-Demo",
-      icon_path: "/gjsx/gi_modules/assets/images/icons/blue/settings.svg",
-      executable: "gnome-tour",
+      icon_path: checkIcon,
+      clickHandler(_button) {
+        log("Clicked1");
+      },
     },
     {
       name: "Gtk4 Tour",
-      icon_path: "/gjsx/gi_modules/assets/images/icons/blue/list_add.svg",
-      executable: "gnome-calculator",
+      icon_path: listAdd,
+      clickHandler(_button) {
+        log("Clicked2");
+      },
     },
     {
       name: "Demo App",
-      icon_path: "/gjsx/gi_modules/assets/images/icons/blue/mic.svg",
-      executable: "gnome-calendar",
+      icon_path: micIcon,
+      clickHandler(_button) {
+        log("Clicked3");
+      },
     },
   ];
   return /* @__PURE__ */ Gjsx.createWidget(
@@ -129,10 +68,6 @@ export function MainWindow({ app, reference }) {
       }),
       /* @__PURE__ */ Gjsx.createWidget(Gtk.Separator, {
         orientation: Gtk.Orientation.VERTICAL,
-      }),
-      /* @__PURE__ */ Gjsx.createWidget(StackSwitch, {
-        orientation: Gtk.Orientation.VERTICAL,
-        spacing: 10,
       }),
       /* @__PURE__ */ Gjsx.createWidget(HeadLayout, { services: panel })
     )

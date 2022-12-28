@@ -7,11 +7,11 @@ import cnxtLogo from "../assets/images/cnxt.png"
 //@ts-expect-error
 import bdsLogo from "../assets/images/bds-mark.png" ;
 //test
-type Services = {
+export type Services = {
   name: string;
-  executable: string | string[];
   icon_path?: string;
   icon_name?: string;
+  clickHandler(button:Gtk.Button):void;
 };
 // Ha ha! This line convinced me to write a higher level parser. 
 const style = {
@@ -39,10 +39,7 @@ export function HeadLayout({
       <Gtk.Image file={paidlogo} style={{ marginLeft: "5px" }} pixel_size={65} />
       <Gtk.Image file={bdsLogo} style={{ marginLeft: "5px" }} pixel_size={65} />
       {services.map(
-        ({ name, icon_path, icon_name }, i) => {
-          function clickHandler(self: Gtk.Button) {
-            log("Executing")
-          }
+        ({ name, icon_path, icon_name, clickHandler }, i) => {
           return (
             <Gtk.Button
               onClicked={clickHandler}

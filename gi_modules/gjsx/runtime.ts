@@ -1,5 +1,5 @@
 import Gtk from "gi://Gtk?version=4.0";
-import { builder, build, getObject } from './builder.js';
+import { builder, build, getObject, useBuilder } from './builder.js';
 import * as Utils from "./utils/index.js";
 import { installGlobals } from './utils/globals.js';
 let uiregex = /<(\/?)(interface|requires|object|template|property|signal|child|menu|item|attribute|link|submenu|section)(.*?)>/g;
@@ -145,12 +145,12 @@ function isConstructor(f: any) {
   return true;
 }
 function isPromise(f: any) {
-try {
-  Promise.resolve(f());
-} catch (err) {
-  return false
-}
-return true;
+  try {
+    Promise.resolve(f());
+  } catch (err) {
+    return false
+  }
+  return true;
 }
 function styleObjectToCssData(styleAttr: Record<string, string>) {
   if (typeof styleAttr === "object") {
@@ -172,7 +172,7 @@ type WidgetConstructed = {
   attributes: Record<string, any>;
   children: WidgetConstructed[];
 };
-export default { installGlobals,builder, build, getObject, render, createWidget, isConstructor, templateRender, ...Utils };
+export default { installGlobals, builder, build, getObject, useBuilder, render, createWidget, isConstructor, templateRender, ...Utils };
 
 
 

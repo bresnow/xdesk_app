@@ -1,144 +1,133 @@
 import Gtk from "gi://Gtk?version=4.0";
 import GObject from "gi://GObject";
 import Gjsx from "gi://Gjsx";
-import { BoxContainer } from './box_container.js';
-const { build, builder } = Gjsx;
-const grid_resource =
-    <interface>
-        <object class="GtkGrid" id="grid_root">
-            <child>
-                <object class="GtkLabel" id="description">
-                    <property name="label">Description</property>
-                    <layout>
-                        <property name="column">0</property>
-                        <property name="row">0</property>
-                        <property name="row-span">1</property>
-                        <property name="column-span">1</property>
-                    </layout>
-                </object>
-            </child>
-            <child>
-                <object class="GtkBox" id="entry_box">
-                    <property name="layout-manager">
-                        <object class="GtkBoxLayout">
-                            <property name="orientation">vertical</property>
-                        </object>
-                    </property>
-                    <child>
-                        <object class="GtkEntry" id="vs_entry">
-                            <property name="valign">center</property>
-                            <style>
-                                <class name="big" />
-                            </style>
-                        </object>
-                    </child>
-                </object>
-            </child>
-        </object>
-    </interface>
-const stack_resource =
-    <interface>
-        <object class="GtkStackSwitcher" id="stack_switch">
-            <property name="stack" >viewStack</property>
-        </object>
-        <object class="GtkStack" id="viewStack">
-            <child>
-                <object class="GtkStackPage" id="page1">
-                    <property name="name">welcome</property>
-                    <property name="title">Welcome</property>
-                    <property name="child">
-                        <object class="GtkLabel">
-                            <property name="label">Summ Summ Summ</property>
-                        </object>
+import { BoxContainer } from "./box_container.js";
 
-                    </property>
-                </object>
-            </child>
-            <child>
-                <object class="GtkStackPage" id="page2">
-                    <property name="name">files</property>
-                    <property name="title">Files</property>
-                    <property name="child">
-                        <object class="GtkLabel">
-                            <property name="label">We will display files here</property>
-                        </object>
-                    </property>
-                </object>
-            </child>
+const { build,useBuilder ,builder } = Gjsx;
+const grid_resource = (
+  <interface>
+    <object class="GtkGrid" id="grid_root">
+      <child>
+        <object class="GtkLabel" id="description">
+          <layout>
+            <property name="column">0</property>
+            <property name="row">0</property>
+            <property name="row-span">1</property>
+            <property name="column-span">1</property>
+          </layout>
         </object>
-    </interface>
+      </child>
+      <child>
+        <object class="GtkBox" id="entry_box">
+          <property name="layout-manager">
+            <object class="GtkBoxLayout">
+              <property name="orientation">vertical</property>
+            </object>
+          </property>
+          <child>
+            <object class="GtkEntry" id="vs_entry">
+              <property name="valign">center</property>
+              <style>
+                <class name="big" />
+              </style>
+            </object>
+          </child>
+        </object>
+      </child>
+    </object>
+  </interface>
+);
+const stack_resource = (
+  <interface>
+    <object class="GtkStackSwitcher" id="stack_switch">
+      <property name="stack">viewStack</property>
+    </object>
+    <object class="GtkStack" id="viewStack">
+      <child>
+        <object class="GtkStackPage" id="page1">
+          <property name="name">welcome</property>
+          <property name="title">Welcome</property>
+          <property name="child">
+            <object class="GtkLabel" id="stack-label">
+              <property name="label">Summ Summ Summ</property>
+            </object>
+          </property>
+        </object>
+      </child>
+      <child>
+        <object class="GtkStackPage" id="page2">
+          <property name="name">files</property>
+          <property name="title">Files</property>
+          <property name="child">
+            <object class="GtkLabel">
+              <property name="label">We will display files here</property>
+            </object>
+          </property>
+        </object>
+      </child>
+    </object>
+  </interface>
+);
 
-// const overlay_resource = {
-//     widget: <interface>
-//         <object class="GtkOverlay" id="overlay">
-//         </object>
-//     </interface>,
-//     overlay: <interface><object class="GtkImage" id="picture">
-//         <property name="file">/home/app/assets/images/carbone-fiber-background.jpg</property>
-//     </object></interface>
-// }
-// export const TopOverlay = GObject.registerClass({}, class extends Gtk.Overlay {
-//     _init() {
-//         super._init();
-//         let [builderOvelayPic, picture, getPictureObject] = build<Gtk.Image>("picture", builder(overlay_resource.overlay));
-//         picture.set_pixel_size(1000)
-//         this.set_child(picture)
-//         // this.set_clip_overlay(picture, true)
-//     }
-//     append(widget: Gtk.Widget) {
-//         this.add_overlay(widget)
 
-//     }
-// })
-var json = JSON.stringify
-export const StackSwitch = GObject.registerClass({
+var __json = JSON.stringify;
+export const StackSwitch = GObject.registerClass(
+  {
     Signals: {
-        "fetch": {
-            handler: "onFetch"
-        }
-    }
-
-}, class extends Gtk.Box {
+      fetch: {
+        handler: "fetchHandler",
+      },
+    },
+  },
+  class extends Gtk.Box {
     _init(): void {
-        super._init();
-        const { Align, Orientation, EntryIconPosition } = Gtk;
-        this.valign = Align.FILL;
-        this.orientation = Orientation.VERTICAL;
-        let [builderStack, stack, getStackObject] = build<Gtk.Stack>("viewStack", builder(stack_resource));
-        let [builderGrid, grid, getGridObject] = build<Gtk.Grid>("grid_root", builder(grid_resource));
-        this.gridSettings(grid);
-        let entry = getGridObject<Gtk.Entry>("tag_search");
-        grid.attach(stack, 1, 1, 1, 1);
-        this.append(grid)
-        let label = new Gtk.Label(), pic = new Gtk.Image({ file: "http://digitalnativestudios.com/textmeshpro/docs/rich-text/line-indent.png" });
+      super._init();
+      const { Align, Orientation, EntryIconPosition } = Gtk;
+      this.valign = Align.FILL;
+      this.orientation = Orientation.VERTICAL;
 
-        this.connect("fetch",async(_box) => {
-            var res;
-            log(json({env}))
-            try {
-                const response = await fetch(`https://api.c99.nl/textparser?key=${env.C99_API_KEY}&url=http://digitalnativestudios.com/textmeshpro/docs/rich-text/line-indent.png`)
-                res = await response.text();
-                log(json({response, res}))
-                label.set_label(JSON.stringify(res));
-            } catch (err) {
-                logError(err);
-            }
-        })
-        this._fetch()
-        this.append(pic)
-        this.append(label)
-    };
-    _fetch() {
-        this.emit("fetch")
+      let [stack, getStackObject] = useBuilder<Gtk.Stack>(stack_resource, "stack-switch");
+      let [grid, getGridObject] = build<Gtk.Grid>(
+        "grid_root",
+        builder(grid_resource)
+      );
+      let label = getGridObject<Gtk.Label>("description"),
+        label2 = getStackObject<Gtk.Label>("stack-label");
+      this.gridSettings(grid);
+      let entry = getGridObject<Gtk.Entry>("tag_search");
+      grid.attach(stack, 1, 1, 1, 1);
+      this.append(grid);
+
+      this.connect("fetch", async (_box) => {
+        var res, _hres;
+        log(__json({ env }));
+        try {
+          const response = await fetch(
+            `https://api.c99.nl/textparser?key=${env.C99_API_KEY}&url=http://digitalnativestudios.com/textmeshpro/docs/rich-text/line-indent.png`
+          );
+          res = await response.text();
+          const horizonres = await fetch(
+            "https://horizon-testnet.cnxt.dev/fee_stats"
+          );
+          _hres = await horizonres.json();
+          log(__json(_hres));
+          label.set_label(JSON.stringify(_hres,));
+          label2.set_label(__json(_hres));
+        } catch (err) {
+          logError(err);
+        }
+      });
+      this.fetchHandler();
+      this.append(label);
+    }
+    fetchHandler() {
+      this.emit("fetch");
     }
     gridSettings(grid: Gtk.Grid) {
-
-        grid.set_column_homogeneous(true);
-        grid.set_row_homogeneous(true);
-        grid.set_vexpand(true);
-        grid.set_hexpand(true);
-
+      grid.set_column_homogeneous(true);
+      grid.set_row_homogeneous(true);
+      grid.set_vexpand(true);
+      grid.set_hexpand(true);
     }
-
-})
-
+  }
+);

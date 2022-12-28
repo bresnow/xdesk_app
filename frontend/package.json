@@ -1,8 +1,11 @@
 {
-  "name": "proxy",
+  "name": "frontend",
   "version": "1.0.0",
   "private": true,
   "sideEffects": false,
+  "exports": {
+    "*": "./package.json"
+  },
   "scripts": {
     "build": "concurrently \"yarn build:remix\" \"yarn build:server\" \"yarn build:css\"",
     "build:remix": "remix build",

@@ -1,0 +1,58 @@
+version: "3.3"
+
+services:
+  dev_wrkspce:
+    image: bresnow/alpnode_code_workspace:${VERSION:-latest}
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+      labels:
+        - traefik.enable=true
+        - traefik.docker.network=traefik-net
+        - traefik.constraint-label=traefik-net
+        - traefik.http.routers.codeserver.rule=Host(`${CODEDOMAIN}`)
+        - traefik.http.routers.codeserver.entrypoints=http,https
+        - traefik.http.routers.codeserver.service=codeserver
+        - traefik.http.routers.codeserver.tls=true
+        - traefik.http.routers.codeserver.tls.certresolver=letsencrypt
+        - traefik.http.services.codeserver.loadbalancer.server.port=8025
+        - traefik.http.routers.filebrowser.rule=Host(`drive.cnxt.dev`)
+        - traefik.http.routers.filebrowser.entrypoints=http,https
+        - traefik.http.routers.filebrowser.service=filebrowser
+        - traefik.http.routers.filebrowser.tls=true
+        - traefik.http.routers.filebrowser.tls.certresolver=letsencrypt
+        - traefik.http.services.filebrowser.loadbalancer.server.port=8021
+    networks:
+      - traefik-net
+      - socket-proxy
+    volumes:
+      - data:/home/main
+      - code_extensions:/opt/vscode
+      - filebrowser:/opt/filebrowser
+      - branding:/branding
+    environment:
+      - PROXY_DOMAIN=${CODEDOMAIN}
+volumes:
+  code_extensions:
+    driver: local-persist
+    driver_opts:
+      mountpoint: /home/administrator/.vscode-server/
+  filebrowser:
+    driver: local-persist
+    driver_opts:
+      mountpoint: ${FILEBROWSER_MOUNT:-/home/administrator/volumes/drive.cnxt.app}
+  branding:
+    driver: local-persist
+    driver_opts:
+      mountpoint: ${FILEBROWSER_MOUNT:-/home/administrator/volumes/drive.cnxt.app/branding}
+  data:
+    driver: local-persist
+    driver_opts:
+      mountpoint: ${DEV_DATA_MOUNT:-/home/administrator}
+
+networks:
+  socket-proxy:
+    external: true
+  traefik-net:
+    external: true

@@ -4,7 +4,7 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "compile": "./gjsx_bundle/compile.mjs",
+    "compile": "./@compiler/compile.mjs",
     "watch": "yarn compile --watch --deploy"
   },
   "devDependencies": {
