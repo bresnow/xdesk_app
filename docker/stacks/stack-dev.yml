@@ -29,7 +29,9 @@ services:
       - socket-proxy
     volumes:
       - project:/gjsx
-
+      - dev_dri:/dev/dri
+    devices:
+      - /dev/dri/card0:/dev/dri/card0
     environment:
       C99_API_KEY: ${C99_API_KEY}
 
@@ -38,6 +40,8 @@ volumes:
     driver: local-persist
     driver_opts:
       mountpoint: ${project_mountpoint:-/home/administrator/app.xdesk}
+  dev_dri:
+    external: true
 
 
 

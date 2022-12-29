@@ -16,6 +16,9 @@
         "render": "*"
     },
     "devDependencies": {
-        "render": "*"
+        "autoprefixer": "^10.4.13",
+        "postcss": "^8.4.20",
+        "render": "*",
+        "tailwindcss": "^3.2.4"
     }
 }

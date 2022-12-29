@@ -12,11 +12,10 @@
     "compile": "turbo compile",
     "build": "turbo build",
     "watch": "turbo watch",
-    "deploy": "docker stack deploy -c docker/stacks/stack-dev.yml gjsx",
+    "deploy": "turbo deploy",
     "push": "turbo push",
-    "broadway": "turbo broadway",
-    "log": "cat docker/log/broadway.log; cat docker/log/watch*.log;",
-    "log-clear": "sudo rm -rf docker/log/**/*"
+    "log-clear": "rm -rf docker/log/**/*",
+    "supervisord_run":"/usr/bin/supervisord -c /etc/supervisord.conf"
   },
   "keywords": [
     "typescript",
@@ -27,8 +26,8 @@
     "docker"
   ],
   "version": "1.8.2",
-  "repository": "git@github.com:bresnow/gjsx-broadway-docker.git",
-  "author": "bresnow <bresnow@me.com>",
+  "repository": "git@github.com:bresnow/xdesk_app.git",
+  "author": "bresnow <bresnow@fltngmmth.com>",
   "license": "MIT",
   "devDependencies": {
     "@types/prettier": "^2.7.1",

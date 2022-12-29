@@ -96,10 +96,12 @@ RUN \
     rsync -av --progress "Mc-OS-themes/$GTK_THEME" /usr/share/themes/; \
     rm -rf /tmp/* /tmp/.[!.]* ; \
     delpkg rsync
+
 # TODO: Config YAML file to add theme url and theme name
 
 FROM packages as development
-ADD docker/supervisor/layered/* /etc/supervisord/
+
+ADD docker/supervisor/layered/{broadway,gjsx}.log docker/supervisor/layered/development/*.log /etc/supervisord/
 WORKDIR /gjsx
 COPY . /gjsx
 
@@ -109,13 +111,25 @@ RUN \
     yarn
 
 #  Prune workspaces
-RUN yarn turbo prune --scope gi_modules --scope frontend --out-dir /pruned --docker 
+RUN yarn turbo prune --scope gi_modules --out-dir /pruned_gi --docker; \
+    yarn turbo prune --scope server --out-dir /pruned_front --docker; \
+    yarn turbo prune --scope ui --out-dir /pruned_front --docker; \
+    yarn turbo prune --scope render --out-dir /pruned_front --docker; 
 
 
 CMD ["/usr/bin/supervisord","-c","/etc/supervisord.conf"]
 
 FROM packages as installer
-COPY --from=development /pruned/json /gjsx
 WORKDIR /gjsx
+COPY --from=development /pruned_gi/json/ .
+RUN yarn
+
+COPY --from=development /pruned_gi/full/ .
+RUN yarn build
 
 
+
+FROM packages as gtk4-application
+ADD docker/supervisor/layered/{broadway,gjsx}.log docker/supervisor/layered/production/*.log /etc/supervisord/
+
+WORKDIR /gjsx

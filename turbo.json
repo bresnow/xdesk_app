@@ -1,7 +1,6 @@
 {
     "$schema": "https://turbo.build/schema.json",
     "pipeline": {
-        "broadway": {},
         "build":{
             "dependsOn": [
                 "^build",
@@ -21,6 +20,9 @@
             "dependsOn": [
                 "build",
                 "push"
+            ],
+            "outputs": [
+                "docker/log/**/*.log"
             ]
         },
         "push": {
