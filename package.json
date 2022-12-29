@@ -5,7 +5,7 @@
   "workspaces": [
     "./gi_modules/*",
     "./gi_modules",
-    "./frontend",
+    "./frontend/*",
     "./docker"
   ],
   "scripts": {
