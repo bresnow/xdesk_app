@@ -1,6 +1,6 @@
 import { useLoaderData } from "@remix-run/react";
 import type { LoaderFunction } from "@remix-run/server-runtime";
-import type { LoaderContext } from "types";
+import type { LoaderContext } from "../../../../types";
 import { html } from "../$namespace";
 import Iframe from "../../../../../ui/iframe";
 export let loader: LoaderFunction = async ({ params, request, context }) => {
@@ -9,7 +9,7 @@ export let loader: LoaderFunction = async ({ params, request, context }) => {
   return html("");
 };
 
-export default function () {
+export default function LemonSquee  () {
   let data = useLoaderData();
   return (
     <>

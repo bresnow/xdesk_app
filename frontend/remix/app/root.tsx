@@ -1,8 +1,7 @@
-import { useLoaderData } from "@remix-run/react";
+/* eslint-disable @next/next/no-head-element */
 import type { LoaderFunction, MetaFunction } from "@remix-run/server-runtime";
 import {
   Links,
-  LiveReload,
   Meta,
   Outlet,
   Scripts,

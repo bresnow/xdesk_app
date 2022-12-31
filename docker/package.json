@@ -7,9 +7,8 @@
     "author": "bresnow <bresnow@me.com>",
     "license": "MIT",
     "scripts": {
-        "build": "docker-compose build",
-        "push": "docker-compose push",
-        "compose": "docker-compose up",
+        "build": "docker-compose -f ../docker-compose.yml build",
+        "push": "docker-compose -f ../docker-compose.yml push",
         "traefik": "docker stack deploy -c stacks/traefik.yml traefik",
         "deploy": "docker stack deploy -c stacks/stack-dev.yml",
         "supervisord": "/usr/bin/supervisord -c /etc/supervisord.conf"

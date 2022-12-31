@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "compile": "./@compiler/compile.mjs",
-    "watch": "yarn compile --watch"
+    "shed":"rm README.md tsconfig.json; rm -rf @compiler app assets gjsx types;",
+    "start": "cd _compiled; gjs -m app/main.js",
+    "watch": "yarn compile --watch --deploy"
   },
   "devDependencies": {
     "@types/prettier": "^2.7.1",

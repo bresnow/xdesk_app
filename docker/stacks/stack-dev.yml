@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   gjsx_xdesk:
-    image: bresnow/gjsx-dev:${VERSION:-latest}
+    image: bresnow/amnion-dev:${VERSION:-latest}
     deploy:
       placement:
         constraints:
@@ -16,7 +16,7 @@ services:
         - traefik.http.routers.proxy-${ID:-xdesk_dev}.service=proxy-${ID:-xdesk_dev}
         - traefik.http.routers.proxy-${ID:-xdesk_dev}.tls=true
         - traefik.http.routers.proxy-${ID:-xdesk_dev}.tls.certresolver=${TLS:-letsencrypt}
-        - traefik.http.services.proxy-${ID:-xdesk_dev}.loadbalancer.server.port=8087
+        - traefik.http.services.proxy-${ID:-xdesk_dev}.loadbalancer.server.port=${FRONTEND_PORT:-3333}
         - traefik.http.routers.gjsx-${ID:-xdesk_dev}.rule=Host(`${INTERFACE_DOMAIN:-namespace.cnxt.dev}`) 
         - traefik.http.routers.gjsx-${ID:-xdesk_dev}.entrypoints=http,https
         - traefik.http.routers.gjsx-${ID:-xdesk_dev}.service=gjsx-${ID:-xdesk_dev}
@@ -29,10 +29,12 @@ services:
     volumes:
       - project:/gjsx
       - dev_dri:/dev/dri
+      - logs:/var/log
     devices:
       - /dev/dri/card0:/dev/dri/card0
     environment:
       C99_API_KEY: ${C99_API_KEY}
+      SERVICE_ID: '{{.Service.ID}}'
 
 volumes:
   project:
@@ -41,6 +43,10 @@ volumes:
       mountpoint: ${project_mountpoint:-/home/administrator/app.xdesk}
   dev_dri:
     external: true
+  logs:
+    driver: local-persist
+    driver_opts:
+      mountpoint: ${LOGS_PATH:-/home/administrator/app.xdesk/.logs/dev}
 
 
 

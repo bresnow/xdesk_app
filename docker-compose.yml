@@ -1,15 +1,15 @@
 version: "3.8"
 services:
-  # amnion:
-  #   image: bresnow/amnion:${VERSION:-latest}
-  #   build:
-  #     context: ..
-  #     dockerfile: Dockerfile
-  #     target: amnion
+  amnion:
+    image: bresnow/amnion-gjsx:${VERSION:-latest}
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: amnion-gjsx
   dev:
     image: bresnow/amnion-dev:${VERSION:-latest}
     build:
-      context: ..
+      context: .
       dockerfile: Dockerfile
       target: development
     ports:
@@ -19,8 +19,8 @@ services:
       - 8085:8085
       - 3333:3333
     volumes:
-      - ../.logs/dev:/var/log
-      - ../:/gjsx
+      - ${PWD}/.logs/dev:/var/log
+      - ${PWD}:/gjsx
     networks:
       - socket-proxy
 

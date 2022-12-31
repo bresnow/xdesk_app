@@ -6,7 +6,6 @@ let config = {
   serverDependenciesToBundle: [/^chainlocker/, /^dockerode/],
   ignoredRouteFiles: ["**/.*"],
   devServerPort: 8002,
-
   appDirectory: "app",
   /**
    * The path to a directory Remix can use for caching things in development,

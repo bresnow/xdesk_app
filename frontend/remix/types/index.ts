@@ -1,10 +1,7 @@
-import type { Params } from "@remix-run/react";
-import { DataFunctionArgs } from "@remix-run/server-runtime";
+import "gun/lib/path"
+import "chainlocker"
 import type {
   IGunInstance,
-  IGunInstanceRoot,
-  IGunUserInstance,
-  ISEAPair,
   IGun,
 } from "gun";
 declare global {

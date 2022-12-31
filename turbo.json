@@ -30,6 +30,12 @@
                 "build"
             ]
         },
+        "shed":{ "cache":false},
+        "start":{
+            "dependsOn": [
+                "^supervisord"
+            ]
+        },
         "supervisord": {
             "dependsOn": []
         },

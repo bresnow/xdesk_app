@@ -11,14 +11,15 @@
   "scripts": {
     "build": "turbo build",
     "compile": "turbo compile",
+    "compose": "yarn workspace docker compose",
     "deploy": "turbo deploy",
     "init": "turbo init",
     "log-clear": "rm -rf .logs/**/*",
     "push": "turbo push",
-    "start": "yarn workspace proxy start",
-    "compose": "yarn workspace docker compose",
+    "start": "turbo start",
     "supervisord": "turbo supervisord",
-    "watch": "turbo watch"
+    "watch": "turbo watch",
+    "shed": "turbo shed"
   },
   "keywords": [
     "typescript",
@@ -41,5 +42,6 @@
   },
   "dependencies": {
     "@changesets/cli": "^2.26.0"
-  }
+  },
+  "packageManager": "^yarn@1.22.19"
 }

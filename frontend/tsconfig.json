@@ -20,6 +20,7 @@
             "~/*": [
                 "./remix/app/*"
             ],
+            "@types":["./remix/types/index.ts"],
             "@ui/*": [
                 "./ui/*"
             ]

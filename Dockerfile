@@ -103,41 +103,46 @@ ENV DEBUG=debug
 RUN yarn
 CMD ["yarn","supervisord"]
 
-FROM node:alpine3.16 as pruner
+
+
+
+FROM node as pruner
 ADD . /amnion
 WORKDIR /amnion
 RUN yarn global add turbo;
-#  Prune workspaces
-RUN yarn turbo prune --scope=gi_modules --docker;
+#  Prune workspace gi_modules
+RUN turbo prune --scope=gi_modules --out-dir=gjsx --docker; \
+    turbo prune --scope=proxy --out-dir=gjsx --docker; \
+    turbo prune --scope=docker --out-dir=gjsx --docker;
+ 
+RUN cd /amnion/gjsx/json; yarn;
+
+#  Prune workspace frontend
+RUN turbo prune --scope=render --out-dir=remix --docker; \
+    turbo prune --scope=server --out-dir=remix --docker; \
+    turbo prune --scope=ui --out-dir=remix --docker;
+
+RUN cd /amnion/remix/json; yarn;
 
 
-FROM packages as installer
-COPY --from=pruned /gjsx/out/json /_gi
-WORKDIR /_gi
-RUN yarn
-COPY --from=pruned /gjsx/pruned_front/json /_front
-WORKDIR /_front
-RUN yarn
-COPY --from=pruned /gjsx/pruned_docker/json /_docker
-WORKDIR /_docker
-RUN yarn; 
+FROM node as gjsx_builder
 
-FROM packages as gtk_builder
-COPY --from=pruned /gjsx/out/full /_gi
+RUN yarn global add turbo;
 
-WORKDIR /_gi
-RUN yarn; yarn build;
+WORKDIR /amnion
+COPY --from=pruner /amnion/gjsx/json/ .
+COPY --from=pruner /amnion/gjsx/json/yarn.lock ./yarn.lock
+COPY --from=pruner /amnion/gjsx/full/ .
 
-FROM packages as amnion
-ADD docker/supervisor/layered/broadway.conf docker/supervisor/layered/production/proxy.conf  /etc/supervisord/
-COPY --from=installer /_gi /gjsx
+COPY turbo.json ./turbo.json
+
+RUN yarn build --filter=gi_modules;\
+    yarn shed;
+
+
+
+
+FROM packages as amnion-gjsx
+COPY --from=gjsx_builder /amnion /gjsx
 WORKDIR /gjsx
-ADD ./turbo.json ./turbo.json
-COPY --from=installer /_docker/docker ./docker
-COPY --from=gtk_builder /_gi/gi_modules/_compiled ./gi_modules/_compiled
-COPY --from=gtk_builder /_gi/gi_modules/proxy/src ./gi_modules/proxy/src
-COPY --from=gtk_builder /_gi/gi_modules/proxy/views ./gi_modules/proxy/views
-CMD ["yarn","supervisord"]
-
-
-FROM packages as frontend
+CMD ["yarn", "start"]

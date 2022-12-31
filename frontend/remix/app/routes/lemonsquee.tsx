@@ -1,5 +1,5 @@
 import type { LoaderFunction } from "@remix-run/server-runtime";
-import type { LoaderContext } from "types";
+import type { LoaderContext } from "../../types";
 import {html} from "./__app/$namespace"
 export let loader: LoaderFunction = async({params, request, context}) => { 
  let ctx = context as unknown as LoaderContext
