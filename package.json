@@ -11,8 +11,9 @@
   "scripts": {
     "build": "turbo build",
     "compile": "turbo compile",
-    "compose": "yarn workspace docker compose",
+    "compose": "turbo compose",
     "deploy": "turbo deploy",
+    "down":"cd docker; docker-compose down; cd ..;",
     "init": "turbo init",
     "log-clear": "rm -rf .logs/**/*",
     "push": "turbo push",
@@ -35,6 +36,7 @@
   "license": "MIT",
   "devDependencies": {
     "@types/prettier": "^2.7.1",
+    "concurrently": "^7.3.0",
     "prettier": "^2.7.1",
     "semver": "^7.3.8",
     "turbo": "^1.6.3",

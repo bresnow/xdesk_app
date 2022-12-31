@@ -12,6 +12,7 @@
     },
     "dependencies": {
         "chainlocker": "^1.3.2",
+        "lodash": "^4.17.21",
         "render": "*"
     },
     "devDependencies": {

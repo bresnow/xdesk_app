@@ -1,50 +1,36 @@
 {
-    "$schema": "https://turbo.build/schema.json",
-    "pipeline": {
-        "build": {
-            "dependsOn": [
-                "^build",
-                "compile"
-            ],
-            "outputs": [
-                "broadway-proxy/build/*",
-                "broadway-proxy/public/build/**/*"
-            ]
-        },
-        "compile": {
-            "outputs": [
-                "gi_modules/_compiled/**/*"
-            ]
-        },
-        "deploy": {
-            "dependsOn": [
-                "build",
-                "push"
-            ],
-            "outputs": [
-                "docker/log/**/*.log"
-            ]
-        },
-        "push": {
-            "dependsOn": [
-                "build"
-            ]
-        },
-        "shed":{ "cache":false},
-        "start":{
-            "dependsOn": [
-                "^supervisord"
-            ]
-        },
-        "supervisord": {
-            "dependsOn": []
-        },
-        "watch": {
-            "outputs": [
-                "gi_modules/_compiled/**/*",
-                "broadway-proxy/build/**/*",
-                "broadway-proxy/public/build/**/*"
-            ]
-        }
+  "$schema": "https://turbo.build/schema.json",
+  "pipeline": {
+    "build": {
+      "dependsOn": ["^build", "compile"],
+      "outputs": ["broadway-proxy/build/*", "broadway-proxy/public/build/**/*"]
+    },
+    "compile": {
+      "outputs": ["gi_modules/_compiled/**/*"]
+    },
+    "compose": {
+      "dependsOn": ["build"]
+    },
+    "deploy": {
+      "dependsOn": ["build", "push"],
+      "outputs": ["docker/log/**/*.log"]
+    },
+    "push": {
+      "dependsOn": ["build"]
+    },
+    "shed": { "cache": false },
+    "start": {
+      "dependsOn": ["^supervisord"]
+    },
+    "supervisord": {
+      "dependsOn": []
+    },
+    "watch": {
+      "outputs": [
+        "gi_modules/_compiled/**/*",
+        "broadway-proxy/build/**/*",
+        "broadway-proxy/public/build/**/*"
+      ]
     }
+  }
 }

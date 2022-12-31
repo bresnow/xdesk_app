@@ -4,7 +4,7 @@
   "description": "Proxy server for multisocket broadwayd connections",
     "type": "module",
   "scripts": {
-    "watch:proxy": "nodemon  ./src/server.mjs --watch ./src/",
+    "watch": "nodemon  ./src/server.mjs --watch ./src/",
     "start": "node ./src/server.mjs"
   },
   "repository": {

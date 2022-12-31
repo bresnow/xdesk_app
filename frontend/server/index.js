@@ -8,10 +8,10 @@ import { matchServerRoutes } from "@remix-run/server-runtime/dist/routeMatching.
 import { installGlobals } from "@remix-run/node";
 import Gun from "gun";
 import "./gunlibs.js";
-import process from "process";
-import { data } from "./loader.config.js";
+import Config from "./loader.config.js";
 
 installGlobals();
+const  { data }  =Config
 let require = createRequire(import.meta.url);
 let packagePath = dirname(require.resolve("../remix/package.json"));
 let importPath = resolve(packagePath, "build/index.js");
@@ -89,7 +89,7 @@ let server = app.listen(port, () => {
 });
 
 const gun = Gun({
-  peers: ["http://front_gtk-relay:3000/gun"],
+  peers: ["http://0.0.0.0:3000/gun"],
   file: radataDir,
   web: server,
 });
