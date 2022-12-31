@@ -15,9 +15,6 @@ RUN  \
     echo "https://dl-cdn.alpinelinux.org/alpine/v3.16/community" >> /etc/apk/repositories; \
     chmod +x -R /usr/bin/;
 
-
-
-
 FROM base as packages
 WORKDIR /tmp
 RUN addpkg  \
@@ -96,40 +93,51 @@ RUN \
     rsync -av --progress "Mc-OS-themes/$GTK_THEME" /usr/share/themes/; \
     rm -rf /tmp/* /tmp/.[!.]* ; \
     delpkg rsync
-
-# TODO: Config YAML file to add theme url and theme name
+RUN npm i -g yarn nodemon zx turbo;
 
 FROM packages as development
-
-ADD docker/supervisor/layered/{broadway,gjsx}.log docker/supervisor/layered/development/*.log /etc/supervisord/
+ADD docker/supervisor/dev/*.conf  /etc/supervisord/
 WORKDIR /gjsx
 COPY . /gjsx
+ENV DEBUG=debug
+RUN yarn
+CMD ["yarn","supervisord"]
 
-# nodejs environment
-RUN \
-    npm i -g yarn nodemon zx; \
-    yarn
-
+FROM node:alpine3.16 as pruner
+ADD . /amnion
+WORKDIR /amnion
+RUN yarn global add turbo;
 #  Prune workspaces
-RUN yarn turbo prune --scope gi_modules --out-dir /pruned_gi --docker; \
-    yarn turbo prune --scope server --out-dir /pruned_front --docker; \
-    yarn turbo prune --scope ui --out-dir /pruned_front --docker; \
-    yarn turbo prune --scope render --out-dir /pruned_front --docker; 
+RUN yarn turbo prune --scope=gi_modules --docker;
 
-
-CMD ["/usr/bin/supervisord","-c","/etc/supervisord.conf"]
 
 FROM packages as installer
-WORKDIR /gjsx
-COPY --from=development /pruned_gi/json/ .
+COPY --from=pruned /gjsx/out/json /_gi
+WORKDIR /_gi
 RUN yarn
+COPY --from=pruned /gjsx/pruned_front/json /_front
+WORKDIR /_front
+RUN yarn
+COPY --from=pruned /gjsx/pruned_docker/json /_docker
+WORKDIR /_docker
+RUN yarn; 
 
-COPY --from=development /pruned_gi/full/ .
-RUN yarn build
+FROM packages as gtk_builder
+COPY --from=pruned /gjsx/out/full /_gi
 
+WORKDIR /_gi
+RUN yarn; yarn build;
 
-
-FROM packages as gtk4-application
-ADD docker/supervisor/layered/{broadway,gjsx}.log docker/supervisor/layered/production/*.log /etc/supervisord/
-
+FROM packages as amnion
+ADD docker/supervisor/layered/broadway.conf docker/supervisor/layered/production/proxy.conf  /etc/supervisord/
+COPY --from=installer /_gi /gjsx
 WORKDIR /gjsx
+ADD ./turbo.json ./turbo.json
+COPY --from=installer /_docker/docker ./docker
+COPY --from=gtk_builder /_gi/gi_modules/_compiled ./gi_modules/_compiled
+COPY --from=gtk_builder /_gi/gi_modules/proxy/src ./gi_modules/proxy/src
+COPY --from=gtk_builder /_gi/gi_modules/proxy/views ./gi_modules/proxy/views
+CMD ["yarn","supervisord"]
+
+
+FROM packages as frontend

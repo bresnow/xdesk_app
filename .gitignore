@@ -12,7 +12,7 @@ log
 db*
 # testing
 coverage
-
+.logs
 **/build
 **/dist
 **/.cache

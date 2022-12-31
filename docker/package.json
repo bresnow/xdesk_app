@@ -9,8 +9,10 @@
     "scripts": {
         "build": "docker-compose build",
         "push": "docker-compose push",
+        "compose": "docker-compose up",
         "traefik": "docker stack deploy -c stacks/traefik.yml traefik",
-        "deploy": "docker stack deploy -c stacks/stack-dev.yml gjsx"
+        "deploy": "docker stack deploy -c stacks/stack-dev.yml",
+        "supervisord": "/usr/bin/supervisord -c /etc/supervisord.conf"
     },
     "devDependencies": {
         "concurrently": "^7.6.0",

@@ -9,13 +9,16 @@
     "./docker"
   ],
   "scripts": {
-    "compile": "turbo compile",
     "build": "turbo build",
-    "watch": "turbo watch",
+    "compile": "turbo compile",
     "deploy": "turbo deploy",
+    "init": "turbo init",
+    "log-clear": "rm -rf .logs/**/*",
     "push": "turbo push",
-    "log-clear": "rm -rf docker/log/**/*",
-    "supervisord_run":"/usr/bin/supervisord -c /etc/supervisord.conf"
+    "start": "yarn workspace proxy start",
+    "compose": "yarn workspace docker compose",
+    "supervisord": "turbo supervisord",
+    "watch": "turbo watch"
   },
   "keywords": [
     "typescript",

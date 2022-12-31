@@ -52,7 +52,7 @@ app.use(
 );
 app.use(express.static(publicPath, { maxAge: "5m" }));
 
-// eslint-disable-next-line no-undef
+
 if (process.env.NODE_ENV === "development") {
   app.all("*", async (req, res, next) => {
     try {
@@ -72,7 +72,7 @@ if (process.env.NODE_ENV === "development") {
   app.all(
     "*",
     createRequestHandler({
-      build: await import("remix"),
+      build: await import("../remix/build"),
       getLoadContext,
       mode: "production",
     })
@@ -101,7 +101,8 @@ function purgeRequireCache(path) {
 }
 
 (async () => {
-  await import("chainlocker"); // this is a module I built that keeps the keypair in the vault context to encrypt and compress data to utf16 characters. Object values are almost 50% smaller
+   // this is a module I built that keeps the keypair in the vault context to encrypt and compress data to utf16 characters. Object values are almost 50% smaller
+   await import("chainlocker");
   gun.keys(SECRET_KEY_ARRAY, (masterKeys) => {
     gun.vault("REMIX_GUN", masterKeys);
     let locker = gun.locker(["ENCRYPTED_APP_CONTEXT"]);
@@ -114,7 +115,7 @@ function getLoadContext() {
       authorizedDB() {
         return { gun };
       },
-      SECRET_KEY_ARRAY,
+      SECRET_KEY_ARRAY,// Configuration settings
     };
   };
 }

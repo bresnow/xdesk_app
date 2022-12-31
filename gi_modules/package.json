@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "compile": "./@compiler/compile.mjs",
-    "watch": "yarn compile --watch --deploy"
+    "watch": "yarn compile --watch"
   },
   "devDependencies": {
     "@types/prettier": "^2.7.1",

@@ -1,7 +1,7 @@
 {
     "$schema": "https://turbo.build/schema.json",
     "pipeline": {
-        "build":{
+        "build": {
             "dependsOn": [
                 "^build",
                 "compile"
@@ -29,6 +29,9 @@
             "dependsOn": [
                 "build"
             ]
+        },
+        "supervisord": {
+            "dependsOn": []
         },
         "watch": {
             "outputs": [

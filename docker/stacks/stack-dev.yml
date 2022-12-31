@@ -4,7 +4,6 @@ services:
   gjsx_xdesk:
     image: bresnow/gjsx-dev:${VERSION:-latest}
     deploy:
-
       placement:
         constraints:
           - node.role == manager
