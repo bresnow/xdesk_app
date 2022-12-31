@@ -1,0 +1,36 @@
+{
+  "name": "proxy",
+  "version": "1.0.0",
+  "description": "Proxy server for multisocket broadwayd connections",
+    "type": "module",
+  "scripts": {
+    "watch:proxy": "nodemon  ./src/server.mjs --watch ./src/",
+    "start": "node ./src/server.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bresnow/broadway-proxy.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bresnow/broadway-proxy/issues"
+  },
+  "homepage": "https://github.com/bresnow/broadway-proxy#readme",
+  "dependencies": {
+    "dockerode": "^3.3.4",
+    "dockerode-compose": "^1.3.2",
+    "express": "^4.18.2",
+    "gun": "^0.2020.1239",
+    "http-proxy": "^1.18.1",
+    "redaxios": "^0.5.1",
+    "uuid": "^8.3.2",
+    "ws": "^8.11.0",
+    "yup": "^0.32.11"
+  },
+  "devDependencies": {
+    "@maximegris/node-websockify": "^1.0.7",
+    "nodemon": "^2.0.15"
+  }
+}

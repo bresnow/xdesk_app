@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CNXT — FLTNGMMTH</title>
+    <script type="text/javascript" src="js/broadway.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gun/gun.js"></script>
+    <script>
+        var {origin, protocol} = window.location, internaSock = `${protocol}peer-internal.cnxt.dev`;
+        console.log(internaSock)
+        var gun = GUN({peers:[internaSock+"/gun"]}); // your code here
+        gun.get("fire/andICE").put({idonot: "LikeSamIAM", blessings: "UNTO THEE that reaps my harvest..."})
+    </script>
+</head>
+
+<body onload="cnxt()">
+</body>
+
+</html>
