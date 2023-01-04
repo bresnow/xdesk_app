@@ -2,14 +2,14 @@
   "$schema": "https://turbo.build/schema.json",
   "pipeline": {
     "build": {
-      "dependsOn": ["^build", "compile"],
+         "dependsOn": ["^build", "compile"],
       "outputs": ["broadway-proxy/build/*", "broadway-proxy/public/build/**/*"]
     },
     "compile": {
       "outputs": ["gi_modules/_compiled/**/*"]
     },
     "compose": {
-      "dependsOn": ["build"]
+    "cache": false
     },
     "deploy": {
       "dependsOn": ["build", "push"],

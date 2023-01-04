@@ -1,17 +1,8 @@
 import { Link, Outlet } from "@remix-run/react";
-import {
-  CustomButton as Button,
-  ButtonProvider,
-  FormAuth,
-  NavList,
-  AccountMenu,
-  RouteHeader,
-} from "@ui/index";
+import { CustomButton as Button, AccountMenu } from "@ui/index";
 import type { LoaderFunction } from "@remix-run/server-runtime";
 import type { LoaderContext } from "../../types";
-import HeadProfil from "../../../ui/kit/components/pagesection/profile/HeadProfil";
-import FullPhotoCard from "../../../ui/kit/components/pagesection/profile/FullPhotoCard";
-import FMLogo from "../../../ui/svg/logos/FltngMmth";
+import CNXTLogo from "@ui/svg/logos/CNXT";
 
 export let loader: LoaderFunction = async ({ params, request, context }) => {
   let contextual = context as unknown as LoaderContext;
@@ -33,7 +24,7 @@ export default function _AppRoute() {
         <div className="h-screen hidden lg:block my-4 ml-4 shadow-lg relative w-80">
           <div className="bg-white h-full rounded-2xl dark:bg-gray-700">
             <div className="flex items-center justify-center pt-6">
-              <FMLogo />
+              <CNXTLogo />
             </div>
 
             {/* <nav className="mt-6">

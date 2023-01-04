@@ -7,7 +7,7 @@ export const updateService = (optionalServiceName) => {
         docker.listServices({}
             , (err, services) => {
                 services?.forEach(async service => {
-                    if (service.Spec.ID == SERVICE_ID) {
+                    if (service.Spec.Name=== "amnion_amnion_development"){
                         let initSvc = service
                         const { Spec, ID } = initSvc;
                         const _service = docker.getService(ID);

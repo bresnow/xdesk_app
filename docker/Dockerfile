@@ -124,7 +124,6 @@ RUN turbo prune --scope=render --out-dir=remix --docker; \
 
 RUN cd /amnion/remix/json; yarn;
 
-
 FROM node as gjsx_builder
 
 RUN yarn global add turbo;
@@ -136,14 +135,4 @@ COPY --from=pruner /amnion/gjsx/full/ .
 
 COPY ./turbo.json ./turbo.json
 
-RUN yarn build --filter=gi_modules;\
-    yarn shed;
-
-
-
-
-FROM packages as amnion-gjsx
-ADD docker/supervisor/prod/broadway.conf /etc/supervisord/
-COPY --from=gjsx_builder /amnion /gjsx
-WORKDIR /gjsx
-CMD yarn start
+RUN yarn build --filter=gi_modules;

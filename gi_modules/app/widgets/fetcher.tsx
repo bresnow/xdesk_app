@@ -5,3 +5,8 @@ import { WebViewer } from './webviewer.js';
 const { encode } =Gjsx; 
 
 
+const FetchWidget = GObject.registerClass({}, class  extends Gtk.Widget {
+    constructor(parameters:Gtk.Widget_ConstructProps) {
+        super(parameters)
+    }
+})

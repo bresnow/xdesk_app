@@ -9,16 +9,18 @@
     "scripts": {
         "build": "docker-compose build",
         "compose": "docker-compose up --remove-orphans",
-        "push": "docker-compose push",
+        "push": "docker-compose push; yarn deploy amnion;",
         "traefik": "docker stack deploy -c stacks/traefik.yml traefik",
         "deploy": "docker stack deploy -c stacks/stack-dev.yml",
-        "supervisord": "/usr/bin/supervisord -c /etc/supervisord.conf"
+        "supervisord": "/usr/bin/supervisord -c /etc/supervisord.conf",
+        "webhook": "node portainer/webhooks/amnion_service.mjs;"
     },
     "devDependencies": {
         "concurrently": "^7.6.0",
         "zx": "^7.1.1"
     },
     "dependencies": {
-        "gun": "^0.2020.1239"
+        "gun": "^0.2020.1239",
+        "redaxios": "^0.5.1"
     }
 }

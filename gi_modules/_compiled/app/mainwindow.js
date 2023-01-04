@@ -25,7 +25,10 @@ export function MainWindow({ app, reference }) {
       name: "Gtk4-Demo",
       icon_path: checkIcon,
       clickHandler(_button) {
-        log("Clicked1");
+        _button.set_margin_bottom(3);
+        _button.set_child(
+          new Gtk.Image({ file: "/gjsx/gi_modules/assets/images/AppIcon.svg" })
+        );
       },
     },
     {

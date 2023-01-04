@@ -2,6 +2,7 @@ import { createRequire } from "module";
 import { dirname, resolve } from "path";
 import compression from "compression";
 import express from "express";
+import fs from "fs-extra";
 import { createRequestHandler } from "@remix-run/express";
 import { createRoutes } from "@remix-run/server-runtime/dist/routes.js";
 import { matchServerRoutes } from "@remix-run/server-runtime/dist/routeMatching.js";
@@ -11,7 +12,7 @@ import "./gunlibs.js";
 import Config from "./loader.config.js";
 
 installGlobals();
-const  { data }  =Config
+const { data } = Config;
 let require = createRequire(import.meta.url);
 let packagePath = dirname(require.resolve("../remix/package.json"));
 let importPath = resolve(packagePath, "build/index.js");
@@ -52,7 +53,6 @@ app.use(
 );
 app.use(express.static(publicPath, { maxAge: "5m" }));
 
-
 if (process.env.NODE_ENV === "development") {
   app.all("*", async (req, res, next) => {
     try {
@@ -83,11 +83,13 @@ const port = parseInt(process.env.PORT) ?? 3333;
 const SECRET_KEY = process.env.SECRET_KEY,
   SECRET_KEY_ARRAY = SECRET_KEY ? [SECRET_KEY] : [];
 
-const radataDir = "radata";
+const radataDir = "/data/front-relay_graph";
 let server = app.listen(port, () => {
   console.log(`Remix.Gun relay server listening on port ${port}`);
 });
-
+if (!fs.existsSync(radataDir)) {
+  fs.mkdirpSync(radataDir);
+}
 const gun = Gun({
   peers: ["http://0.0.0.0:3000/gun"],
   file: radataDir,
@@ -101,8 +103,8 @@ function purgeRequireCache(path) {
 }
 
 (async () => {
-   // this is a module I built that keeps the keypair in the vault context to encrypt and compress data to utf16 characters. Object values are almost 50% smaller
-   await import("chainlocker");
+  // this is a module I built that keeps the keypair in the vault context to encrypt and compress data to utf16 characters. Object values are almost 50% smaller
+  await import("chainlocker");
   gun.keys(SECRET_KEY_ARRAY, (masterKeys) => {
     gun.vault("REMIX_GUN", masterKeys);
     let locker = gun.locker(["ENCRYPTED_APP_CONTEXT"]);
@@ -115,7 +117,7 @@ function getLoadContext() {
       authorizedDB() {
         return { gun };
       },
-      SECRET_KEY_ARRAY,// Configuration settings
+      SECRET_KEY_ARRAY, // Configuration settings
     };
   };
 }

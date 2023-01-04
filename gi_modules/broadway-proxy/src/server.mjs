@@ -5,9 +5,7 @@ import fs from "fs-extra"
 import Gun from "gun";
 import url from "url"
 import hp from "http-proxy";
-import routes from "./routes.mjs";
 import process from "process";
-import { createRequire } from "module"
 const app = express();
 const BROADWAY_DISPLAY = process.env.BROADWAY_DISPLAY ?? ":5";
 const BROADWAY_PORT = broadwayPort(), PROXY_PORT = broadwayPort() + 1,
@@ -23,12 +21,22 @@ const wss = new WebSocketServer({
 });
 wss.on("connection", function (server, socket, request) {
   console.log("WEBSOCKET SERVER CONNECTION", JSON.stringify(request, null, 2));
+  
+  wss.emit("message", {
+    test: "connection",
+    message: "hello from websocket server " + request.url,
+})
 });
+wss.on('message', function (msg){
+  console.log("WEBSOCKET MESSAGE", JSON.stringify(msg, null, 2));
+})
+
+
 // TODO: Config Data Store Directory
-if(!fs.existsSync("/data/graph_socket")){
-  fs.mkdirpSync("/data/graph_socket");
+if(!fs.existsSync("/data/interface_graph")){
+  fs.mkdirpSync("/data/interface_graph");
 } 
-const gun = Gun({ web: wss, file: "/data/graph_socket" });
+const gun = Gun({ web: wss, file: "/data/interface_graph" });
 
 
 

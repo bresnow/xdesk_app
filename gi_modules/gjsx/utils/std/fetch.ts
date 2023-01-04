@@ -5,7 +5,7 @@ import Soup from "gi://Soup?version=3.0"
 import EventEmitter from './events.js';
 import GObject from "gi://GObject";
 
-type FetchOptions = { url: string; method: "GET" | "POST" | "PATCH" | "DELETE"; headers: Record<string, string>; body: Uint8Array; }
+export type FetchOptions = { url: string; method: "GET" | "POST" | "PATCH" | "DELETE"; headers: Record<string, string>; body: Uint8Array; }
 export default async function fetch(url: string| FetchOptions, options?: FetchOptions) {
   if (typeof url === "object") {
     options = url;

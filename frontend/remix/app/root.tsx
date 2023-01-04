@@ -50,12 +50,10 @@ export default function App() {
     <html lang="en">
       <head>
         <Meta />
-        {/* <meta httpEquiv="Content-Security-Policy" content="upgrade-insecure-requests" /> */}
         <Links />
       </head>
       <body>
         <Outlet />
-
         <ScrollRestoration />
         <Scripts />
       </body>

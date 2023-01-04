@@ -1,6 +1,7 @@
-import type { LoaderFunction } from "@remix-run/server-runtime";
+import { useLoaderData } from "@remix-run/react";
+import { json, LoaderFunction } from "@remix-run/server-runtime";
 import Iframe from "@ui/iframe";
-
+import Websocket from "ws";
 export function html(
   content: string,
   init: number | ResponseInit = {}
@@ -17,21 +18,19 @@ export function html(
     headers,
   });
 }
+//
 
 export let loader: LoaderFunction = async () => {
-  // let { data } = await axios.get("http://kan_kanboard:8080");
-  return null;
+  let src = "https://namespace.cnxt.dev";
+  return json({ src }, 200);
 };
 
 export default function NameSpace() {
-  // let data = useLoaderData();
+  let src = "https://namespace.cnxt.dev";
 
   return (
     <>
-      <Iframe
-        src={"https://kanboard.fltngmmth.com"}
-        className={"w-full h-full"}
-      />
+      <Iframe src={src} className={"w-full h-full"} />
       {/* <Iframe srcdocument={data} className={"w-full h-1/2"} /> */}
     </>
   );

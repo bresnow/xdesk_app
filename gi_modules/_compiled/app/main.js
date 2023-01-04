@@ -10,7 +10,6 @@ const display = Gdk.Display.get_default();
 let dname = display.get_name();
 var DEBUG = env.DEBUG,
   argv = ARGV;
-log(DEBUG);
 const app = new Gtk.Application();
 app.connect("activate", () => {
   if (dname === "Broadway" || dname.toLowerCase() === env["GDK_BACKEND"]) {

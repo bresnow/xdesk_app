@@ -13,7 +13,6 @@ const display = Gdk.Display.get_default()
 let dname = display.get_name();
  var DEBUG = env.DEBUG,
   argv = ARGV;
-log(DEBUG)
 const app = new Gtk.Application();
 app.connect("activate", () => {
   // make sure the display matches the backend environnment ( Broadway)
