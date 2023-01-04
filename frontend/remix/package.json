@@ -40,6 +40,8 @@
         "redaxios": "^0.5.1",
         "remix": "^1.7.0",
         "remix-validated-form": "^4.5.5",
+        "stellar-sdk": "^10.4.1",
+        "stripe": "^11.5.0",
         "super-expressive": "^1.4.1",
         "zod": "^3.18.0",
         "zod-form-data": "^1.2.1"

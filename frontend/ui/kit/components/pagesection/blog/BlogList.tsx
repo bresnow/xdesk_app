@@ -9,45 +9,21 @@ interface Props {
 const NameSpacePreviewMap = (props: Props) => {
   const blogs = [
     {
-      tags: ["Car", "Money"],
-      title: "Work at home",
-      service: "Video",
+      tags: ["#GOD", "#STARCASH"],
+      title: "#KLYSTAR",
+      link: "/KLYSTAR",
+      service: "KLYSTAR",
       img: "/images/gradient.webp",
-      desc: "Work at home, remote, is the new age of the job, every person can work at home....",
+      desc: "Dr. Ying Platform example...",
     },
     {
-      tags: ["Car", "Money"],
-      title: "test",
+      tags: ["#DRIVE", "#FILES"],
+      title: "#FILESHARE",
+     link : "/files",
       service: "Oui",
       img: "/images/gradient1.webp",
-      desc: "The new supercar is here, 543 cv and 140 000$ !!",
-    },
-    {
-      tags: ["Car", "Money"],
-      title: "test",
-      service: "Oui",
-      img: "/images/gradient.webp",
-      desc: "The new supercar is here, 543 cv and 140 000$ !!",
-    },
-    {
-      tags: ["Car", "Money"],
-      title: "test",
-      img: "/images/gradient1.webp",
-      desc: "The new supercar is here, 543 cv and 140 000$ !!",
-    },
-    {
-      tags: ["Car", "Money"],
-      title: "test",
-      img: "/images/gradient.webp",
-      desc: "The new supercar is here, 543 cv and 140 000$ !!",
-    },
-    {
-      tags: ["Car", "Money"],
-      title: "test",
-      service: "Oui",
-      img: "/images/gradient1.webp",
-      desc: "The new supercar is here, 543 cv and 140 000$ !!",
-    },
+      desc: "Google Drive Example",
+    }
   ];
 
   return (
@@ -63,12 +39,13 @@ const NameSpacePreviewMap = (props: Props) => {
           </div>
         )}
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-12">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-15">
         {blogs.map((blog) => {
           return (
             <NameSpaceCard
               key={blog.title}
               tags={blog.tags}
+              link={blog.link}
               title={blog.title}
               service={blog.service}
               img={blog.img}

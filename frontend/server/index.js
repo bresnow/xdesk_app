@@ -90,8 +90,10 @@ let server = app.listen(port, () => {
 if (!fs.existsSync(radataDir)) {
   fs.mkdirpSync(radataDir);
 }
+const peer = `https://${process.env.PEER_SOCKET_DOMAIN}/gun`
+console.log("PEER_SOCKET_" , peer)
 const gun = Gun({
-  peers: ["http://0.0.0.0:3000/gun"],
+  peers: [peer],
   file: radataDir,
   web: server,
 });

@@ -20,6 +20,7 @@
             "~/*": [
                 "./remix/app/*"
             ],
+            "@stellar":["./remix/utils/stellar.server.ts"],
             "@types":["./remix/types/index.ts"],
             "@ui/*": [
                 "./ui/*"

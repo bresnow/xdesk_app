@@ -89,6 +89,171 @@ export default {
           },
         },
       },
+      god: {
+        header: {
+          title: "#CNXT",
+          subtitle: `Alpha implementation of the #HashedTagNamespaceProtocol. An open source #PaaS built by developer and #interfaceDesigner @Bresnow.`,
+        },
+        heading: `CNXT  Dynamic Namespaces`,
+        profile: "/images/AppIcon.svg",
+
+        text: `#CNXT [ pronounced kuh-next ] is a peer-to-peer, offline-first content management network. A *ProofOfWork hashing algorithm create unique content addresses or #nameSpaces. These !dynamicDomains can host an unlimited array of content and services. !inDEVELOPMENT`,
+        meta_cards: {
+          service_delimiters: {
+            hash: {
+              prefix: "#:\\",
+              service: "Information Delimiter",
+              description: "Point to any information. The default delimiter.",
+            },
+            at_rate: {
+              prefix: "@:\\",
+              service: "Identity Delimiter",
+              description:
+                "User profiles, resumes, #eBusinessCards, and namespaces identifying individual personalities.",
+            },
+            dollar: {
+              prefix: "$:\\",
+              service: "Finance & Barter Delimiter",
+              description:
+                "Price tickers, ecommerce, cryptocurrency, coupons, etc. The default delimiter for namespaces about money.",
+            },
+            x_clam: {
+              prefix: "!:\\",
+              service: "Alert Delimiter",
+              description:
+                "Messages, notifications, chat, etc... The default delimiter for building namespaces around communication awareness.",
+            },
+            wildcard: {
+              prefix: "*:\\",
+              service: "WildCard Delimiter",
+              description:
+                "Namespaces dealing with more than one hash service.",
+            },
+          },
+          links: {
+            github: {
+              id: "github-remix.gun",
+              link: "https://github.com/bresnow/remix.gun/tree/cnxt",
+              label: "Github",
+            },
+            twitter: {
+              id: "github-remix.gun",
+              link: "https://github.com/bresnow/remix.gun/tree/cnxt",
+              label: "Github",
+            },
+          },
+        },
+      },
+      smart_contracts: {
+        header: {
+          title: "#CNXT",
+          subtitle: `Alpha implementation of the #HashedTagNamespaceProtocol. An open source #PaaS built by developer and #interfaceDesigner @Bresnow.`,
+        },
+        heading: `CNXT  Dynamic Namespaces`,
+        profile: "/images/AppIcon.svg",
+
+        text: `#CNXT [ pronounced kuh-next ] is a peer-to-peer, offline-first content management network. A *ProofOfWork hashing algorithm create unique content addresses or #nameSpaces. These !dynamicDomains can host an unlimited array of content and services. !inDEVELOPMENT`,
+        meta_cards: {
+          service_delimiters: {
+            hash: {
+              prefix: "#:\\",
+              service: "Information Delimiter",
+              description: "Point to any information. The default delimiter.",
+            },
+            at_rate: {
+              prefix: "@:\\",
+              service: "Identity Delimiter",
+              description:
+                "User profiles, resumes, #eBusinessCards, and namespaces identifying individual personalities.",
+            },
+            dollar: {
+              prefix: "$:\\",
+              service: "Finance & Barter Delimiter",
+              description:
+                "Price tickers, ecommerce, cryptocurrency, coupons, etc. The default delimiter for namespaces about money.",
+            },
+            x_clam: {
+              prefix: "!:\\",
+              service: "Alert Delimiter",
+              description:
+                "Messages, notifications, chat, etc... The default delimiter for building namespaces around communication awareness.",
+            },
+            wildcard: {
+              prefix: "*:\\",
+              service: "WildCard Delimiter",
+              description:
+                "Namespaces dealing with more than one hash service.",
+            },
+          },
+          links: {
+            github: {
+              id: "github-remix.gun",
+              link: "https://github.com/bresnow/remix.gun/tree/cnxt",
+              label: "Github",
+            },
+            twitter: {
+              id: "github-remix.gun",
+              link: "https://github.com/bresnow/remix.gun/tree/cnxt",
+              label: "Github",
+            },
+          },
+        },
+      },
+      drive: {
+        header: {
+          title: "#CNXT",
+          subtitle: `Alpha implementation of the #HashedTagNamespaceProtocol. An open source #PaaS built by developer and #interfaceDesigner @Bresnow.`,
+        },
+        heading: `CNXT  Dynamic Namespaces`,
+        profile: "/images/AppIcon.svg",
+
+        text: `#CNXT [ pronounced kuh-next ] is a peer-to-peer, offline-first content management network. A *ProofOfWork hashing algorithm create unique content addresses or #nameSpaces. These !dynamicDomains can host an unlimited array of content and services. !inDEVELOPMENT`,
+        meta_cards: {
+          service_delimiters: {
+            hash: {
+              prefix: "#:\\",
+              service: "Information Delimiter",
+              description: "Point to any information. The default delimiter.",
+            },
+            at_rate: {
+              prefix: "@:\\",
+              service: "Identity Delimiter",
+              description:
+                "User profiles, resumes, #eBusinessCards, and namespaces identifying individual personalities.",
+            },
+            dollar: {
+              prefix: "$:\\",
+              service: "Finance & Barter Delimiter",
+              description:
+                "Price tickers, ecommerce, cryptocurrency, coupons, etc. The default delimiter for namespaces about money.",
+            },
+            x_clam: {
+              prefix: "!:\\",
+              service: "Alert Delimiter",
+              description:
+                "Messages, notifications, chat, etc... The default delimiter for building namespaces around communication awareness.",
+            },
+            wildcard: {
+              prefix: "*:\\",
+              service: "WildCard Delimiter",
+              description:
+                "Namespaces dealing with more than one hash service.",
+            },
+          },
+          links: {
+            github: {
+              id: "github-remix.gun",
+              link: "https://github.com/bresnow/remix.gun/tree/cnxt",
+              label: "Github",
+            },
+            twitter: {
+              id: "github-remix.gun",
+              link: "https://github.com/bresnow/remix.gun/tree/cnxt",
+              label: "Github",
+            },
+          },
+        },
+      },
     },
   },
 };

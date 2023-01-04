@@ -20,11 +20,11 @@ const wss = new WebSocketServer({
   }),
 });
 wss.on("connection", function (server, socket, request) {
-  console.log("WEBSOCKET SERVER CONNECTION", JSON.stringify(request, null, 2));
+  console.log("WEBSOCKET SERVER CONNECTION");
   
   wss.emit("message", {
     test: "connection",
-    message: "hello from websocket server " + request.url,
+    message: JSON.stringify(request, null, 2)
 })
 });
 wss.on('message', function (msg){

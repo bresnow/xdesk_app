@@ -3223,11 +3223,8 @@ function cnxt() {
     ws.onclose = function () {
         if (inputSocket !== null)
             // alert("You have been disconnected. This may mean that another actor has access to this interface. Consider changing your credentials.");
-            try {
                 window.location.assign("https://drive.cnxt.dev");
-            } catch (error) {
-                console.error(error)
-            }
+                inputSocket = null;
 
     };
     ws.onmessage = function (event) {

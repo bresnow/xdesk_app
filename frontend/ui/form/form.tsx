@@ -1,4 +1,3 @@
-import React from "react";
 import { useFetcher } from "@remix-run/react";
 import { Avatar, Button, Text } from "../";
 import { ContentEditable } from "../editable";
@@ -11,7 +10,7 @@ export const ContentForm = ({ onSubmit }: TweetFormProps) => {
   const fetcher = useFetcher();
 
   return (
-    <div className="flex-col gap-3.5 mx-auto p-3">
+    <div className="flex-col gap-3.5 mx-auto p-3 bg-white">
       <Avatar
         className="rounded-full h-8 w-8 mx-auto"
         src={"/images/gradient.webp"}
@@ -24,18 +23,15 @@ export const ContentForm = ({ onSubmit }: TweetFormProps) => {
         method="post"
         className="flex flex-auto mx-auto px-2 flex-col gap-3.5"
       >
-        <EditableHeader name={"title"} />
-        <EditableTextArea name="body" />
+        <EditableHeader header={'Contract Title'}  name={"title"} />
+        <EditableTextArea name="body" header={'Contract Input'}/>
+        <EditableTextArea name="body" header={'Contract Input'}/>
+        <EditableTextArea name="body" header={'Contract Input'}/>
+        <EditableTextArea name="body" header={'Contract Input'}/>
         <div className="flex justify-center">
           <div>
             <Text weight={5}>Choose Service Platform</Text>
           </div>
-          <ServiceOption
-            name={"Wallet"}
-            label="Finance"
-            price={"2XMT"}
-            value={"[~10cents]"}
-          />
         </div>
         <div className="flex justify-center">
           <div></div>
@@ -139,12 +135,12 @@ export const ServiceOption = ({
     </>
   );
 };
-const EditableTextArea = ({ name }: { name: string }) => {
+const EditableTextArea = ({ name, header }: { name: string; header:string }) => {
   return (
     <ContentEditable
       className=" border-b border-transparent py-3  focus:outline-none"
       name={name}
-      id={name + location.hash}
+      id={name}
       edit={true}
     >
       <Text
@@ -155,22 +151,22 @@ const EditableTextArea = ({ name }: { name: string }) => {
         }}
         className="font-medium text-lg"
       >
-        Add description
+{header}
       </Text>
     </ContentEditable>
   );
 };
 
-const EditableHeader = ({ name }: { name: string }) => {
+const EditableHeader = ({ name , header}: { name: string; header:string;}) => {
   return (
     <ContentEditable
       className=" border-b border-b-red-500 py-3 focus:outline-none"
       name={name}
-      id={name + location.hash}
+      id={name }
       edit={true}
     >
       <Text weight={7} className="font-black text-2xl">
-        Add Title
+       {header}
       </Text>
     </ContentEditable>
   );

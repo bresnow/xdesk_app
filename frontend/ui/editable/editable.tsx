@@ -37,6 +37,7 @@ export const ContentEditable = ({
         }
       };
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [children]);
   return (
     <>
