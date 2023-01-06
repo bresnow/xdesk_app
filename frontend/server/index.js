@@ -72,7 +72,7 @@ if (process.env.NODE_ENV === "development") {
   app.all(
     "*",
     createRequestHandler({
-      build: await import("../remix/build"),
+      build: await import("../remix/build/index.js"),
       getLoadContext,
       mode: "production",
     })
