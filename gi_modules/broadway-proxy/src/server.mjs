@@ -8,6 +8,8 @@ import hp from "http-proxy";
 import process from "process";
 const app = express();
 const BROADWAY_DISPLAY = process.env.BROADWAY_DISPLAY ?? ":5";
+const RADATA_DIR = process.env.AMNION_RADATA_PATH ?? "/radata/amnion";
+const FRONTEND_DOMAIN = process.env.FRONTEND_DOMAIN ?? "0.0.0.0:3333", peer = `https://${FRONTEND_DOMAIN}/gun`;
 const BROADWAY_PORT = broadwayPort(), PROXY_PORT = broadwayPort() + 1,
   SOCKET_INTERNAL = PROXY_PORT + 2;
 const DEBUG = (process.env.DEBUG === "debug");
@@ -33,10 +35,10 @@ wss.on('message', function (msg) {
 
 
 // TODO: Config Data Store Directory
-if (!fs.existsSync("/data/interface_graph")) {
-  fs.mkdirpSync("/data/interface_graph");
+if (!fs.existsSync(RADATA_DIR)) {
+  fs.mkdirpSync(RADATA_DIR);
 }
-const gun = Gun({ web: wss, file: "/data/interface_graph" });
+const gun = Gun({ peers: [peer], web: wss, file: RADATA_DIR });
 
 
 

@@ -1,11 +1,14 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import GLib from 'gi://GLib';
 
 declare global {
     class TextEncoder {
+        // eslint-disable-next-line @typescript-eslint/no-misused-new
         static new(): TextEncoder;
         encode(str: string): Uint8Array;
     }
     class TextDecoder {
+        // eslint-disable-next-line @typescript-eslint/no-misused-new
         static new(): TextDecoder;
         decode(bytes: Uint8Array): string;
     }
@@ -19,7 +22,7 @@ declare global {
         text(): Promise<string>;
         arrayBuffer(): Promise<any>;
         gBytes(): Promise<GLib.Bytes>;
-}>
+    }>
 }
 type FetchOptions = { url: string; method: "GET" | "POST" | "PATCH" | "DELETE"; headers: Record<string, string>; body: Uint8Array; }
 declare const __dirname: string;
@@ -53,6 +56,7 @@ declare interface GjsGiImports {
 }
 
 declare module "gmodule" {
+    // eslint-disable-next-line no-var
     var _: any;
 
     export default _;
@@ -196,117 +200,121 @@ type GtkClass =
     | "GtkVolumeButton"
     | "GtkPicture"
     | "GtkWindow";
-    declare namespace JSX {
-        interface ResourceUi {
-            interface: {
-                domain?: string;
-            };
-            requires: {
-                lib: "gtk+";
-                version: "3.0" | "4.0" // TODO
-                // no children
-            };
-            object: {
-                class: GtkClass;
-                id?: string; //xsd:ID
-                "type-func"?: string;
-            };
-            template: {
-                class: string;
-                parent: string;
-            };
-            property: {
-                name: string;
-                translatable?: "yes" | "no";
-                comments?: string;
-                context?: string;
-                "bind-source"?: string;
-                "bind-property"?: string;
-                "bind-flags"?: string;
-            };
-            signal: {
-                name: string;
-                handler: string;
-                after?: string;
-                swapped?: string;
-                object?: string;
-                last_modification_time?: string;
-            };
-            packing: {};
-            child: {
-                type?: string;
-                "internal-child"?: string;
-            };
-            menu: {
-                id: string; // { xsd:ID },
-                domain?: string;
-            };
-            item: {
-                id?: string; // { xsd:ID } ?,
-            };
-            attribute: {
-                name: string;
-                type?: string;
-                translatable?: "yes" | "no";
-                context?: string;
-                comments?: string;
-            };
-            lookup: {
-                name: string;
-                type?: string;
-                id: string;
-            };
-            ink: {
-                id?: string; //{ xsd:ID } ?,
-                name: string; // { text },
-            };
-            script: {
-                source?: string
-            },
-            submenu: {
-                id?: string; //  { xsd:ID } ?,
-            };
-            section: {
-                id?: string; // { xsd:ID } ?,
-            };
-            placeholder: Partial<{
-                [key: string]: string;
-            }>;
+declare namespace JSX {
+    interface ResourceUi {
+        interface: {
+            domain?: string;
+        };
+        requires: {
+            lib: "gtk+";
+            version: "3.0" | "4.0" // TODO
+            // no children
+        };
+        object: {
+            class: GtkClass;
+            id?: string; //xsd:ID
+            "type-func"?: string;
+        };
+        template: {
+            class: string;
+            parent: string;
+        };
+        property: {
+            name: string;
+            translatable?: "yes" | "no";
+            comments?: string;
+            context?: string;
+            "bind-source"?: string;
+            "bind-property"?: string;
+            "bind-flags"?: string;
+        };
+        signal: {
+            name: string;
+            handler: string;
+            after?: string;
+            swapped?: string;
+            object?: string;
+            last_modification_time?: string;
+        };
+        // eslint-disable-next-line @typescript-eslint/ban-types
+        packing: {};
+        child: {
+            type?: string;
+            "internal-child"?: string;
+        };
+        menu: {
+            id: string; // { xsd:ID },
+            domain?: string;
+        };
+        item: {
+            id?: string; // { xsd:ID } ?,
+        };
+        attribute: {
+            name: string;
+            type?: string;
+            translatable?: "yes" | "no";
+            context?: string;
+            comments?: string;
+        };
+        lookup: {
+            name: string;
+            type?: string;
+            id: string;
+        };
+        ink: {
+            id?: string; //{ xsd:ID } ?,
+            name: string; // { text },
+        };
+        script: {
+            source?: string
+        },
+        submenu: {
+            id?: string; //  { xsd:ID } ?,
+        };
+        section: {
+            id?: string; // { xsd:ID } ?,
+        };
+        placeholder: Partial<{
+            [key: string]: string;
+        }>;
+    }
+    interface GnomeResource {
+        gresources: {
+            domain?: string;
         }
-        interface GnomeResource {
-            gresources: {
-                domain?: string;
-            }
-            gresource: {
-                prefix?: string;
-            }
-            file: Partial<{
-                compressed: string;
-                preprocess: string;
-                alias: string;
-            }>
-
+        gresource: {
+            prefix?: string;
         }
-        interface DBus {
-            node: {};
-            method: {
-                name: string;
-            };
-            property: {
-                readonly?: string | boolean;
-            };
-            arg: {
-                name: string;
-                type: string;
-            };
-            signal: {};
-            annotation: {};
-            interface: {
-                domain?: string;
-            }
-        }
-        interface GnomeSchema {
-[key: string]: string;
-        }
+        file: Partial<{
+            compressed: string;
+            preprocess: string;
+            alias: string;
+        }>
 
     }
+    interface DBus {
+        // eslint-disable-next-line @typescript-eslint/ban-types
+        node: {};
+        method: {
+            name: string;
+        };
+        property: {
+            readonly?: string | boolean;
+        };
+        arg: {
+            name: string;
+            type: string;
+        };
+        // eslint-disable-next-line @typescript-eslint/ban-types
+        signal: {};
+        // eslint-disable-next-line @typescript-eslint/ban-types
+        annotation: {};
+        interface: {
+            domain?: string;
+        }
+    }
+    interface GnomeSchema {
+        [key: string]: string;
+    }
+
+}

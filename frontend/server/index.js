@@ -12,7 +12,6 @@ import "./gunlibs.js";
 import Config from "./loader.config.js";
 
 installGlobals();
-const { data } = Config;
 let require = createRequire(import.meta.url);
 let packagePath = dirname(require.resolve("../remix/package.json"));
 let importPath = resolve(packagePath, "build/index.js");
@@ -39,21 +38,21 @@ app.use(
       } else if (contentTypeHeader) {
         contentType = contentTypeHeader.join("; ");
       }
-
+      
       if (
         noCompressContentTypes &&
         noCompressContentTypes.some((regex) => regex.test(contentType))
-      ) {
-        return false;
-      }
+        ) {
+          return false;
+        }
 
-      return true;
+        return true;
     },
   })
 );
 app.use(express.static(publicPath, { maxAge: "5m" }));
 
-if (process.env.NODE_ENV === "development") {
+if (Config.env.NODE_ENV === "development") {
   app.all("*", async (req, res, next) => {
     try {
       purgeRequireCache(importPath);
@@ -76,22 +75,20 @@ if (process.env.NODE_ENV === "development") {
       getLoadContext,
       mode: "production",
     })
-  );
-}
-
-const port = parseInt(process.env.PORT) ?? 3333;
-const SECRET_KEY = process.env.SECRET_KEY,
-  SECRET_KEY_ARRAY = SECRET_KEY ? [SECRET_KEY] : [];
-
-const radataDir = "/data/front-relay_graph";
-let server = app.listen(port, () => {
-  console.log(`Remix.Gun relay server listening on port ${port}`);
+    );
+  }
+  
+  const port = Config.env.PORT;
+  
+  const radataDir = Config.env.RADATA_PATH;
+  let server = app.listen(port, () => {
+    console.log(`Remix.Gun relay server listening on port ${port}`);
 });
 if (!fs.existsSync(radataDir)) {
   fs.mkdirpSync(radataDir);
 }
 const peer = `https://${process.env.PEER_SOCKET_DOMAIN}/gun`
-console.log("PEER_SOCKET_" , peer)
+console.log("PEER_SOCKET_", peer)
 const gun = Gun({
   peers: [peer],
   file: radataDir,
@@ -104,22 +101,24 @@ function purgeRequireCache(path) {
   delete require.cache[require.resolve(path)];
 }
 
-(async () => {
-  // this is a module I built that keeps the keypair in the vault context to encrypt and compress data to utf16 characters. Object values are almost 50% smaller
-  await import("chainlocker");
-  gun.keys(SECRET_KEY_ARRAY, (masterKeys) => {
-    gun.vault("REMIX_GUN", masterKeys);
-    let locker = gun.locker(["ENCRYPTED_APP_CONTEXT"]);
-    locker.put(data);
-  });
-})();
+
+const SECRET_KEY_ARRAY = Object.keys(Config.env);
+// this is a module I built that keeps the keypair in the vault context to encrypt and compress data to utf16 characters. Object values are almost 50% smaller
+await import("chainlocker");
+const { data } = Config;
+gun.keys(SECRET_KEY_ARRAY, (MasterKeyPair) => {
+  gun.vault(Config.env.DOMAIN, MasterKeyPair);
+  let locker = gun.locker([MasterKeyPair.pub]);
+  locker.put(data);
+});
+
 function getLoadContext() {
   return async function () {
+    const MasterKeys = await gun.keys(SECRET_KEY_ARRAY)
     return {
       authorizedDB() {
-        return { gun };
+        return { gun, MasterKeys };
       },
-      SECRET_KEY_ARRAY, // Configuration settings
     };
   };
 }

@@ -1,0 +1,109 @@
+version: "3.9"
+
+
+volumes:
+  gi_modules_compiled:
+    driver: local-persist
+    driver_opts:
+      mountpoint: ${MOUNTPOINT:-/home/administrator/app.xdesk}/gi_modules/_compiled
+  gi_modules_broadway-proxy_src:
+    driver: local-persist
+    driver_opts:
+      mountpoint: ${MOUNTPOINT:-/home/administrator/app.xdesk}/gi_modules/broadway-proxy/src
+  gi_modules_broadway-proxy_views:
+    driver: local-persist
+    driver_opts:
+      mountpoint: ${MOUNTPOINT:-/home/administrator/app.xdesk}/gi_modules/broadway-proxy/views
+  frontend_server:
+    driver: local-persist
+    driver_opts:
+      mountpoint: ${MOUNTPOINT:-/home/administrator/app.xdesk}/frontend/server
+  frontend_remix_build:
+    driver: local-persist
+    driver_opts:
+      mountpoint: ${MOUNTPOINT:-/home/administrator/app.xdesk}/frontend/remix/build
+
+
+
+networks:
+  traefik-net:
+    external: true
+  socket-proxy:
+    external: true
+
+
+
+services:
+  gi:
+    image: bresnow/amnion-gjsx:${VERSION:-latest}
+    volumes:
+      - gi_modules_compiled:/amnion-gjsx/gi_modules/_compiled
+      - gi_modules_broadway-proxy_src:/amnion-gjsx/gi_modules/broadway-proxy/src
+      - gi_modules_broadway-proxy_views:/amnion-gjsx/gi_modules/broadway-proxy/views
+    networks:
+      - traefik-net
+      - socket-proxy
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+      labels:
+        - traefik.enable=true
+        - traefik.docker.network=traefik-net
+        - traefik.constraint-label=traefik-net
+        - traefik.http.routers.amnion_{{.Service.Name}}_{{.Service.ID}}.rule=Host(`${INTERFACE_DOMAIN?Unset Interface Domain}`)
+        - traefik.http.routers.amnion_{{.Service.Name}}_{{.Service.ID}}.entrypoints=http,https
+        - traefik.http.routers.amnion_{{.Service.Name}}_{{.Service.ID}}.service=amnion_{{.Service.Name}}_{{.Service.ID}}
+        - traefik.http.routers.amnion_{{.Service.Name}}_{{.Service.ID}}.tls=true
+        - traefik.http.routers.amnion_{{.Service.Name}}_{{.Service.ID}}.tls.certresolver=${TLS:-letsencrypt}
+        - traefik.http.services.amnion_{{.Service.Name}}_{{.Service.ID}}.loadbalancer.server.port=${INTERFACE_PORT:-8086}
+        - traefik.http.routers.internal_socket_{{.Service.Name}}_{{.Service.ID}}.rule=Host(`${PEER_SOCKET_DOMAIN?Peer Socket Domain}`)
+        - traefik.http.routers.internal_socket_{{.Service.Name}}_{{.Service.ID}}.entrypoints=http,https
+        - traefik.http.routers.internal_socket_{{.Service.Name}}_{{.Service.ID}}.service=internal_socket_{{.Service.Name}}_{{.Service.ID}}
+        - traefik.http.routers.internal_socket_{{.Service.Name}}_{{.Service.ID}}.tls=true
+        - traefik.http.routers.internal_socket_{{.Service.Name}}_{{.Service.ID}}.tls.certresolver=${TLS:-letsencrypt}
+        - traefik.http.services.internal_socket_{{.Service.Name}}_{{.Service.ID}}.loadbalancer.server.port=${PEER_SOCKET_PORT:-8088}
+    environment:
+      C99_API_KEY: ${C99_API_KEY?Unset C99_API_KEY}
+      SERVICE_NAME: "{{.Service.Name}}"
+      PEER_SOCKET_DOMAIN: ${PEER_SOCKET_DOMAIN?Peer Socket Domain}
+      INTERFACE_DOMAIN: ${INTERFACE_DOMAIN?Unset Interface Domain}
+
+  front:
+    image: bresnow/amnion-frontend:${VERSION:-latest}
+    volumes:
+      - frontend_server:/amnion/frontend/server
+      - frontend_remix_build:/amnion/frontend/remix/build
+    networks:
+      - traefik-net
+      - socket-proxy
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+      labels:
+        - traefik.enable=true
+        - traefik.docker.network=traefik-net
+        - traefik.constraint-label=traefik-net
+        - traefik.http.routers.proxy_{{.Service.Name}}_{{.Service.ID}}.rule=Host(`${DOMAIN?Unset Domain}`)
+        - traefik.http.routers.proxy_{{.Service.Name}}_{{.Service.ID}}.entrypoints=http,https
+        - traefik.http.routers.proxy_{{.Service.Name}}_{{.Service.ID}}.service=proxy_{{.Service.Name}}_{{.Service.ID}}
+        - traefik.http.routers.proxy_{{.Service.Name}}_{{.Service.ID}}.tls=true
+        - traefik.http.routers.proxy_{{.Service.Name}}_{{.Service.ID}}.tls.certresolver=${TLS:-letsencrypt}
+        - traefik.http.services.proxy_{{.Service.Name}}_{{.Service.ID}}.loadbalancer.server.port=${FRONTEND_PORT:-3333}
+    environment:
+      C99_API_KEY: ${C99_API_KEY}
+      SERVICE_NAME: "{{.Service.Name}}"
+      PEER_SOCKET_DOMAIN: ${PEER_SOCKET_DOMAIN?Peer Socket Domain}
+      DOMAIN: ${DOMAIN?Unset Domain}
+      INTERFACE_DOMAIN: ${INTERFACE_DOMAIN?Unset Interface Domain}
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY?Unset Stripe Key}
+      STRIPE_CONNECT_CLIENT_ID: ${STRIPE_CONNECT_CLIENT_ID?Unset Stripe Client Id}
+      ISSUER_ID: ${ISSUER_ID?Unset Issuer Id}
+      ISSUER_SEED: ${ISSUER_SEED?Unset Issuer Seed}
+      HORIZON_URL: ${HORIZON_URL:-https://horizon-testnet.cnxt.dev}
+      NETWORK_PASSPHRASE: ${NETWORK_PASSPHRASE:-Test SDF Network ; September 2015}
+      WITHDRAW_ENDPOINT: ${DOMAIN?Unset Domain}/api/withdraw
+
+
+

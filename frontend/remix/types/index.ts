@@ -2,6 +2,7 @@ import "chainlocker"
 import type {
   IGunInstance,
   IGun,
+  ISEAPair,
 } from "gun";
 declare global {
   interface Window {
@@ -18,13 +19,19 @@ export interface IConfig {
   NETWORK_PASSPHRASE: string | undefined;
   WITHDRAW_ENDPOINT: string | undefined;
   ENV: string | undefined;
+  PEER_SOCKET_DOMAIN: string | undefined;
+  DOMAIN: string ;
+  PORT: number ;
+  INTERFACE_DOMAIN: string | undefined;
+  RADATA_PATH: string ;
 }
 
 export interface LoaderContext {
   (): Promise<{
     authorizedDB(): {
       gun: IGunInstance<any>;
+      MasterKeys: ISEAPair;
     };
-    SECRET_KEY_ARRAY: string[] | [];
+    
   }>;
 }
