@@ -27,21 +27,6 @@ export function HeadLayout({ services }) {
   return /* @__PURE__ */ Gjsx.createWidget(
     Gtk.Box,
     { spacing: 18, style: style.box, orientation: Gtk.Orientation.HORIZONTAL },
-    /* @__PURE__ */ Gjsx.createWidget(Gtk.Image, {
-      file: cnxtLogo,
-      style: { marginLeft: "5px" },
-      pixel_size: 100,
-    }),
-    /* @__PURE__ */ Gjsx.createWidget(Gtk.Image, {
-      file: paidlogo,
-      style: { marginLeft: "5px" },
-      pixel_size: 65,
-    }),
-    /* @__PURE__ */ Gjsx.createWidget(Gtk.Image, {
-      file: bdsLogo,
-      style: { marginLeft: "5px" },
-      pixel_size: 65,
-    }),
     services.map(({ name, icon_path, icon_name, clickHandler }, i) => {
       return /* @__PURE__ */ Gjsx.createWidget(
         Gtk.Button,
@@ -53,7 +38,8 @@ export function HeadLayout({ services }) {
         },
         /* @__PURE__ */ Gjsx.createWidget(Gtk.Image, {
           file: icon_path,
-          pixel_size: 50,
+          style: { marginLeft: "5px" },
+          pixel_size: 65,
         })
       );
     })

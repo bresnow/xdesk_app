@@ -1,12 +1,33 @@
-import StellarSdkLibrary from 'stellar-sdk';
-
+import * as StellarSdk from 'stellar-sdk';
+import $ from 'redaxios';
 import { Config } from './config';
-
 if (Config.ENV === 'production') {
-    StellarSdkLibrary.Networks.PUBLIC;
+  StellarSdk.Networks.PUBLIC;
 } else {
-    StellarSdkLibrary.Networks.TESTNET;
+  StellarSdk.Networks.TESTNET;
 }
+export const stellarServer = new StellarSdk.Server(Config.HORIZON_URL ?? "https://horizon-testnet.cnxt.dev");
 
-export const stellarServer = new StellarSdkLibrary.Server(Config.HORIZON_URL);
-export const StellarSdk = StellarSdkLibrary;
+const pair = StellarSdk.Keypair.random();
+
+const createAccount = () => {
+  // Creamos nuestro par de llaves
+  const secret = pair.secret();
+  const publicKey = pair.publicKey();
+
+  return {
+    secret,
+    publicKey
+  };
+};
+
+const buddybot = async (publicKey: string) => {
+  const {data:responseJSON } = await $.get(
+    `https://friendbot.stellar.org?addr=${publicKey}`
+  );
+  return responseJSON;
+};
+
+export { createAccount , buddybot };
+
+export { StellarSdk };

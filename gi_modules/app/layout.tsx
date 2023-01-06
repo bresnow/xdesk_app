@@ -35,9 +35,9 @@ export function HeadLayout({
 
   return (
     <Gtk.Box spacing={18} style={style.box} orientation={Gtk.Orientation.HORIZONTAL}>
-      <Gtk.Image file={cnxtLogo} style={{ marginLeft: "5px" }} pixel_size={100} />
-      <Gtk.Image file={paidlogo} style={{ marginLeft: "5px" }} pixel_size={65} />
-      <Gtk.Image file={bdsLogo} style={{ marginLeft: "5px" }} pixel_size={65} />
+      {/* <Gtk.Image file={cnxtLogo} style={{ marginLeft: "5px" }} pixel_size={100} /> */}
+      {/* <Gtk.Image file={paidlogo} style={{ marginLeft: "5px" }} pixel_size={65} /> */}
+      {/* <Gtk.Image file={bdsLogo} style={{ marginLeft: "5px" }} pixel_size={65} /> */}
       {services.map(
         ({ name, icon_path, icon_name, clickHandler }, i) => {
           return (
@@ -47,7 +47,7 @@ export function HeadLayout({
               label={name}
               css_name="buttonbottom"
             >
-              <Gtk.Image file={icon_path} pixel_size={50} />
+              <Gtk.Image file={icon_path} style={{ marginLeft: "5px" }} pixel_size={65} />
             </Gtk.Button>
           );
         }

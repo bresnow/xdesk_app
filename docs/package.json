@@ -1,0 +1,12 @@
+{
+  "name": "docs",
+  "version": "1.0.0",
+  "description": "Documentation and ideas",
+  "main": "src/index.mjs",
+  "author": "Bresnow",
+  "license": "Creative Commons",
+  "private": true,
+  "devDependencies": {
+    "eslint-plugin-mdx": "^2.0.5"
+  }
+}

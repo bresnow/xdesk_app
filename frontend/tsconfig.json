@@ -21,10 +21,12 @@
                 "./remix/app/*"
             ],
             "@stellar":["./remix/utils/stellar.server.ts"],
+            "@stripe":["./remix/utils/stripe.server.ts"],
             "@types":["./remix/types/index.ts"],
             "@ui/*": [
                 "./ui/*"
-            ]
+            ],
+            "@utils/*":["./remix/utils/*"]
         }
     },
   

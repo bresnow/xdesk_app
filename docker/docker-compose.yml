@@ -1,21 +1,84 @@
 version: "3.8"
 services:
-  dev:
-    image: bresnow/amnion-dev:${VERSION:-latest}
+  gi:
+    image: bresnow/amnion-gjsx:${VERSION:-latest}
     build:
       context: ..
       dockerfile: ./docker/Dockerfile
-      target: development
+      target: gtkgjsx
     ports:
-      - 3333:3333
       - 8086:8086
       - 8088:8088
       - 8085:8085
     volumes:
-      - ../.logs/dev:/var/log
-      - ../:/gjsx
-    networks:
-      - socket-proxy
+      - ../gi_modules/_compiled:/amnion-gjsx/gi_modules/_compiled
+      - ../gi_modules/broadway-proxy/src:/amnion-gjsx/gi_modules/broadway-proxy/src
+      - ../gi_modules/broadway-proxy/views:/amnion-gjsx/gi_modules/broadway-proxy/views
+    environment:
+      C99_API_KEY: ${C99_API_KEY}
+      INTERFACE_DOMAIN: ${INTERFACE_DOMAIN:-namespace.cnxt.dev}
+  gi_dev:
+    image: bresnow/amnion-gjsx_dev:${VERSION:-latest}
+    build:
+      context: ..
+      dockerfile: ./docker/Dockerfile
+      target: gtkgjsx_dev
+    ports:
+      - 3086:8086
+      - 3088:8088
+      - 3085:8085
+    volumes:
+      - ../gi_modules:/amnion-gjsx/gi_modules
+    environment:
+      C99_API_KEY: ${C99_API_KEY}
+      INTERFACE_DOMAIN: ${INTERFACE_DOMAIN:-namespace.cnxt.dev}
+  front_dev:
+    image: bresnow/amnion-frontend_dev:${VERSION:-latest}
+    build:
+      context: ..
+      dockerfile: ./docker/Dockerfile
+      target: frontend_dev
+    ports:
+      - 3333:3333
+    volumes:
+      - ../frontend:/amnion/frontend
+    environment:
+      C99_API_KEY: ${C99_API_KEY}
+      SERVICE_NAME: "{{.Service.Name}}"
+      PEER_SOCKET_DOMAIN: ${PEER_SOCKET_DOMAIN:-peer-internal.cnxt.dev}
+      DOMAIN: ${DOMAIN:-cnxt.dev}
+      INTERFACE_DOMAIN: ${INTERFACE_DOMAIN:-namespace.cnxt.dev}
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
+      STRIPE_CONNECT_CLIENT_ID: ${STRIPE_CONNECT_CLIENT_ID}
+      ISSUER_ID: ${ISSUER_ID}
+      ISSUER_SEED: ${ISSUER_SEED}
+      HORIZON_URL: ${HORIZON_URL:-https://horizon-testnet.cnxt.dev}
+      NETWORK_PASSPHRASE: ${NETWORK_PASSPHRASE:-Test SDF Network ; September 2015}
+      WITHDRAW_ENDPOINT: ${WITHDRAW_ENDPOINT:-http://0.0.0.0:3333/api/withdraw}
+  front:
+    image: bresnow/amnion-frontend:${VERSION:-latest}
+    build:
+      context: ..
+      dockerfile: ./docker/Dockerfile
+      target: frontend
+    ports:
+      - 8033:3333
+    volumes:
+      - ../frontend/server:/amnion/frontend/server
+      - ../frontend/remix/build:/amnion/frontend/remix/build
+    environment:
+      C99_API_KEY: ${C99_API_KEY}
+      SERVICE_NAME: "{{.Service.Name}}"
+      PEER_SOCKET_DOMAIN: ${PEER_SOCKET_DOMAIN:-peer-internal.cnxt.dev}
+      DOMAIN: ${DOMAIN:-cnxt.dev}
+      INTERFACE_DOMAIN: ${INTERFACE_DOMAIN:-namespace.cnxt.dev}
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
+      STRIPE_CONNECT_CLIENT_ID: ${STRIPE_CONNECT_CLIENT_ID}
+      ISSUER_ID: ${ISSUER_ID}
+      ISSUER_SEED: ${ISSUER_SEED}
+      HORIZON_URL: ${HORIZON_URL:-https://horizon-testnet.cnxt.dev}
+      NETWORK_PASSPHRASE: ${NETWORK_PASSPHRASE:-Test SDF Network ; September 2015}
+      WITHDRAW_ENDPOINT: ${WITHDRAW_ENDPOINT:-http://0.0.0.0:3333/api/withdraw}
 
 networks:
   socket-proxy:

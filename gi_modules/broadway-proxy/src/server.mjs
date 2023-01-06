@@ -1,5 +1,5 @@
 import express from "express";
-import WebSocket, {WebSocketServer}from "ws";
+import WebSocket, { WebSocketServer } from "ws";
 import { createServer } from "http";
 import fs from "fs-extra"
 import Gun from "gun";
@@ -21,21 +21,21 @@ const wss = new WebSocketServer({
 });
 wss.on("connection", function (server, socket, request) {
   console.log("WEBSOCKET SERVER CONNECTION");
-  
+
   wss.emit("message", {
     test: "connection",
-    message: JSON.stringify(request, null, 2)
-})
+    message: { continue: true, type: "test" }
+  })
 });
-wss.on('message', function (msg){
+wss.on('message', function (msg) {
   console.log("WEBSOCKET MESSAGE", JSON.stringify(msg, null, 2));
 })
 
 
 // TODO: Config Data Store Directory
-if(!fs.existsSync("/data/interface_graph")){
+if (!fs.existsSync("/data/interface_graph")) {
   fs.mkdirpSync("/data/interface_graph");
-} 
+}
 const gun = Gun({ web: wss, file: "/data/interface_graph" });
 
 
@@ -45,8 +45,8 @@ const gun = Gun({ web: wss, file: "/data/interface_graph" });
 const server = createServer(app);
 
 server.on("upgrade", function (request, socket, head) {
-hp.createProxyServer({target:`http://0.0.0.0:${BROADWAY_PORT}`,ws:true}).ws(request,socket, head)
-  console.log("proxying upgrade request", `0.0.0.0:${PROXY_PORT}` );
+  hp.createProxyServer({ target: `http://0.0.0.0:${BROADWAY_PORT}`, ws: true }).ws(request, socket, head)
+  console.log("proxying upgrade request", `0.0.0.0:${PROXY_PORT}`);
 });
 
 app.use("/", express.static("./views"));
@@ -54,9 +54,8 @@ server.listen(PROXY_PORT, () => {
   console.log(
     "Broadway Server has been proxied and is listening on port",
     PROXY_PORT
-    );
-  });
-  function broadwayPort() {
-    return parseInt(BROADWAY_DISPLAY.replace(":", "")) + 8080;
-  }
-  
+  );
+});
+function broadwayPort() {
+  return parseInt(BROADWAY_DISPLAY.replace(":", "")) + 8080;
+}

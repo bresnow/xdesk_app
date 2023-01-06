@@ -2,15 +2,15 @@ import Gjsx from "gi://Gjsx";
 import Gtk from "gi://Gtk?version=4.0";
 import { HeadLayout } from "./layout.js";
 import { AppWindow } from "./widgets/appwindow.js";
-import { Demo } from "./widgets/demo.js";
+import { buildaBitch, Demo } from "./widgets/demo.js";
 import { StackSwitch } from "./widgets/stackswitch.js";
 import { BoxContainer } from "./widgets/box_container.js";
 //@ts-expect-error
-import micIcon from "../assets/images/icons/blue/mic.svg";
+import paidlogo from "../assets/images/paid_logo.png";
 //@ts-expect-error
-import listAdd from "../assets/images/icons/blue/list_add.svg";
+import cnxtLogo from "../assets/images/cnxt.png"
 //@ts-expect-error
-import checkIcon from "../assets/images/icons/blue/check.svg";
+import bdsLogo from "../assets/images/bds-mark.png";
 import { WebViewer } from "./widgets/webviewer.js";
 const { build, builder } = Gjsx;
 
@@ -24,24 +24,44 @@ export function MainWindow({
   const panel = [
     {
       name: "Gtk4-Demo",
-      icon_path: checkIcon,
+      icon_path: bdsLogo,
       clickHandler(_button: Gtk.Button) {
-        _button.set_margin_bottom(3);
-        _button.set_child(
-          new Gtk.Image({ file: "/gjsx/gi_modules/assets/images/AppIcon.svg" })
-        );
+        let window: Gtk.Window, builder: Gtk.Builder, app = new Gtk.Application(), webmsg = new WebViewer();
+        try {
+          window = new Gtk.Window({ application: app }), builder = Gtk.Builder.new_from_string(buildaBitch, buildaBitch.length)
+          let root = builder.get_object('root');
+
+          var actionButton = builder.get_object('actionButton');
+          actionButton.connect('clicked', () => {
+            print('actionButton clicked')
+          })
+
+          var closeButton = builder.get_object('closeButton')
+          closeButton.connect('clicked', () => {
+            print('closeButton clicked')
+          });
+          app.connect("activate", () => {
+            window.set_child(webmsg)
+            window.show()
+            window.maximize()
+            window.present()
+          })
+          app.run([])
+        } catch (error) {
+          _button.label = error.message
+        }
       },
     },
     {
       name: "Gtk4 Tour",
-      icon_path: listAdd,
+      icon_path: cnxtLogo,
       clickHandler(_button: Gtk.Button) {
-        log("Clicked2");
+     
       },
     },
     {
       name: "Demo App",
-      icon_path: micIcon,
+      icon_path: paidlogo,
       clickHandler(_button: Gtk.Button) {
         log("Clicked3");
       },
@@ -58,12 +78,12 @@ export function MainWindow({
       >
         <Gtk.Label
           style={{ fontSize: "30px", fontWeight: "bold" }}
-          label="X://ProgramaticAssets"
+          label="#KLYSTAR"
         />
         <Gtk.Separator orientation={Gtk.Orientation.VERTICAL} />
         <Gtk.Label
           style={{ fontSize: "30px", fontWeight: "bold" }}
-          label="Title Of Contract"
+          label="GOD"
         />
         <Gtk.Separator orientation={Gtk.Orientation.VERTICAL} />
         <HeadLayout services={panel} />

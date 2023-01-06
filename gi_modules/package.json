@@ -5,13 +5,15 @@
   "type": "module",
   "scripts": {
     "compile": "./@compiler/compile.mjs",
-    "shed":"rm README.md tsconfig.json; rm -rf @compiler app assets gjsx types;",
+    "shed": "rm README.md tsconfig.json; rm -rf @compiler app assets gjsx types;",
     "start": "cd _compiled; gjs -m app/main.js",
-    "watch": "yarn compile --watch --deploy"
+    "watch:gjsx": "nodemon --exec \"yarn start\" --watch _compiled/**/*",
+    "watch": "concurrently \"yarn compile --watch\" \"yarn watch:gjsx\""
   },
   "devDependencies": {
     "@types/prettier": "^2.7.1",
     "chokidar": "^3.5.3",
+    "concurrently": "^7.6.0",
     "dockerode": "^3.3.4",
     "esbuild": "^0.15.11",
     "prettier": "^2.7.1",

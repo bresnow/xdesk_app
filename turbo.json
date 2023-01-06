@@ -2,7 +2,7 @@
   "$schema": "https://turbo.build/schema.json",
   "pipeline": {
     "build": {
-         "dependsOn": ["^build", "compile"],
+         "dependsOn": ["compile"],
       "outputs": ["broadway-proxy/build/*", "broadway-proxy/public/build/**/*"]
     },
     "compile": {
@@ -12,15 +12,15 @@
     "cache": false
     },
     "deploy": {
-      "dependsOn": ["build", "push"],
-      "outputs": ["docker/log/**/*.log"]
+      "dependsOn": ["build", "push"]
     },
     "push": {
+      "inputs": ["docker/Dockerfile"],
       "dependsOn": ["build"]
     },
     "shed": { "cache": false },
     "start": {
-      "dependsOn": ["^supervisord"]
+      "cache": false
     },
     "supervisord": {
       "dependsOn": []

@@ -3,7 +3,7 @@ import GObject from "gi://GObject";
 import Gjsx from "../../gjsx/index.js";
 import { WebViewer } from "./webviewer.js";
 const { encode } = Gjsx;
-const Button = /* @__PURE__ */ Gjsx.createWidget(
+export const Button = /* @__PURE__ */ Gjsx.createWidget(
   "object",
   { class: "GtkButton", id: "button" },
   /* @__PURE__ */ Gjsx.createWidget("property", { name: "label" }, "Let's go!"),
@@ -18,7 +18,7 @@ const Button = /* @__PURE__ */ Gjsx.createWidget(
     /* @__PURE__ */ Gjsx.createWidget("class", { name: "suggested-action" })
   )
 );
-const ResourceTemplateDemo = /* @__PURE__ */ Gjsx.createWidget(
+export const ResourceTemplateDemo = /* @__PURE__ */ Gjsx.createWidget(
   "interface",
   null,
   /* @__PURE__ */ Gjsx.createWidget(
@@ -82,7 +82,7 @@ const ResourceTemplateDemo = /* @__PURE__ */ Gjsx.createWidget(
     /* @__PURE__ */ Gjsx.createWidget("child", null, Button)
   )
 );
-const buildaBitch = /* @__PURE__ */ Gjsx.createWidget(
+export const buildaBitch = /* @__PURE__ */ Gjsx.createWidget(
   "interface",
   null,
   /* @__PURE__ */ Gjsx.createWidget(

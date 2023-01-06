@@ -10,7 +10,7 @@ declare global {
   }
 }
 export interface IConfig {
-  STRIPE_SECTRET_KEY: string | undefined;
+  STRIPE_SECRET_KEY: string | undefined;
   STRIPE_CONNECT_CLIENT_ID: string | undefined;
   ISSUER_ID: string | undefined;
   ISSUER_SEED: string | undefined;

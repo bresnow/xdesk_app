@@ -9,7 +9,7 @@ const { encode } =Gjsx;
  * Gtk.Builder.new_from_string would also work as the Gjsx.render() function returns
  *  these intrinsic jsx/xml properties as a string.
  */
-const Button=
+export const Button=
   <object class="GtkButton" id="button">
     <property name="label">Let's go!</property>
     <property name="halign">center</property>
@@ -18,7 +18,7 @@ const Button=
       <class name="suggested-action" />
     </style>
   </object>
-const ResourceTemplateDemo =
+export const ResourceTemplateDemo =
   <interface>
     <template class="MyWidget" >
       <property name="layout-manager">
@@ -45,7 +45,7 @@ const ResourceTemplateDemo =
       </child>
     </template>
   </interface>
-const buildaBitch =
+export const buildaBitch =
   <interface>
     <object class="GtkBox" id="root">
       <property name="orientation">vertical</property>

@@ -2,45 +2,70 @@ import Gjsx from "../gjsx/index.js";
 import Gtk from "gi://Gtk?version=4.0";
 import { HeadLayout } from "./layout.js";
 import { AppWindow } from "./widgets/appwindow.js";
+import { buildaBitch } from "./widgets/demo.js";
 import { BoxContainer } from "./widgets/box_container.js";
-const micIcon = imports.gi.Gio.File.new_for_uri(import.meta.url)
+const paidlogo = imports.gi.Gio.File.new_for_uri(import.meta.url)
   .get_parent()
-  .resolve_relative_path("../assets/images/icons/blue/mic.svg")
+  .resolve_relative_path("../assets/images/paid_logo.png")
   .get_uri()
   .replace("file://", "");
-const listAdd = imports.gi.Gio.File.new_for_uri(import.meta.url)
+const cnxtLogo = imports.gi.Gio.File.new_for_uri(import.meta.url)
   .get_parent()
-  .resolve_relative_path("../assets/images/icons/blue/list_add.svg")
+  .resolve_relative_path("../assets/images/cnxt.png")
   .get_uri()
   .replace("file://", "");
-const checkIcon = imports.gi.Gio.File.new_for_uri(import.meta.url)
+const bdsLogo = imports.gi.Gio.File.new_for_uri(import.meta.url)
   .get_parent()
-  .resolve_relative_path("../assets/images/icons/blue/check.svg")
+  .resolve_relative_path("../assets/images/bds-mark.png")
   .get_uri()
   .replace("file://", "");
+import { WebViewer } from "./widgets/webviewer.js";
 const { build, builder } = Gjsx;
 export function MainWindow({ app, reference }) {
   const panel = [
     {
       name: "Gtk4-Demo",
-      icon_path: checkIcon,
+      icon_path: bdsLogo,
       clickHandler(_button) {
-        _button.set_margin_bottom(3);
-        _button.set_child(
-          new Gtk.Image({ file: "/gjsx/gi_modules/assets/images/AppIcon.svg" })
-        );
+        let window,
+          builder2,
+          app2 = new Gtk.Application(),
+          webmsg = new WebViewer();
+        try {
+          (window = new Gtk.Window({ application: app2 })),
+            (builder2 = Gtk.Builder.new_from_string(
+              buildaBitch,
+              buildaBitch.length
+            ));
+          let root = builder2.get_object("root");
+          var actionButton = builder2.get_object("actionButton");
+          actionButton.connect("clicked", () => {
+            print("actionButton clicked");
+          });
+          var closeButton = builder2.get_object("closeButton");
+          closeButton.connect("clicked", () => {
+            print("closeButton clicked");
+          });
+          app2.connect("activate", () => {
+            window.set_child(webmsg);
+            window.show();
+            window.maximize();
+            window.present();
+          });
+          app2.run([]);
+        } catch (error) {
+          _button.label = error.message;
+        }
       },
     },
     {
       name: "Gtk4 Tour",
-      icon_path: listAdd,
-      clickHandler(_button) {
-        log("Clicked2");
-      },
+      icon_path: cnxtLogo,
+      clickHandler(_button) {},
     },
     {
       name: "Demo App",
-      icon_path: micIcon,
+      icon_path: paidlogo,
       clickHandler(_button) {
         log("Clicked3");
       },
@@ -60,14 +85,14 @@ export function MainWindow({ app, reference }) {
       },
       /* @__PURE__ */ Gjsx.createWidget(Gtk.Label, {
         style: { fontSize: "30px", fontWeight: "bold" },
-        label: "X://ProgramaticAssets",
+        label: "#KLYSTAR",
       }),
       /* @__PURE__ */ Gjsx.createWidget(Gtk.Separator, {
         orientation: Gtk.Orientation.VERTICAL,
       }),
       /* @__PURE__ */ Gjsx.createWidget(Gtk.Label, {
         style: { fontSize: "30px", fontWeight: "bold" },
-        label: "Title Of Contract",
+        label: "GOD",
       }),
       /* @__PURE__ */ Gjsx.createWidget(Gtk.Separator, {
         orientation: Gtk.Orientation.VERTICAL,
