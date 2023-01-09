@@ -49,12 +49,15 @@ export default {
       cnxt: {
         header: {
           title: "#CNXT",
-          subtitle: `Alpha implementation of the #HashedTagNamespaceProtocol. An open source #PaaS built by developer and #interfaceDesigner @Bresnow.`,
+          subtitle: `Alpha implementation of the #HashedTagNamespaceProtocol.`,
         },
         heading: `CNXT  Dynamic Namespaces`,
         profile: "/images/AppIcon.svg",
 
-        text: `#CNXT [ pronounced kuh-next ] is a peer-to-peer, offline-first content management network. A *ProofOfWork hashing algorithm create unique content addresses or #nameSpaces. These !dynamicDomains can host an unlimited array of content and services. !inDEVELOPMENT`,
+        // trunk-ignore(git-diff-check/error)
+        text: `#://CNXT [pronounced "connects"] is a asset issuance protocol that uses cryptographically "Hashed Tags" as content addresses to create and store entire platforms, aka #://Namespaces, on a public ledger. While the 
+       ledger tokenizes the Namespaces per se, the data that gives the platform it's value is encrypted and persisted locally within your browser.
+        `,
         meta_cards: {
           service_delimiters: {
             hash: {

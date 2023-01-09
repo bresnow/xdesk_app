@@ -14,6 +14,7 @@ import type { LinksFunction } from "@remix-run/server-runtime";
 import "chainlocker";
 import { json } from "@remix-run/node";
 import { Config } from "@utils/config";
+import Display from "./components/DisplayHeading";
 
 export const links: LinksFunction = () => {
   return [
@@ -50,32 +51,49 @@ export default function App() {
 }
 
 export function CatchBoundary() {
-  let { status, statusText } = useCatch();
+  let caught = useCatch();
 
-  return (
-    <main>
-      <h1>{status}</h1>
-      {statusText && <p>{statusText}</p>}
-    </main>
-  );
+  switch (caught.status) {
+    case 401:
+    case 403:
+    case 404:
+      return (
+        <div className='min-h-screen py-4 flex flex-col justify-center items-center'>
+          <Display
+            title={`${caught.status}`}
+            titleColor='white'
+            span={`${caught.statusText}`}
+            spanColor='pink-500'
+            description={`${caught.statusText}`}
+          />
+        </div>
+      );
+  }
+  throw new Error(`Unexpected caught response with status: ${caught.status}`);
 }
 
 export function ErrorBoundary({ error }: { error: Error }) {
-  console.log(error);
-
+  console.error(error);
   return (
-    <main>
-      <h1>Oops, looks like something went wrong 😭</h1>
-    </main>
+    <div className='min-h-screen py-4 flex flex-col justify-center items-center'>
+      <Display
+        title='Error:'
+        titleColor='#cb2326'
+        span={error.message}
+        spanColor='#fff'
+        description={`error`}
+      />
+    </div>
   );
 }
+
 
 export async function vaultLocker(context: unknown) {
   let loaderContext = context as unknown as LoaderContext;
   let { authorizedDB } = await loaderContext();
   let { gun, MasterKeys } = authorizedDB();
   gun.vault(Config.DOMAIN, MasterKeys);
-  return function (args?: string[]) { return args ? gun.locker([MasterKeys.pub, ...args]) : gun.locker([MasterKeys.pub]) };
+  return {locker(args?: string[]) { return args ? gun.locker([MasterKeys.pub, ...args]) : gun.locker([MasterKeys.pub]) }}
 }
 
 async function getMetaData(context: unknown, request: Request): Promise<Record<string, any>> {

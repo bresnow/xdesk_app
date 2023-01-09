@@ -1,5 +1,5 @@
 import { ActionArgs, json } from "@remix-run/node"
-import { getConnectToken, getLoginLink } from "@utils/index";
+import { getConnectToken, getLoginLink } from "@utils/stripe-stellar";
 export async function action({ request }: ActionArgs) {
     const body = await request.json()
     if (!body.authCode || body.authCode.length !== 35) {

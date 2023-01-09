@@ -4,6 +4,7 @@ import Iframe from "@ui/iframe";
 import axios from "redaxios"
 import { LoaderContext } from '@types';
 import { Header } from "@ui/dialog/dialog";
+import Display from "~/components/DisplayHeading";
 export function html(
   content: string,
   init: number | ResponseInit = {}
@@ -28,7 +29,6 @@ export let loader: LoaderFunction = async ({ params, context }) => {
   src = `https://${namespace}.cnxt.dev`
   try {
     let response = await axios.get(src);
-    console.log(JSON.stringify({ status: response.status }, null,))
   } catch (error) {
     return redirect("/explore")
   }
@@ -46,16 +46,31 @@ export function CatchBoundary() {
     case 403:
     case 404:
       return (
-        <>
-          <Header>
-            <div className={"flex justify-center"}>
-              <h1 className={"text-5xl font-extrabold text-gray-900"}>
-                {caught.status}
-              </h1>
-            </div>
-          </Header>
-        </>
+        <div className='min-h-screen py-4 flex flex-col justify-center items-center'>
+          <Display
+            title={`${caught.status}`}
+            titleColor='white'
+            span={`${caught.statusText}`}
+            spanColor='pink-500'
+            description={`${caught.statusText}`}
+          />
+        </div>
       );
   }
   throw new Error(`Unexpected caught response with status: ${caught.status}`);
+}
+
+export function ErrorBoundary({ error }: { error: Error }) {
+  console.error(error);
+  return (
+    <div className='min-h-screen py-4 flex flex-col justify-center items-center'>
+      <Display
+        title='Error:'
+        titleColor='#cb2326'
+        span={error.message}
+        spanColor='#fff'
+        description={`error`}
+      />
+    </div>
+  );
 }

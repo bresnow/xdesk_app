@@ -5,8 +5,8 @@ services:
   gi_dev:
     image: bresnow/amnion-gjsx_dev:${VERSION:-latest}
     volumes:
-      - gi_modules:/amnion-gjsx/gi_modules
-      - amnion_radata:${AMNION_RADATA_PATH:-/radata/amnion}
+      - gi_modules_dev:/amnion-gjsx/gi_modules
+      - amnion_radata:/radata
     networks:
       - traefik-net
       - socket-proxy
@@ -41,8 +41,8 @@ services:
   front_dev:
     image: bresnow/amnion-frontend_dev:${VERSION:-latest}
     volumes:
-      - frontend:/amnion/frontend
-      - frontend_radata:${RADATA_PATH:-/radata/frontend}
+      - frontend_dev:/amnion/frontend
+      - frontend_radata:/radata
     networks:
       - traefik-net
       - socket-proxy
@@ -76,7 +76,7 @@ services:
       RADATA_PATH: ${RADATA_PATH:-/radata/frontend}
 
 volumes:
-  gi_modules:
+  gi_modules_dev:
     driver: local-persist
     driver_opts:
       mountpoint: ${MOUNTPOINT:-/home/administrator/app.xdesk/}gi_modules
@@ -84,10 +84,10 @@ volumes:
     driver: local-persist
     driver_opts:
       mountpoint: ${MOUNTPOINT:-/home/administrator/app.xdesk/}radata/amnion
-  frontend:
+  frontend_dev:
     driver: local-persist
     driver_opts:
-      mountpoint: ${MOUNTPOINT:-/home/administrator/app.xdesk/}gi_modules/frontend
+      mountpoint: ${MOUNTPOINT:-/home/administrator/app.xdesk/}frontend
   frontend_radata:
     driver: local-persist
     driver_opts:

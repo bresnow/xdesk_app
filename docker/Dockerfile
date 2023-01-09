@@ -2,9 +2,9 @@ ARG ALPINE_VERSION=3.16
 
 FROM alpine:${ALPINE_VERSION} as base
 
-ADD ./docker/bin/* /usr/bin/
+COPY ./docker/bin/* /usr/bin/
 # add supervisor commands along/ specific to each build layer
-ADD  ./docker/supervisor/unified.conf /etc/supervisord.conf
+COPY  ./docker/supervisor/unified.conf /etc/supervisord.conf
 
 RUN  \
     echo "https://dl-cdn.alpinelinux.org/alpine/v3.16/main" > /etc/apk/repositories; \
@@ -69,7 +69,7 @@ RUN \
     delpkg rsync
 
 FROM node as gtkgjsbuilder
-ADD .  /builder
+COPY .  /builder
 RUN yarn global add turbo
 WORKDIR /builder
 RUN turbo prune --scope=gi_modules --out-dir=out --docker; \
@@ -80,7 +80,7 @@ COPY ./turbo.json ./turbo.json
 RUN yarn; yarn build --filter=gi_modules;
 
 FROM node as frontend_dev
-ADD .  /amnion
+COPY .  /amnion
 WORKDIR /amnion
 RUN yarn
 ENV NODE_ENV=development
@@ -88,7 +88,7 @@ RUN rm -rf docker gi_modules docs
 CMD [ "yarn", "watch", "--filter=render" , "--filter=server" , "--filter=ui"]
 
 FROM node as frontend
-ADD .  /amnion
+COPY .  /amnion
 WORKDIR /amnion
 RUN yarn; yarn build --filter=render --filter=ui;
 ENV NODE_ENV=production

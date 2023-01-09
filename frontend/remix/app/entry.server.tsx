@@ -45,7 +45,6 @@ export default function handleRequest(
           let body = new PassThrough();
 
           helmet.forEach((header) => {
-            // console.log(header[0], header[1])
             responseHeaders.set(header[0], header[1]);
           });
 

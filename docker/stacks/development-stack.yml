@@ -1,8 +1,15 @@
-version: "3.3"
+version: "3.9"
+
 
 services:
-  dev_wrkspce:
-    image: bresnow/alpnode_code_workspace:${VERSION:-latest}
+  gi_dev:
+    image: bresnow/amnion-gjsx_dev:${VERSION:-latest}
+    volumes:
+      - gi_modules_dev:/amnion-gjsx/gi_modules
+      - amnion_radata:/radata
+    networks:
+      - traefik-net
+      - socket-proxy
     deploy:
       placement:
         constraints:
@@ -11,48 +18,84 @@ services:
         - traefik.enable=true
         - traefik.docker.network=traefik-net
         - traefik.constraint-label=traefik-net
-        - traefik.http.routers.codeserver.rule=Host(`${CODEDOMAIN}`)
-        - traefik.http.routers.codeserver.entrypoints=http,https
-        - traefik.http.routers.codeserver.service=codeserver
-        - traefik.http.routers.codeserver.tls=true
-        - traefik.http.routers.codeserver.tls.certresolver=letsencrypt
-        - traefik.http.services.codeserver.loadbalancer.server.port=8025
-        - traefik.http.routers.filebrowser.rule=Host(`drive.cnxt.dev`)
-        - traefik.http.routers.filebrowser.entrypoints=http,https
-        - traefik.http.routers.filebrowser.service=filebrowser
-        - traefik.http.routers.filebrowser.tls=true
-        - traefik.http.routers.filebrowser.tls.certresolver=letsencrypt
-        - traefik.http.services.filebrowser.loadbalancer.server.port=8021
+        - traefik.http.routers.amnion_${ID:-001}.rule=Host(`${INTERFACE_DOMAIN?Unset Interface Domain}`)
+        - traefik.http.routers.amnion_${ID:-001}.entrypoints=http,https
+        - traefik.http.routers.amnion_${ID:-001}.service=amnion_${ID:-001}
+        - traefik.http.routers.amnion_${ID:-001}.tls=true
+        - traefik.http.routers.amnion_${ID:-001}.tls.certresolver=${TLS:-letsencrypt}
+        - traefik.http.services.amnion_${ID:-001}.loadbalancer.server.port=${INTERFACE_PORT:-8086}
+        - traefik.http.routers.internal_socket_${ID:-001}.rule=Host(`${PEER_SOCKET_DOMAIN?Unset Peer Socket Domain}`)
+        - traefik.http.routers.internal_socket_${ID:-001}.entrypoints=http,https
+        - traefik.http.routers.internal_socket_${ID:-001}.service=internal_socket_${ID:-001}
+        - traefik.http.routers.internal_socket_${ID:-001}.tls=true
+        - traefik.http.routers.internal_socket_${ID:-001}.tls.certresolver=${TLS:-letsencrypt}
+        - traefik.http.services.internal_socket_${ID:-001}.loadbalancer.server.port=${PEER_SOCKET_PORT:-8088}
+    environment:
+      C99_API_KEY: ${C99_API_KEY}
+      SERVICE_NAME: '{{.Service.Name}}'
+      PEER_SOCKET_DOMAIN: ${PEER_SOCKET_DOMAIN?Unset Peer Socket Domain}
+      INTERFACE_DOMAIN: ${INTERFACE_DOMAIN?Unset Interface Domain}
+      FRONTEND_DOMAIN: ${FRONTEND_DOMAIN?Unset Domain}
+      AMNION_RADATA_PATH: ${AMNION_RADATA_PATH:-/radata/amnion}
+
+  front_dev:
+    image: bresnow/amnion-frontend_dev:${VERSION:-latest}
+    volumes:
+      - frontend_dev:/amnion/frontend
+      - frontend_radata:/radata
     networks:
       - traefik-net
       - socket-proxy
-    volumes:
-      - data:/home/main
-      - code_extensions:/opt/vscode
-      - filebrowser:/opt/filebrowser
-      - branding:/branding
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+      labels:
+        - traefik.enable=true
+        - traefik.docker.network=traefik-net
+        - traefik.constraint-label=traefik-net
+        - traefik.http.routers.proxy_${ID:-001}.rule=Host(`${FRONTEND_DOMAIN?Unset Domain}`)
+        - traefik.http.routers.proxy_${ID:-001}.entrypoints=http,https
+        - traefik.http.routers.proxy_${ID:-001}.service=proxy_${ID:-001}
+        - traefik.http.routers.proxy_${ID:-001}.tls=true
+        - traefik.http.routers.proxy_${ID:-001}.tls.certresolver=${TLS:-letsencrypt}
+        - traefik.http.services.proxy_${ID:-001}.loadbalancer.server.port=${FRONTEND_PORT:-3333}
     environment:
-      - PROXY_DOMAIN=${CODEDOMAIN}
+      C99_API_KEY: ${C99_API_KEY}
+      SERVICE_NAME: '{{.Service.Name}}'
+      PEER_SOCKET_DOMAIN: ${PEER_SOCKET_DOMAIN?Peer Socket Domain}
+      DOMAIN: ${FRONTEND_DOMAIN?Unset Domain}
+      INTERFACE_DOMAIN: ${INTERFACE_DOMAIN?Unset Interface Domain}
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY?Unset Stripe Key}
+      STRIPE_CONNECT_CLIENT_ID: ${STRIPE_CONNECT_CLIENT_ID?Unset Stripe Client Id}
+      ISSUER_ID: ${ISSUER_ID?Unset Issuer Id}
+      ISSUER_SEED: ${ISSUER_SEED?Unset Issuer Seed}
+      HORIZON_URL: ${HORIZON_URL:-https://horizon-testnet.cnxt.dev}
+      NETWORK_PASSPHRASE: ${NETWORK_PASSPHRASE:-Test SDF Network ; September 2015}
+      WITHDRAW_ENDPOINT: ${FRONTEND_DOMAIN?Unset Domain}/api/withdraw
+      RADATA_PATH: ${RADATA_PATH:-/radata/frontend}
+
 volumes:
-  code_extensions:
+  gi_modules_dev:
     driver: local-persist
     driver_opts:
-      mountpoint: /home/administrator/.vscode-server/
-  filebrowser:
+      mountpoint: ${MOUNTPOINT:-/home/administrator/app.xdesk/}gi_modules
+  amnion_radata:
     driver: local-persist
     driver_opts:
-      mountpoint: ${FILEBROWSER_MOUNT:-/home/administrator/volumes/drive.cnxt.app}
-  branding:
+      mountpoint: ${MOUNTPOINT:-/home/administrator/app.xdesk/}radata/amnion
+  frontend_dev:
     driver: local-persist
     driver_opts:
-      mountpoint: ${FILEBROWSER_MOUNT:-/home/administrator/volumes/drive.cnxt.app/branding}
-  data:
+      mountpoint: ${MOUNTPOINT:-/home/administrator/app.xdesk/}frontend
+  frontend_radata:
     driver: local-persist
     driver_opts:
-      mountpoint: ${DEV_DATA_MOUNT:-/home/administrator}
+      mountpoint: ${MOUNTPOINT:-/home/administrator/app.xdesk/}radata/frontend
+
 
 networks:
-  socket-proxy:
-    external: true
   traefik-net:
+    external: true
+  socket-proxy:
     external: true

@@ -3,6 +3,7 @@ import { CustomButton as Button, AccountMenu } from "@ui/index";
 import type { LoaderFunction } from "@remix-run/server-runtime";
 import type { LoaderContext } from "../../types";
 import CNXTLogo from "@ui/svg/logos/CNXT";
+import Display from "~/components/DisplayHeading";
 
 export let loader: LoaderFunction = async ({ params, request, context }) => {
   let contextual = context as unknown as LoaderContext;
@@ -234,21 +235,38 @@ const AuthBanner = () => (
 );
 
 export function CatchBoundary() {
-  let { status, statusText } = useCatch();
-  return (
-    <main>
-      <h1>{status}</h1>
-      {statusText && <p>{statusText}</p>}
-    </main>
-  );
+  let caught = useCatch();
+
+  switch (caught.status) {
+    case 401:
+    case 403:
+    case 404:
+      return (
+        <div className='min-h-screen py-4 flex flex-col justify-center items-center'>
+          <Display
+            title={`${caught.status}`}
+            titleColor='white'
+            span={`${caught.statusText}`}
+            spanColor='pink-500'
+            description={`${caught.statusText}`}
+          />
+        </div>
+      );
+  }
+  throw new Error(`Unexpected caught response with status: ${caught.status}`);
 }
 
 export function ErrorBoundary({ error }: { error: Error }) {
-  console.log(error);
+  console.error(error);
   return (
-    <main>
-      <h1>{error.name}</h1>
-      <p>{error.message}</p>
-    </main>
+    <div className='min-h-screen py-4 flex flex-col justify-center items-center'>
+      <Display
+        title='Error:'
+        titleColor='#cb2326'
+        span={error.message}
+        spanColor='#fff'
+        description={`error`}
+      />
+    </div>
   );
 }
