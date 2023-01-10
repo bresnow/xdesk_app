@@ -18,17 +18,17 @@ import Display from "~/components/DisplayHeading";
 //   };
 // };
 export const handle = {
-  action: "/api/createAccount",
+  action:"/api/createAccount",
   title: {
     header: "Account",
     name: "title",
     edit: false
   } as ContractHeader_ConstructOptions,
-  button: (fetcher:FetcherWithComponents<any>) => {
+  button: (fetcher: FetcherWithComponents<any>) => {
     return {
       name: "create",
       aria_label: "Create Account",
-      label: fetcher.type === "actionSubmission" ? "Please Wait..." :"Create Account",
+      label: fetcher.type === "actionSubmission" ? "Please Wait..." : "Create Account",
       isSubmitting: fetcher.type === "actionSubmission"
     } as ContractButton_ConstructOptions
   },

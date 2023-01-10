@@ -14,8 +14,3 @@ export const Config: IConfig = {
     NODE_ENV: process.env.NODE_ENV 
 };
 
-for (const variable in Config) {
-    if (process.env[variable] === undefined) {
-        throw new Error(`Unset config variable ${variable}`);
-    }
-}

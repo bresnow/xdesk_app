@@ -6,12 +6,12 @@ if (Config.NODE_ENV === 'production') {
 } else {
   StellarSdk.Networks.TESTNET;
 }
-export const stellarServer = new StellarSdk.Server(Config.HORIZON_URL ?? "https://horizon-testnet.cnxt.dev");
+export const stellarServer = new StellarSdk.Server("https://horizon-testnet.stellar.org");
 
-const pair = StellarSdk.Keypair.random();
 
 const createAccount = () => {
   // Creamos nuestro par de llaves
+  const pair = StellarSdk.Keypair.random();
   const secret = pair.secret();
   const publicKey = pair.publicKey();
 

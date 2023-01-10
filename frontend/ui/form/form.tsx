@@ -1,9 +1,6 @@
 import type { FetcherWithComponents } from "@remix-run/react";
-import React from "react";
-import { Avatar, Button, Text } from "../";
+import { Button, Text } from "../";
 import { ContentEditable } from "../editable";
-import { useIff } from '@utils/useIff';
-
 export interface ContractForm_ConstructOptions {
   action: string;
   button: ContractButton_ConstructOptions;
@@ -33,6 +30,7 @@ export const ContentForm = ({ title, action, method, button, inputs, onSubmit, f
         {inputs.map((input) => {
           return (
             <ContractInput
+              key={input.name + "KEYMAP"}
               name={input.name}
               header={input.header}
               description={input.description}
