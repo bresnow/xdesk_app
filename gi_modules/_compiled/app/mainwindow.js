@@ -37,15 +37,6 @@ export function MainWindow({ app, reference }) {
               buildaBitch,
               buildaBitch.length
             ));
-          let root = builder2.get_object("root");
-          var actionButton = builder2.get_object("actionButton");
-          actionButton.connect("clicked", () => {
-            print("actionButton clicked");
-          });
-          var closeButton = builder2.get_object("closeButton");
-          closeButton.connect("clicked", () => {
-            print("closeButton clicked");
-          });
           app2.connect("activate", () => {
             window.set_child(webmsg);
             window.show();
@@ -61,13 +52,53 @@ export function MainWindow({ app, reference }) {
     {
       name: "Gtk4 Tour",
       icon_path: cnxtLogo,
-      clickHandler(_button) {},
+      clickHandler(_button) {
+        let window,
+          builder2,
+          app2 = new Gtk.Application(),
+          webmsg = new WebViewer({ url: "http://front_dev:3333" });
+        try {
+          (window = new Gtk.Window({ application: app2 })),
+            (builder2 = Gtk.Builder.new_from_string(
+              buildaBitch,
+              buildaBitch.length
+            ));
+          app2.connect("activate", () => {
+            window.set_child(webmsg);
+            window.show();
+            window.maximize();
+            window.present();
+          });
+          app2.run([]);
+        } catch (error) {
+          _button.label = error.message;
+        }
+      },
     },
     {
       name: "Demo App",
       icon_path: paidlogo,
       clickHandler(_button) {
-        log("Clicked3");
+        let window,
+          builder2,
+          app2 = new Gtk.Application(),
+          webmsg = new WebViewer();
+        try {
+          (window = new Gtk.Window({ application: app2 })),
+            (builder2 = Gtk.Builder.new_from_string(
+              buildaBitch,
+              buildaBitch.length
+            ));
+          app2.connect("activate", () => {
+            window.set_child(webmsg);
+            window.show();
+            window.maximize();
+            window.present();
+          });
+          app2.run([]);
+        } catch (error) {
+          _button.label = error.message;
+        }
       },
     },
   ];
@@ -85,7 +116,7 @@ export function MainWindow({ app, reference }) {
       },
       /* @__PURE__ */ Gjsx.createWidget(Gtk.Label, {
         style: { fontSize: "30px", fontWeight: "bold" },
-        label: "#KLYSTAR",
+        label: "#SPIDERMAN",
       }),
       /* @__PURE__ */ Gjsx.createWidget(Gtk.Separator, {
         orientation: Gtk.Orientation.VERTICAL,

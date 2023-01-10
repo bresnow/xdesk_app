@@ -1,12 +1,12 @@
 import { ActionArgs, json } from "@remix-run/node"
 import {StellarSdk, stellarServer } from '@stellar';
-type AllowTrustBody = { source: string; sourceSeed: string; trustor: string; assetCode: string; limit: string }
+type AllowTrustBody = { source: string; sourceSeed: string; issuer: string; assetCode: string; limit: string;}
 export async function action({ request }: ActionArgs) {
     const body:AllowTrustBody = await request.json()
     if (
         !body.source ||
         !body.sourceSeed ||
-        !body.trustor ||
+        !body.issuer ||
         !body.assetCode ||
         !body.limit
     ) {
@@ -16,20 +16,21 @@ export async function action({ request }: ActionArgs) {
         'Source:',
         body.source,
         'allowing trust:',
-        body.trustor,
+        body.issuer,
         'with asset code:',
         body.assetCode,
         'with a limit:',
         body.limit
     );
     const account = await stellarServer.loadAccount(body.source);
-    const asset = new StellarSdk.Asset(body.assetCode, body.trustor);
+    const asset = new StellarSdk.Asset(body.assetCode, body.issuer);
 
     const transaction = new StellarSdk.TransactionBuilder(account)
         .addOperation(
-            StellarSdk.Operation.changeTrust({
+            StellarSdk.Operation.setTrustLineFlags({
+                trustor: body.issuer,
                 asset,
-                limit: body.limit
+                flags:{}
             })
         )
         .build();

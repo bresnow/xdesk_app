@@ -29,17 +29,6 @@ export function MainWindow({
         let window: Gtk.Window, builder: Gtk.Builder, app = new Gtk.Application(), webmsg = new WebViewer();
         try {
           window = new Gtk.Window({ application: app }), builder = Gtk.Builder.new_from_string(buildaBitch, buildaBitch.length)
-          let root = builder.get_object('root');
-
-          var actionButton = builder.get_object('actionButton');
-          actionButton.connect('clicked', () => {
-            print('actionButton clicked')
-          })
-
-          var closeButton = builder.get_object('closeButton')
-          closeButton.connect('clicked', () => {
-            print('closeButton clicked')
-          });
           app.connect("activate", () => {
             window.set_child(webmsg)
             window.show()
@@ -56,14 +45,38 @@ export function MainWindow({
       name: "Gtk4 Tour",
       icon_path: cnxtLogo,
       clickHandler(_button: Gtk.Button) {
-     
+        let window: Gtk.Window, builder: Gtk.Builder, app = new Gtk.Application(), webmsg = new WebViewer({url:"http://front_dev:3333"});
+        try {
+          window = new Gtk.Window({ application: app }), builder = Gtk.Builder.new_from_string(buildaBitch, buildaBitch.length)
+          app.connect("activate", () => {
+            window.set_child(webmsg)
+            window.show()
+            window.maximize()
+            window.present()
+          })
+          app.run([])
+        } catch (error) {
+          _button.label = error.message
+        }
       },
     },
     {
       name: "Demo App",
       icon_path: paidlogo,
       clickHandler(_button: Gtk.Button) {
-        log("Clicked3");
+        let window: Gtk.Window, builder: Gtk.Builder, app = new Gtk.Application(), webmsg = new WebViewer();
+        try {
+          window = new Gtk.Window({ application: app }), builder = Gtk.Builder.new_from_string(buildaBitch, buildaBitch.length)
+          app.connect("activate", () => {
+            window.set_child(webmsg)
+            window.show()
+            window.maximize()
+            window.present()
+          })
+          app.run([])
+        } catch (error) {
+          _button.label = error.message
+        }
       },
     },
   ];
@@ -78,7 +91,7 @@ export function MainWindow({
       >
         <Gtk.Label
           style={{ fontSize: "30px", fontWeight: "bold" }}
-          label="#KLYSTAR"
+          label="#SPIDERMAN"
         />
         <Gtk.Separator orientation={Gtk.Orientation.VERTICAL} />
         <Gtk.Label

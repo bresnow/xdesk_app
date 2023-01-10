@@ -35,10 +35,6 @@ declare function log(msg: any): void;
 declare function print(msg: any): void;
 declare function logError(error: Error, msg?: any): void;
 declare function printerr(msg: any): void;
-
-
-
-
 declare function setTimeout(fn: () => void, timeout: number): void;
 declare interface GjsGiImports {
     versions: {

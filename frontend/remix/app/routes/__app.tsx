@@ -33,11 +33,11 @@ export default function _AppRoute() {
         </div> */}
 
         <div className="flex flex-col w-full pl-0 md:p-4 md:space-y-4">
-          <header className="w-full shadow-lg bg-white dark:bg-gray-700 items-center h-16 rounded-2xl z-40">
+          <header className="w-full shadow-lg bg-white dark:bg-gray-700 items-center h-16  z-40">
             <div className="relative z-20 flex flex-col justify-center h-full px-3 mx-auto flex-center">
               <div className="relative items-center pl-1 flex w-full lg:max-w-68 sm:pr-2 sm:ml-0">
                 <div className="container relative left-0 z-50 flex w-3/4 h-auto h-full">
-                  <CNXTLogo to={"/explore"}/>
+                  <CNXTLogo to={"/"}/>
                   <div className="relative flex items-center w-full lg:w-64 h-full group">
                     <div className="absolute z-50 flex items-center justify-center block w-auto h-10 p-3 pr-10 text-sm text-gray-500 uppercase cursor-pointer sm:hidden">
                       <svg
@@ -79,10 +79,6 @@ export default function _AppRoute() {
           </header>
           <div className="overflow-auto h-screen pb-24 pt-2 pr-2 pl-2 md:pt-0 md:pr-0 md:pl-0">
             <Outlet />
-            {/* <div className="flex flex-col flex-wrap sm:flex-row ">
-                <div className="w-full sm:w-1/2 xl:w-1/3">
-                </div>
-              </div> */}
           </div>
         </div>
       </div>

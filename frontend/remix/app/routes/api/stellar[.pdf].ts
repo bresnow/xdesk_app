@@ -1,5 +1,7 @@
-import type { LoaderArgs } from "@remix-run/node"
-import { Config } from "../../../utils/config"
+import type { LoaderArgs } from "@remix-run/node";
+import { Config } from "@utils/config";
+import { pdf } from "@utils/responses";
+
 export async function loader(args: LoaderArgs) {
   const content = `
 #TODO: Finish STELLAR TOML
@@ -103,23 +105,7 @@ HISTORY="http://history.domain.com/prd/core-live/core_live_003/"
 # Minimum Amount Forward: $2 USD
 # Maximum Amount Forward: $10000 USD"
 `
-  return Toml(content, 200)
+  return pdf(new Blob([content]), 200)
 };
 
 
-export function Toml(
-  content: string,
-  init: number | ResponseInit = {}
-): Response {
-  let responseInit = typeof init === "number" ? { status: init } : init;
-
-  let headers = new Headers(responseInit.headers);
-  if (!headers.has("Content-Type")) {
-    headers.set("Content-Type", "text/toml; charset=utf-8");
-  }
-
-  return new Response(content, {
-    ...responseInit,
-    headers,
-  });
-}

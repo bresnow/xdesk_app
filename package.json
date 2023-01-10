@@ -21,6 +21,7 @@
     "start": "turbo start",
     "supervisord": "turbo supervisord",
     "watch": "turbo watch",
+    "webhook": "yarn workspace docker webhook",
     "shed": "turbo shed"
   },
   "keywords": [

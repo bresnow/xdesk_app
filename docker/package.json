@@ -9,9 +9,8 @@
     "scripts": {
         "build": "docker-compose build",
         "compose": "docker-compose up --remove-orphans",
-        "push": "docker-compose push; yarn deploy amnion;",
+        "push": "docker-compose push",
         "traefik": "docker stack deploy -c stacks/traefik.yml traefik",
-        "deploy": "docker stack deploy -c stacks/stack-dev.yml",
         "start": "nohup gtk4-broadwayd $BROADWAY_DISPLAY",
         "supervisord":"/usr/bin/supervisord -c /etc/supervisord.conf",
         "watch": "nohup gtk4-broadwayd $BROADWAY_DISPLAY",

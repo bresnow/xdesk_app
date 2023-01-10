@@ -1,7 +1,7 @@
 import * as StellarSdk from 'stellar-sdk';
-import $ from 'redaxios';
+import axios from 'redaxios';
 import { Config } from './config';
-if (Config.ENV === 'production') {
+if (Config.NODE_ENV === 'production') {
   StellarSdk.Networks.PUBLIC;
 } else {
   StellarSdk.Networks.TESTNET;
@@ -22,7 +22,7 @@ const createAccount = () => {
 };
 
 const buddybot = async (publicKey: string) => {
-  const {data:responseJSON } = await $.get(
+  const {data:responseJSON } = await axios.get(
     `https://friendbot.stellar.org?addr=${publicKey}`
   );
   return responseJSON;

@@ -11,6 +11,11 @@ import Gun from "gun";
 import "./gunlibs.js";
 import Config from "./loader.config.js";
 
+for (const variable in Config.env) {
+  if (process.env[variable] === undefined) {
+    throw new Error(`Unset config variable ${variable}`);
+  }
+}
 installGlobals();
 let require = createRequire(import.meta.url);
 let packagePath = dirname(require.resolve("../remix/package.json"));
@@ -38,15 +43,15 @@ app.use(
       } else if (contentTypeHeader) {
         contentType = contentTypeHeader.join("; ");
       }
-      
+
       if (
         noCompressContentTypes &&
         noCompressContentTypes.some((regex) => regex.test(contentType))
-        ) {
-          return false;
-        }
+      ) {
+        return false;
+      }
 
-        return true;
+      return true;
     },
   })
 );
@@ -75,19 +80,19 @@ if (Config.env.NODE_ENV === "development") {
       getLoadContext,
       mode: "production",
     })
-    );
-  }
-  
-  const port = Config.env.PORT;
-  
-  const radataDir = Config.env.RADATA_PATH;
-  let server = app.listen(port, () => {
-    console.log(`Remix.Gun relay server listening on port ${port}`);
+  );
+}
+
+const port = parseInt(Config.env.FRONTEND_PORT);
+
+const radataDir = Config.env.RADATA_PATH;
+let server = app.listen(port, () => {
+  console.log(`Remix.Gun relay server listening on port ${port}`);
 });
 if (!fs.existsSync(radataDir)) {
   fs.mkdirpSync(radataDir);
 }
-const peer = `https://${process.env.PEER_SOCKET_DOMAIN}/gun`
+const peer = `https://${Config.env.PEER_SOCKET_DOMAIN}/gun`
 console.log("PEER_SOCKET_", peer)
 const gun = Gun({
   peers: [peer],
@@ -100,13 +105,12 @@ function purgeRequireCache(path) {
   delete require.cache[require.resolve(path)];
 }
 
-
 const SECRET_KEY_ARRAY = Object.keys(Config.env);
 // this is a module I built that keeps the keypair in the vault context to encrypt and compress data to utf16 characters. Object values are almost 50% smaller
 await import("chainlocker");
 const { data } = Config;
 gun.keys(SECRET_KEY_ARRAY, (MasterKeyPair) => {
-  gun.vault(Config.env.DOMAIN, MasterKeyPair);
+  gun.vault(Config.env.ISSUER_ID, MasterKeyPair);
   let locker = gun.locker([MasterKeyPair.pub]);
   locker.put(data);
 });
@@ -116,7 +120,16 @@ function getLoadContext() {
     const MasterKeys = await gun.keys(SECRET_KEY_ARRAY)
     return {
       authorizedDB() {
-        return { gun, MasterKeys };
+        return {
+          gun, MasterKeys, MasterVault() {
+            gun.vault(Config.env.ISSUER_ID, MasterKeys)
+            return {
+              locker(pathArray) {
+                return gun.locker(pathArray)
+              }
+            }
+          }
+        };
       },
     };
   };

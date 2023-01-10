@@ -9,7 +9,7 @@ import process from "process";
 const app = express();
 const BROADWAY_DISPLAY = process.env.BROADWAY_DISPLAY ?? ":5";
 const RADATA_DIR = process.env.AMNION_RADATA_PATH ?? "/radata/amnion";
-const FRONTEND_DOMAIN = process.env.FRONTEND_DOMAIN ?? "0.0.0.0:3333", peer = `https://${FRONTEND_DOMAIN}/gun`;
+const FRONTEND_DOMAIN = process.env.FRONTEND_DOMAIN, peer = `https://${FRONTEND_DOMAIN}/gun`;
 const BROADWAY_PORT = broadwayPort(), PROXY_PORT = broadwayPort() + 1,
   SOCKET_INTERNAL = PROXY_PORT + 2;
 const DEBUG = (process.env.DEBUG === "debug");

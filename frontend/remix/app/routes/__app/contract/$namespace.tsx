@@ -5,6 +5,7 @@ import axios from "redaxios"
 import { LoaderContext } from '@types';
 import { Header } from "@ui/dialog/dialog";
 import Display from "~/components/DisplayHeading";
+import {CreateForm} from "~/components";
 export function html(
   content: string,
   init: number | ResponseInit = {}
@@ -23,20 +24,15 @@ export function html(
 }
 //
 
-export let loader: LoaderFunction = async ({ params, context }) => {
-  let namespace = params?.namespace, src: string;
-  let loadContext = context as unknown as LoaderContext;
-  src = `https://${namespace}.cnxt.dev`
-  try {
-    let response = await axios.get(src);
-  } catch (error) {
-    return redirect("/contract")
-  }
-  return json({ src }, 200);
+export let loader: LoaderFunction = async () => {
+
+  return json({ src: "src" }, 200);
 }
 export default function NameSpace() {
   let { src } = useLoaderData<{ src: string }>();
-  return (<Iframe src={src} className={"w-full h-screen"} />);
+  console.log(src);
+  
+  return (<CreateForm/>);
 }
 
 export function CatchBoundary() {
