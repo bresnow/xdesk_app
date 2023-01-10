@@ -1,41 +1,118 @@
-import { useFetcher } from "@remix-run/react";
+import type { FetcherWithComponents } from "@remix-run/react";
 import React from "react";
 import { Avatar, Button, Text } from "../";
 import { ContentEditable } from "../editable";
 import { useIff } from '@utils/useIff';
 
-export type TweetFormProps = {
+export interface ContractForm_ConstructOptions {
+  action: string;
+  button: ContractButton_ConstructOptions;
+  method?: "get" | "post"
+  title: ContractHeader_ConstructOptions
+  inputs: ContractInput_ConstructOptions[];
   onSubmit?: ({ id }: { id: string }) => void;
+  fetcher: FetcherWithComponents<any>;
 };
+export type ContractInput_ConstructOptions = { name: string; header: string; description: string; placeholder?: string; edit?: boolean; }
+export type ContractButton_ConstructOptions = { label: string; isValid?: boolean; isSubmitting?: boolean; name: string; value: string; aria_label: string; color?: "default" | "primary" | "red" | "green" | "white" | undefined };
+export type ContractHeader_ConstructOptions = { name: string; header: string; edit?: boolean }
+export const ContentForm = ({ title, action, method, button, inputs, onSubmit, fetcher }: ContractForm_ConstructOptions) => {
 
-export const ContentForm = ({ onSubmit }: TweetFormProps) => {
-  const fetcher = useFetcher();
-useIff
   return (
     <div className="flex-col gap-3.5 mx-auto p-3 bg-white">
-      <Avatar
-        className="rounded-full h-8 w-8 mx-auto"
-        src={"/images/gradient.webp"}
-        alt={"Bresnow"}
-        size="lg"
-      />
       <fetcher.Form
         onSubmit={() => onSubmit && onSubmit}
-        action={"/api/createAccount"}
-        method="post"
+        action={action}
+        method={method ?? "post"}
         className="flex flex-auto mx-auto px-2 flex-col gap-3.5"
       >
-        <EditableHeader header={'Contract Title'} name={"title"} />
-        <ContractInput name="accountID" header={'Wallet ID'} description={`WalletID`} placeholder={fetcher.data?.publicKey && fetcher.data?.publicKey} />
-        <ContractInput name="secret" header={'Secret Key'} description={`Stellar Secret Key`} placeholder={fetcher.data?.secret && fetcher.data?.secret} />
+        <EditableHeader
+          header={title.header}
+          name={title.name}
+          edit={title.edit} />
+        {inputs.map((input) => {
+          return (
+            <ContractInput
+              name={input.name}
+              header={input.header}
+              description={input.description}
+              placeholder={input.placeholder}
+            />)
+        })}
         <div className="flex justify-center">
-          <SubmitButton />
+          <SubmitButton {...button} />
         </div>
       </fetcher.Form>
-      <div className="flex p-6">{fetcher.data && (JSON.stringify(fetcher.data))}</div>
+      <div className="flex p-6">{fetcher.data && (JSON.stringify(fetcher.data, null, 2))}</div>
     </div>
   );
 };
+
+const ContractInput = ({ name, header, description, placeholder, edit }: ContractInput_ConstructOptions) => {
+  return (
+    <>
+      <div>
+        <Text
+          weight={6}
+          className="font-medium text-lg"
+        >
+          <label className='font-display block dark:text-slate-800'>
+            {header}
+          </label>
+        </Text>
+        <p className='text-2xs mb-1'>
+          {description}
+        </p>
+      </div>
+      <ContentEditable
+        className={`border border-slate-800 rounded-xl p-1 border-1 focus:outline-none`}
+        name={name}
+        id={name}
+        edit={edit ?? true}
+      >
+        <Text >
+          {placeholder}
+        </Text>
+      </ContentEditable>
+    </>
+
+  );
+};
+const EditableHeader = ({ name, header, edit }: ContractHeader_ConstructOptions) => {
+  return (
+    <ContentEditable
+      className=" border-b border-b-red-500 py-3 focus:outline-none"
+      name={name}
+      id={name}
+      edit={edit ?? true}
+    >
+      <Text weight={7} className="font-black text-2xl">
+        {header}
+      </Text>
+    </ContentEditable>
+  );
+};
+
+
+const SubmitButton = ({ name, value, aria_label, label, color, isSubmitting = false, isValid = true }: ContractButton_ConstructOptions) => {
+  const disabled = isSubmitting || !isValid;
+  return (
+    <Button
+      name={name}
+      value={value}
+      type="submit"
+      color={color ?? "default"}
+      aria-label={aria_label}
+      disabled={disabled}
+    >
+      {label}
+    </Button>
+  );
+};
+
+
+
+
 export const ServiceOption = ({
   name,
   label,
@@ -128,69 +205,5 @@ export const ServiceOption = ({
 				</div>
 			</div> */}
     </>
-  );
-};
-const ContractInput = ({ name, header, description, placeholder }: { name: string; header: string; description: string; placeholder?: string }) => {
-  let [change, changeSet] = React.useState(false)
-  return (
-    <>
-      <Text
-        weight={6}
-        className="font-medium text-lg"
-      >
-        <label className='font-display text-jacarta-700 mb-2 block dark:text-slate-800'>
-          {header}
-        </label>
-      </Text>
-      <p className='text-2xs mb-1'>
-        {description}
-      </p>
-      <ContentEditable
-        className={`border-b border-b-slate-800 focus:outline-none ${change && "bg-slate-500"}`}
-        name={name}
-        id={name}
-        edit={true}
-      >
-        <Text className={`border-b  `} onChange={(event) => {
-          changeSet(true)
-          event.currentTarget.style.height = "1px";
-          event.currentTarget.style.height = `${event.currentTarget.scrollHeight}px`;
-        }}>
-          {placeholder}
-        </Text>
-      </ContentEditable>
-    </>
-
-  );
-};
-
-const EditableHeader = ({ name, header }: { name: string; header: string; }) => {
-  return (
-    <ContentEditable
-      className=" border-b border-b-red-500 py-3 focus:outline-none"
-      name={name}
-      id={name}
-      edit={true}
-    >
-      <Text weight={7} className="font-black text-2xl">
-        {header}
-      </Text>
-    </ContentEditable>
-  );
-};
-
-const SubmitButton = ({ isSubmitting = false, isValid = true }) => {
-  const disabled = isSubmitting || !isValid;
-  return (
-    <Button
-      name="action"
-      value="create"
-      type="submit"
-      color="default"
-      aria-label="Create tweet"
-      disabled={disabled}
-    >
-      Publish
-    </Button>
   );
 };

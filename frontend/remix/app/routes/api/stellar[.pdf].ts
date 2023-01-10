@@ -1,7 +1,7 @@
 import type { LoaderArgs } from "@remix-run/node";
 import { Config } from "@utils/config";
 import { pdf } from "@utils/responses";
-
+import fs from 'fs-extra';
 export async function loader(args: LoaderArgs) {
   const content = `
 #TODO: Finish STELLAR TOML
@@ -105,6 +105,7 @@ HISTORY="http://history.domain.com/prd/core-live/core_live_003/"
 # Minimum Amount Forward: $2 USD
 # Maximum Amount Forward: $10000 USD"
 `
+
   return pdf(new Blob([content]), 200)
 };
 

@@ -2069,7 +2069,7 @@
   dependencies:
     "@types/node" "*"
 
-"@typescript-eslint/eslint-plugin@^5.38.0":
+"@typescript-eslint/eslint-plugin@^5.38.0", "@typescript-eslint/eslint-plugin@^5.48.0":
   version "5.48.1"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/eslint-plugin/-/eslint-plugin-5.48.1.tgz#deee67e399f2cb6b4608c935777110e509d8018c"
   integrity sha512-9nY5K1Rp2ppmpb9s9S2aBiF3xo5uExCehMDmYmmFqqyxgenbHJ3qbarcLt4ITgaD6r/2ypdlcFRdcuVPnks+fQ==
@@ -2084,7 +2084,7 @@
     semver "^7.3.7"
     tsutils "^3.21.0"
 
-"@typescript-eslint/parser@^5.21.0", "@typescript-eslint/parser@^5.38.0":
+"@typescript-eslint/parser@^5.21.0", "@typescript-eslint/parser@^5.38.0", "@typescript-eslint/parser@^5.48.0":
   version "5.48.1"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/parser/-/parser-5.48.1.tgz#d0125792dab7e232035434ab8ef0658154db2f10"
   integrity sha512-4yg+FJR/V1M9Xoq56SF9Iygqm+r5LMXvheo6DQ7/yUWynQ4YfCRnsKuRgqH4EQ5Ya76rVwlEpw4Xu+TgWQUcdA==
@@ -4182,7 +4182,7 @@ eslint-visitor-keys@^3.3.0:
   resolved "https://registry.yarnpkg.com/eslint-visitor-keys/-/eslint-visitor-keys-3.3.0.tgz#f6480fa6b1f30efe2d1968aa8ac745b862469826"
   integrity sha512-mQ+suqKJVyeuwGYHAdjMFqjCyfl8+Ldnxuyp3ldiMBFKkvytrXUZWaiPCEav8qDHKty44bD+qV1IP4T+w+xXRA==
 
-eslint@^8.15.0:
+eslint@^8.15.0, eslint@^8.31.0:
   version "8.31.0"
   resolved "https://registry.yarnpkg.com/eslint/-/eslint-8.31.0.tgz#75028e77cbcff102a9feae1d718135931532d524"
   integrity sha512-0tQQEVdmPZ1UtUKXjX7EMm9BlgJ08G90IhWh0PKDCb3ZLsgAOHI8fYSIzYVZej92zsgq+ft0FGsxhJ3xo2tbuA==

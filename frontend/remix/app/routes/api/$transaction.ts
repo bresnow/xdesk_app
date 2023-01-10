@@ -30,24 +30,36 @@ export type OperationType = | "createAccount"
     | "clawbackClaimableBalance"
     | "setTrustLineFlags"
     | "liquidityPoolDeposit"
-    | "liquidityPoolWithdraw"
+    | "liquidityPoolWithdraw" | "loadAccountBalance"
 export async function action({ request, params }: ActionArgs) {
     if (!Config.ISSUER_ID || !Config.ISSUER_SEED) {
         throw new Error("Issuer needs to configure Stellar account ID and seed before using this action. Technically this application should not be running. Check the issuer's toml file and always do your due diligence.")
     }
-    let { accountID, secret, ..._options } = await FormEntry<{ accountID: string; secret: string }>(request)
-    accountID = accountID.trim();
-    secret = secret.trim();
     let operation = params.transaction as OperationType
     if (operation === "createAccount") {
-        let result;
+        let result, data;
         let { publicKey, secret } = createAccount()
-        if (Config.NETWORK_PASSPHRASE === "Test SDF Network ; September 2015") {
-            buddybot(publicKey)
+        try {
+            if (Config.NETWORK_PASSPHRASE === "Test SDF Network ; September 2015") {
+                data = await buddybot(publicKey)
+            }
+            result = { publicKey, secret, ...data };
+            return json({ status: "OK", ...result })
+        } catch (error) {
+            return json({ status: "ERROR", error })
         }
-        result = { publicKey, secret }
-        return json({ status: "OK", ...result })
     }
+
+    let { accountID, secret, ..._options } = await FormEntry<{ accountID: string; secret: string }>(request)
+    if (operation === "loadAccountBalance") {
+        try {
+            let result = await stellarServer.loadAccount(accountID)
+            return json({ status: "OK", ...result })
+        } catch (error) {
+            return json({ status: "ERROR", error })
+        }
+    }
+
     const operationBuilder = StellarSdk.Operation[operation]
     if (!operationBuilder) {
         return json({ status: "ERROR", error: `Unknown operation type: ${operation}` }, 500)
