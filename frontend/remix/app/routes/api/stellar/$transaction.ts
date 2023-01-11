@@ -12,9 +12,12 @@ export async function action({ request, params }: ActionArgs) {
         return json({ error: `Unknown operation type: ${operation}` }, 500)
     };
     // Transaction will hold a built transaction we can resubmit if the result is unknown.
-    var tx;
+    var tx:string, options:Record<string,any>;
     try {
-        let options = await FormEntry(request)
+        options = await FormEntry(request)
+        if (!options && request.headers.get("Content-Type") === "application/json") {
+            options = await request.json()
+        }
         let sourceAccount = await stellarServer.loadAccount(issuerKeys.publicKey())
         const operation = operationBuilder(options as never)
         // Start building the transaction.

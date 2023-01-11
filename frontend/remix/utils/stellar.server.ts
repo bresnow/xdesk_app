@@ -1,7 +1,7 @@
 import * as StellarSdk from 'stellar-sdk';
 import axios from 'redaxios';
 import { Config } from './config';
-import invariant from '@remix-run/react/dist/invariant';
+import invariant from '@remix-run/react/dist/invariant.js';
 export type OperationType =
     | "createAccount"
     | "payment"

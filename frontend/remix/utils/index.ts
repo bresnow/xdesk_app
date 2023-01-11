@@ -1,10 +1,6 @@
-import { parseMultipartFormData } from "@remix-run/server-runtime/dist/formData.js";
-import { createMemoryUploadHandler, MemoryUploadHandlerOptions } from "@remix-run/server-runtime/dist/upload/memoryUploadHandler.js";
 
-export async function FormEntry<Entries extends Record<string,string>>(request: Request, options?: MemoryUploadHandlerOptions):Promise<Entries>  {
-    const handler = createMemoryUploadHandler(options ?? {});
-    let values = Object.fromEntries(await request.formData()
-    );
+export async function FormEntry<Entries extends Record<string,string>>(request: Request):Promise<Entries>  {
+    let values = Object.fromEntries(await request.formData());
     let obj: Record<string, string> = {};
     return new Promise((resolve, _reject) => {
         for (const prop in values) {

@@ -96,7 +96,6 @@ export default function ContractRoute() {
         button={handle.button(fetcher)}
         action={handle.action}
         title={handle.title}
-        fetcher={fetcher}
         inputs={inputs} />
       <Outlet />
     </div>

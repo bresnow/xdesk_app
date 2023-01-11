@@ -1,4 +1,5 @@
 import type { FetcherWithComponents } from "@remix-run/react";
+import {Form} from "@remix-run/react"
 import { Button, Text } from "../";
 import { ContentEditable } from "../editable";
 export interface ContractForm_ConstructOptions {
@@ -8,16 +9,15 @@ export interface ContractForm_ConstructOptions {
   title: ContractHeader_ConstructOptions
   inputs: ContractInput_ConstructOptions[];
   onSubmit?: ({ id }: { id: string }) => void;
-  fetcher: FetcherWithComponents<any>;
 };
 export type ContractInput_ConstructOptions = { name: string; header: string; description: string; placeholder?: string; edit?: boolean; }
 export type ContractButton_ConstructOptions = { label: string; isValid?: boolean; isSubmitting?: boolean; name: string; value: string; aria_label: string; color?: "default" | "primary" | "red" | "green" | "white" | undefined };
 export type ContractHeader_ConstructOptions = { name: string; header: string; edit?: boolean }
-export const ContentForm = ({ title, action, method, button, inputs, onSubmit, fetcher }: ContractForm_ConstructOptions) => {
+export const ContentForm = ({ title, action, method, button, inputs, onSubmit }: ContractForm_ConstructOptions) => {
 
   return (
     <div className="flex-col gap-3.5 mx-auto p-3 bg-white">
-      <fetcher.Form
+      <Form
         onSubmit={() => onSubmit && onSubmit}
         action={action}
         method={method ?? "post"}
@@ -40,8 +40,7 @@ export const ContentForm = ({ title, action, method, button, inputs, onSubmit, f
         <div className="flex justify-center">
           <SubmitButton {...button} />
         </div>
-      </fetcher.Form>
-      <div className="flex p-6">{fetcher.data && (JSON.stringify(fetcher.data, null, 2))}</div>
+      </Form>
     </div>
   );
 };
