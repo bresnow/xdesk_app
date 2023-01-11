@@ -1,38 +1,31 @@
-import { useCatch, useLoaderData } from "@remix-run/react";
-import { json, LoaderFunction, redirect } from "@remix-run/server-runtime";
-import Iframe from "@ui/iframe";
-import axios from "redaxios"
-import { LoaderContext } from '@types';
-import { Header } from "@ui/dialog/dialog";
+import { useCatch, useActionData } from "@remix-run/react";
 import Display from "~/components/DisplayHeading";
-import {CreateForm} from "~/components";
-export function html(
-  content: string,
-  init: number | ResponseInit = {}
-): Response {
-  let responseInit = typeof init === "number" ? { status: init } : init;
+import { ActionArgs, json } from "@remix-run/node"
+import { adminPair, OperationType, StellarSdk, stellarServer } from '@stellar';
+import { Suspense } from "react";
+import {runOperation} from "@utils/stellar"
+import { FormEntry } from "@utils/index";
 
-  let headers = new Headers(responseInit.headers);
-  if (!headers.has("Content-Type")) {
-    headers.set("Content-Type", "text/html; charset=utf-8");
-  }
 
-  return new Response(content, {
-    ...responseInit,
-    headers,
-  });
-}
-//
+export const parsify = (object: any) => JSON.parse(JSON.stringify(object))
+export async function action({ request,  params }: ActionArgs) {
+  let issuerKeys = adminPair()
+  let operation = params.transaction as OperationType;
+  let options = await FormEntry(request)
+  let txResponse = runOperation(issuerKeys, operation,options)
 
-export let loader: LoaderFunction = async () => {
+  return json(txResponse)
+};
 
-  return json({ src: "src" }, 200);
-}
 export default function NameSpace() {
-  let { src } = useLoaderData<{ src: string }>();
-  console.log(src);
-  
-  return (<CreateForm/>);
+  var act = useActionData()
+  return (
+    <div>
+      <Suspense>
+        <p>{JSON.stringify(act)}</p>
+      </Suspense>
+    </div>
+  );
 }
 
 export function CatchBoundary() {

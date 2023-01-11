@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-interface Props {
+export interface DropDownMenu_Props {
   //boolean to always open ddm (for presentation)
   forceOpen?: boolean;
   label?: string;
@@ -17,7 +17,7 @@ export interface DDMItem {
   link?: string;
 }
 
-const DropDownMenu = (props: Props) => {
+const DropDownMenu = (props: DropDownMenu_Props) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <div className="relative inline-block text-left">

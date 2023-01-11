@@ -2,7 +2,6 @@ import { useCatch, useLoaderData } from "@remix-run/react";
 import { json, LoaderFunction, redirect } from "@remix-run/server-runtime";
 import Iframe from "@ui/iframe";
 import axios from "redaxios"
-import { LoaderContext } from '@types';
 import Display from "~/components/DisplayHeading";
 export function html(
   content: string,
@@ -22,9 +21,8 @@ export function html(
 }
 //
 
-export let loader: LoaderFunction = async ({ params, context }) => {
+export let loader: LoaderFunction = async ({ params}) => {
   let namespace = params?.namespace, src: string;
-  let loadContext = context as unknown as LoaderContext;
   src = `https://${namespace}.cnxt.dev`
   try {
     let response = await axios.get(src);

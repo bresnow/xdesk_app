@@ -1,5 +1,5 @@
 import type { FetcherWithComponents } from "@remix-run/react";
-import {Form} from "@remix-run/react"
+import { Form } from "@remix-run/react"
 import { Button, Text } from "../";
 import { ContentEditable } from "../editable";
 export interface ContractForm_ConstructOptions {

@@ -3,23 +3,28 @@ import NameSpacePreviewMap from "@ui/kit/components/pagesection/blog/BlogList";
 import Display from "~/components/DisplayHeading";
 import FeaturesAndDesc from '@ui/kit/components/pagesection/feature/FeaturesAndDesc'
 import { LoaderFunction } from "@remix-run/server-runtime";
-import { LoaderContext } from "@types";
-import { vaultLocker } from "~/root";
 import { json } from '@remix-run/node';
+import FeaturesCards from '@ui/kit/components/pagesection/feature/FeaturesCards';
+import FeaturesImage from '@ui/kit/components/pagesection/feature/FeaturesImage';
+import FeaturesImage2 from '@ui/kit/components/pagesection/feature/FeaturesImage2';
+import { yamlData } from '@utils/config/yaml';
 export const handle = {
   header: {
     title: "#://CNXT",
   },
 };
-export let loader: LoaderFunction = async ({ params, request, context }) => {
-  let { locker } = await vaultLocker(context);
-  let data = await locker().value((data) => data)
-  return json(data.pages.cnxt)
+export let loader: LoaderFunction = async ({  context }) => {
+  let {routes} = yamlData()
+  return json(routes.explore)
 }
 export default function Home() {
   let data = useLoaderData()
+  
   return (
     <div className="h-screen">
+      <FeaturesImage2 heading={''} subtitle={''} description={''} features={["Serverless Computing", "Programatic Assets"]} />
+      <FeaturesImage />
+      <FeaturesCards />
       <FeaturesAndDesc
         header={data.header.title}
         description={data.text}
@@ -30,7 +35,6 @@ export default function Home() {
 }
 export function CatchBoundary() {
   let caught = useCatch();
-
   switch (caught.status) {
     case 401:
     case 403:

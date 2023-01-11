@@ -9,25 +9,27 @@ export async function action({ request, params }: ActionArgs) {
     let operation = params.transaction as OperationType
     const operationBuilder = StellarSdk.Operation[operation]
     if (!operationBuilder) {
-        return json({ error: `Unknown operation type: ${operation}` }, 500)
+        return `Unknown operation type: ${operation}`
     };
     // Transaction will hold a built transaction we can resubmit if the result is unknown.
-    var tx:string, options:Record<string,any>;
-    try {
-        options = await FormEntry(request)
-        if (!options && request.headers.get("Content-Type") === "application/json") {
-            options = await request.json()
-        }
-        let sourceAccount = await stellarServer.loadAccount(issuerKeys.publicKey())
-        const operation = operationBuilder(options as never)
-        // Start building the transaction.
-        tx = new StellarSdk.TransactionBuilder(sourceAccount)
-            .addOperation(operation)
-            .build()
-            .toXDR();
 
-        return json(tx, 200)
-    } catch (error) {
-        return json({ error }, 500)
-    }
+    let {_submit,...options} = await FormEntry(request)
+ 
+    let sourceAccount = await stellarServer.loadAccount(issuerKeys.publicKey())
+    const op = operationBuilder(options as never)
+    // Start building the transaction.
+    let transaction = new StellarSdk.TransactionBuilder(sourceAccount, {
+        fee: StellarSdk.BASE_FEE,
+        networkPassphrase: StellarSdk.Networks.TESTNET,
+    })
+        .addOperation(op)
+        .build()
+    transaction.sign(issuerKeys); // sign the transaction
+    try {
+        await stellarServer.submitTransaction(transaction);
+        return json({ success: true }, 200);
+    } catch (e) {
+        return json({ error: JSON.stringify(e) }, 400)
+    };
+
 };

@@ -15,6 +15,7 @@ import "chainlocker";
 import { json } from "@remix-run/node";
 import { Config } from "@utils/config";
 import Display from "./components/DisplayHeading";
+import { yamlData } from '../utils/config/yaml';
 
 export const links: LinksFunction = () => {
   return [
@@ -30,9 +31,10 @@ export let meta: MetaFunction = ({ data }) => ({
   title: "New Remix App",
   viewport: "width=device-width,initial-scale=1",
 });
-export const loader: LoaderFunction = async ({ request, context }) => {
-  var rootmetadata = await getMetaData(context, request)
-  return json(rootmetadata);
+export const loader: LoaderFunction = async () => {
+  var {routes} = yamlData()
+  let rootmeta = routes.root.meta
+  return json(rootmeta);
 };
 export default function App() {
   return (
@@ -88,27 +90,3 @@ export function ErrorBoundary({ error }: { error: Error }) {
 }
 
 
-export async function vaultLocker(context: unknown) {
-  let loaderContext = context as unknown as LoaderContext;
-  let { authorizedDB } = await loaderContext();
-  let { gun, MasterKeys } = authorizedDB();
-  gun.vault(Config.DOMAIN, MasterKeys);
-  return {locker(args?: string[]) { return args ? gun.locker([MasterKeys.pub, ...args]) : gun.locker([MasterKeys.pub]) }}
-}
-
-async function getMetaData(context: unknown, request: Request): Promise<Record<string, any>> {
-  let loaderContext = context as unknown as LoaderContext;
-  let { authorizedDB } = await loaderContext();
-  let { gun, MasterKeys } = authorizedDB();
-  gun.vault(Config.DOMAIN, MasterKeys);
-  let locker = gun.locker([MasterKeys.pub]);
-  let { pages } = await locker.value((data) => (data));
-  let rootmetadata = pages.root.meta;
-  let url = new URL(request.url);
-  rootmetadata = JSON.parse(
-    JSON.stringify(rootmetadata)
-      .split("<%--protocol-host--%>")
-      .join(url.protocol + url.host)
-  );
-  return rootmetadata;
-}

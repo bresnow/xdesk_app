@@ -1,1 +1,0 @@
-import { createFileUploadHandler } from '@remix-run/node/dist/upload/fileUploadHandler';

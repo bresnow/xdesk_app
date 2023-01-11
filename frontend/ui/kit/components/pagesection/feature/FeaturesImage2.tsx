@@ -1,12 +1,6 @@
 import React from "react";
 
-const FeaturesImage2 = () => {
-  const features = [
-    "Live modifications",
-    "Data tracker",
-    "24/24 support",
-    "Free tips to improve work time",
-  ];
+const FeaturesImage2 = ({ heading, features, description, subtitle }: { heading: string; subtitle: string; description: string; features: string[] }) => {
 
   return (
     <div className="max-w-screen-xl p-4 bg-white dark:bg-gray-800 mx-auto px-4 sm:px-6 lg:px-8 relative py-26 lg:mt-20">
@@ -14,15 +8,13 @@ const FeaturesImage2 = () => {
         <div className="lg:grid lg:grid-flow-row-dense lg:grid-cols-2 lg:gap-8 lg:items-center">
           <div className="lg:col-start-2 lg:max-w-2xl ml-auto">
             <p className="text-base leading-6 text-indigo-500 font-semibold uppercase">
-              Interactive
+              {heading}
             </p>
             <h4 className="mt-2 text-2xl leading-8 font-extrabold text-gray-900 dark:text-white sm:text-3xl sm:leading-9">
-              Interactivity between team members is the key of the success.
+              {subtitle}
             </h4>
             <p className="mt-4 text-lg leading-6 text-gray-500 dark:text-gray-300">
-              Build a simply and powered collaborative space for all your team.
-              Track, share, measure, you have a fully control, it's never be
-              simply and efficient.
+              {description}
             </p>
             <ul className="mt-8 md:grid md:grid-cols-2 gap-6">
               {features.map((feat, index) => {
@@ -58,13 +50,13 @@ const FeaturesImage2 = () => {
                 <img
                   className="rounded-lg shadow-lg w-32 md:w-56"
                   width="200"
-                  src="/images/object/8.jpg"
+                  src="/images/interface/Web.png"
                   alt="1"
                 />
                 <img
                   className="rounded-lg shadow-lg w-40 md:w-64"
                   width="260"
-                  src="/images/landscape/4.jpg"
+                  src="/images/interface/soft/User Interface_App Interface Concept.png"
                   alt="2"
                 />
               </div>
@@ -72,13 +64,13 @@ const FeaturesImage2 = () => {
                 <img
                   className="rounded-lg shadow-lg w-24 md:w-40"
                   width="170"
-                  src="/images/landscape/3.jpg"
+                  src="/images/interface/soft/User Interface_App Interface Concept.png"
                   alt="3"
                 />
                 <img
                   className="rounded-lg shadow-lg w-32 md:w-56"
                   width="200"
-                  src="/images/object/9.jpg"
+                  src="/images/interface/Tech.png"
                   alt="4"
                 />
               </div>
