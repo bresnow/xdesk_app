@@ -8,7 +8,7 @@ export async function FormEntry<Entries extends Record<string,string>>(request: 
             if (typeof value !== 'string') {
                 value = JSON.stringify(value);
             }
-            Object.assign(obj, { [prop]: value.trim() });
+            Object.assign(obj, { [prop]: value});
         }
         resolve(obj as Entries);
     });

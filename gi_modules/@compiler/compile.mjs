@@ -24,9 +24,6 @@ let scope = chokidar.watch(entryPoints, {
 if (watch) {
   ["add", "change", "unlink"].forEach((e) => {
     scope.on(e, async (path) => {
-      console.log(
-        green(`Compiling ${blue(path)} after ${yellow(e)} event`)
-      );
       compile(path)
     }
     )
@@ -126,7 +123,7 @@ function copyAsset(source) {
   if (!fs.existsSync(compiled_path)) {
     fs.mkdirpSync(compiled_path);
   }
-  console.log("Assets Copied", yellow(compiled_path + `/${basename}.${extension}`))
+  // console.log("Assets Copied", yellow(compiled_path + `/${basename}.${extension}`))
   fs.copyFileSync(path + `/${basename}.${extension}`, compiled_path + `/${basename}.${extension}`)
 }
 

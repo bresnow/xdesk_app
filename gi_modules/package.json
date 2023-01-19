@@ -8,7 +8,7 @@
     "shed": "rm README.md tsconfig.json; rm -rf @compiler app assets gjsx types;",
     "start": "cd _compiled; gjs -m app/main.js",
     "watch:gjsx": "nodemon --exec \"yarn start\" --watch _compiled/**/*",
-    "watch": "concurrently \"yarn compile --watch\" \"yarn watch:gjsx\""
+    "watch": "concurrently \"yarn compile --watch --deploy\" \"yarn watch:gjsx\""
   },
   "devDependencies": {
     "@types/prettier": "^2.7.1",

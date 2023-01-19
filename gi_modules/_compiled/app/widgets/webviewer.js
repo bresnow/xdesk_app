@@ -11,7 +11,7 @@ export const WebViewer = GObject.registerClass(
         "Url Source",
         "The url of the webkit view",
         GObject.ParamFlags.READWRITE,
-        "https://drawio.fltngmmth.com"
+        "https://fltngmmth.com"
       ),
     },
   },
@@ -44,7 +44,6 @@ export const WebViewer = GObject.registerClass(
         logError(e);
       }
     }
-    _connect(signal, callback) {}
     setAttr() {
       this.orientation = Gtk.Orientation.VERTICAL;
       this.valign = Gtk.Align.BASELINE;

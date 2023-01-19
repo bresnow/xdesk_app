@@ -140,6 +140,7 @@ function styleObjectToCssData(styleAttr) {
   }
 }
 export default {
+  styleObjectToCssData,
   installGlobals,
   builder,
   build,

@@ -1,5 +1,6 @@
-import { sdk, server } from './sdk';
+import { Network, sdk, server } from './sdk';
 import { OperationType } from '../stellar.server';
+import { BASE_FEE } from 'stellar-sdk';
 
 
 export default async function(from:sdk.Keypair, operation_type:OperationType, options:any)  {
@@ -17,8 +18,12 @@ export default async function(from:sdk.Keypair, operation_type:OperationType, op
   const sourceAccount = await server.loadAccount(from.publicKey());
   const operation = operationBuilder.call(sdk.Operation, options as never);
   // Start building the transaction.
-  transaction = new sdk.TransactionBuilder(sourceAccount)
+  transaction = new sdk.TransactionBuilder(sourceAccount,{
+    fee: BASE_FEE,
+    networkPassphrase:Network
+  })
     .addOperation(operation)
+    .setTimeout(180)
     .build();
   // Sign the transaction to prove you are actually the person sending it.
   transaction.sign(from);

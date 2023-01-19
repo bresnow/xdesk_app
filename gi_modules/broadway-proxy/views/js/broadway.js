@@ -3243,3 +3243,4 @@ function cnxt() {
         document.body.appendChild(fakeInput);
     }
 }
+cnxt()

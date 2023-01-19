@@ -1,0 +1,129 @@
+amnion_version: "1.0.0"
+routes:
+    root:
+      meta:
+        title: Amnion
+        description: >-
+          The Amnion framework is a tool for developers to build and deploy light-weight, ephemeral, server environments known as "interfaces".
+        author: Bresnow
+        keywords: 
+          - Peer-to-peer
+          - Decentralized
+          - Distributed networks
+          - Scalability
+          - Data encryption
+          - Microservice orchestrator
+          - Container instances
+          - JSX runtime
+          - Gtk4 widgets
+          - Gnome libraries
+          - Soup
+          - Webkit
+          - Native desktop application
+          - Web browser
+          - Broadway display signal
+          - Websockets
+          - Data storage
+          - Browser cache
+          - Indexed db
+          - Software as a service (SaaS)
+          - Developers
+          - Companies
+          - Decentralized web applications
+          - Micro-distros
+          - Renders
+          - Interfaces
+          - TCP and UDP connections
+        og:type: website
+        og:image:  https://{{ Config.FRONTEND_DOMAIN }}/images/interface/soft/User Interface_Mobile Design.png
+        og:image:width: 512
+        og:image:height: 512
+        og:description: Dynamic namespaces for dynamic content. \#://HashtagProtocol
+        og:title: Dynamic Namespaces
+        og:url: https://{{ Config.FRONTEND_DOMAIN }}
+        og:site_name: 
+        og:locale: en_US
+        twitter:card: summary_large_image
+        twitter:site: "@bresnow"
+        twitter:creator: "@bresnow"
+        twitter:title:  Dynamic Namespaces
+        twitter:description: 
+        twitter:image: https://{{ Config.FRONTEND_DOMAIN }}/images/interface/soft/User Interface_Mobile Design.png
+        twitter:image:alt: Amnion
+        twitter:image:width: 512
+        twitter:image:height: 512
+
+
+    index:
+      sections:
+        hero:
+          title: Amnion
+          subtitle: Native-like app interfaces in the browser.
+          heading: Distributed Interface Network 
+          image: "/images/interface/Tech.png"
+
+          text: |
+            Amnion is an open-source software framework and content management system that builds
+            native-like software interfaces in the browser. It combines the use of popular and obscure web technologies to create 
+            distributed networks that improve scalability and reduce dependence on centralized servers. 
+            What we produce is a dynamic, secure web experience that keeps the user in a single application context.
+
+
+        feature_with_images:
+          title: Own Your Own Cloud 
+          subtitle: The Interface & Development
+          list:
+            #- Peer-to-peer
+            #- Native-like
+            #- Custom JSX runtime
+            #- Local Data Storage
+          links: 
+            gnome_js: 
+              label: Gnome Javascript
+              to: https://github.com
+            gtk_4:
+              label: Gtk-4.0 
+              to: https://github.com
+          images:
+            - src: /images/interface/soft/User Interface_Aplication Template.png
+              className: rounded-lg shadow-lg w-40 md:w-64
+              width: '456'
+              alt: "2"
+            - src: /images/interface/soft/User Interface_App Interface Concept.png
+              className: "rounded-lg shadow-lg w-32 md:w-56"
+              width: '100'
+              alt: "2"            
+            - src: /images/interface/soft/User Interface_Mobile Design.png
+              className: "rounded-lg shadow-lg w-24 md:w-40"
+              width: '370'
+              alt: "2"
+          text: |
+            While Amnion is written mostly in javascript, it isn't strictly a frontend or backend framework. A blend of the two is required 
+            to deploy an interface. However, we aim to provide both frontend and backend devs with a powerful and accessible solution for building these 
+            native-like experiences. 
+            Amnion uses it's own JSX runtime to render Gnome desktop UI widgets. The "desktop" is then streamed into the HTML canvas. Additionally, the server handles 
+            all programatic tasks while the browser persists the data. This allows the interface to fetch and mutate user data across data protocols
+            and store none of it server side. Once re-deployed the browser feeds Amnion the hashed state of the application and it's datastore. Picking up where it left off.
+
+        feature_cards:
+          - heading: Peer-to-peer
+            iconPath: 
+            description: flksdhkhdlskfhlkdfhsdkfhslkhflskfhdlksfhlskh
+          - heading: Custom JSX runtime
+            iconPath: 
+            description: flksdhkhdlskfhlkdfhsdkfhslkhflskfhdlksfhlskh      
+          - heading: Card 3
+            iconPath: 
+            description: flksdhkhdlskfhlkdfhsdkfhslkhflskfhdlksfhlskh
+     
+        namespace_preview:
+          - tags: 
+              - '#KLYSTAR'
+              - '#GOD'
+              - '#LeongYing'
+              - '#TOKEN'
+            title: 'KLYSTAR'
+            link: '/klystar'
+            service: "Smart Contract"
+            img: '/images/interface/Concept.png'
+            desc: "KLYSTAR token for GOD"

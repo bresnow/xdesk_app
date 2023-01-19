@@ -13,6 +13,7 @@ declare global {
         decode(bytes: Uint8Array): string;
     }
     const env: Record<string, string>
+    
     function fetch(url: string | FetchOptions, options?: FetchOptions): Promise<{
         status: number;
         statusText: string;

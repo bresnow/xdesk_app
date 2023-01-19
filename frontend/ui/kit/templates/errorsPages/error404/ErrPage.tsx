@@ -1,6 +1,5 @@
 import React from "react";
 import { Text } from "../../../../";
-import Iframe from "../../../../iframe/Iframe";
 const ErrPage = ({ error }: { error: Error }) => {
   return (
     <main className="bg-white  overflow-hidden h-screen relative">
@@ -8,10 +7,7 @@ const ErrPage = ({ error }: { error: Error }) => {
         <nav className="container mx-auto px-6 md:px-12 py-4">
           <div className="md:flex justify-between items-center">
             <div className="flex justify-between items-center">
-              <Iframe
-                className="h-full w-full flex"
-                url="https://duckduckgo.com"
-              />
+ 
             </div>
             <div className="hidden md:flex md:items-center md:justify-end space-x-4">
               <a

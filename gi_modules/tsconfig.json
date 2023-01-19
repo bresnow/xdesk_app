@@ -40,7 +40,7 @@
             "gi://Atk": [
                 "types/Gjs/Atk-1.0.d.ts"
             ],
-            "gi://Cairo": [
+            "cairo": [
                 "types/Gjs/cairo-1.0.d.ts"
             ],
             "gi://Gdk": [

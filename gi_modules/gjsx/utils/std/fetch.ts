@@ -13,7 +13,7 @@ export default async function fetch(url: string| FetchOptions, options?: FetchOp
   }
 
 const session = new Soup.Session();
-  const method = options?.method || "GET";
+  const method = options?.method.toLocaleUpperCase()|| "GET";
 
   const uri = GLib.Uri.parse(url, GLib.UriFlags.NONE);
 

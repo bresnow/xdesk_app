@@ -1,3 +1,4 @@
+import { TagPreview } from "@ui/kit/components/pagesection/blog/BlogList";
 import "chainlocker"
 import { CallBack } from "chainlocker";
 import type {
@@ -28,6 +29,87 @@ export interface IConfig {
   APPWRITE_PROJECT_ID: string;
     APPWRITE_ENDPOINT: string 
   
+}
+export interface AppData {
+  amnion_version: string;
+  routes: Routes;
+}
+
+export interface Routes {
+  root: Root;
+  index: Index;
+}
+
+export interface Index {
+  sections: Sections;
+}
+
+export interface Sections {
+  hero: Hero;
+  feature_with_images: Featurewithimages;
+  feature_cards: {heading:string, description:string, iconPath:string}[]
+  namespace_preview: TagPreview
+}
+
+export interface Featurewithimages {
+  title: string;
+  subtitle: string;
+  list: string[];
+  links: Links;
+  text: string;
+  images: Image[]
+}
+
+export interface Links {
+  [key:string]: Link;
+}
+export interface Image {
+  src: string;
+  className?:string;
+  width: string;
+  alt: string;
+
+}
+export interface Link {
+  label: string;
+  to: string;
+}
+
+export interface Hero {
+  title: string;
+  subtitle: string;
+  heading: string;
+  image: string;
+  text: string;
+}
+
+export interface Root {
+  meta: Meta;
+}
+
+export interface Meta {
+  title: string;
+  description: string;
+  author: string;
+  keywords: string[];
+  'og:type': string;
+  'og:image': string;
+  'og:image:width': number;
+  'og:image:height': number;
+  'og:description': string;
+  'og:title': string;
+  'og:url': string;
+  'og:site_name'?: any;
+  'og:locale': string;
+  'twitter:card': string;
+  'twitter:site': string;
+  'twitter:creator': string;
+  'twitter:title': string;
+  'twitter:description'?: any;
+  'twitter:image': string;
+  'twitter:image:alt': string;
+  'twitter:image:width': number;
+  'twitter:image:height': number;
 }
 
 export interface LoaderContext {

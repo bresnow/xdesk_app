@@ -1,7 +1,7 @@
 import cn from "clsx";
 import React from "react";
 import type { IconCollection, TextProps } from "../";
-import { Icon, Text } from "../";
+import { SvgIcon, Text } from "../";
 import { Theme } from "../theme";
 
 export type ButtonProps = {
@@ -55,10 +55,10 @@ export const Button = <E extends React.ElementType = typeof DEFAULT_ELEMENT>({
           <span
             className={cn("grid place-items-center", Theme.sizes.square[size])}
           >
-            <Icon name={icon} size={size} />
+            <SvgIcon name={icon} size={size} />
           </span>
         ) : (
-          <Icon name={icon} size={size} />
+          <SvgIcon name={icon} size={size} />
         ))}
       {children && (
         <Text

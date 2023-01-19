@@ -1,0 +1,121 @@
+amnion_version: "1.0.0"
+routes:
+    root:
+      meta:
+        title: Amnion
+        description: >-
+          Dynamically rendered, P2P, secure platform interfaces. Micro-Distros 
+        author: Bresnow
+        keywords: 
+          - cnxt
+          - xdesk
+          - dynamic
+          - namespaces
+          - globalIcon
+          - taglish
+          - hashtag
+          - domains
+          - crypto
+          - floating
+          - mammoth
+          - FLTNGMMTH
+          - Bresnow
+          - development
+          - server
+          - Remix.run
+          - GunDB
+          - gun
+        og:type: website
+        og:image:  https://{{ Config.FRONTEND_DOMAIN }}/images/x_icon.png
+        og:image:width: 512
+        og:image:height: 512
+        og:description: Dynamic namespaces for dynamic content. \#://HashtagProtocol
+        og:title: Dynamic Namespaces
+        og:url: https://{{ Config.FRONTEND_DOMAIN }}
+        og:site_name: 
+        og:locale: en_US
+        twitter:card: summary_large_image
+        twitter:site: "@bresnow"
+        twitter:creator: "@bresnow"
+        twitter:title:  Dynamic Namespaces
+        twitter:description: Dynamic namespaces for dynamic content
+        twitter:image: https://{{ Config.FRONTEND_DOMAIN }}/images/x_icon.png
+        twitter:image:alt: CNXT | Dynamic Namespaces
+        twitter:image:width: 512
+        twitter:image:height: 512
+
+
+    index:
+      header:
+        title: Amnion
+        subtitle: ""
+      heading: CNXT  Dynamic Namespaces
+      profile: /images/AppIcon.svg
+      text: >-
+
+      example_tags:
+        preview: 
+          - KLYSTAR:
+              tags: ["#GOD", "#STARCASH"],
+              title: "#KLYSTAR",
+              link: "/test",
+              service: "#SmartContract",
+              img: "/images/gradient.webp",
+              desc: "Dr. Ying Platform example...",
+      
+          - DRIVE: 
+              tags: ["#DRIVE", "#FILES"],
+              title: "#FILESHARE",
+              link: "/drive",
+              service: "#FileStorage",
+              img: "/images/gradient1.webp",
+              desc: "Google Drive Example",
+    
+             
+      meta_cards:
+        service_delimiters:
+          hash:
+            prefix: "#"
+            service: Information Delimiter
+            description: Point to any information. The default delimiter.
+          at_rate:
+            prefix: "@"
+            service: Identity Delimiter
+            description: >-
+              User profiles, resumes, #eBusinessCards, and namespaces
+              identifying individual personalities.
+          dollar:
+            prefix: "$"
+            service: Finance & Barter Delimiter
+            description: >-
+              Price tickers, ecommerce, cryptocurrency, coupons, etc. The
+              default delimiter for namespaces about money.
+          alert:
+            prefix: "!"
+            service: Alert Delimiter
+            description: >-
+              Messages, notifications, chat, etc... The default delimiter for
+              building namespaces around communication awareness.
+        links:
+          github:
+            id: github-remix.gun
+            link: https://github.com/bresnow/remix.gun/tree/cnxt
+            label: Github
+          twitter:
+            id: github-remix.gun
+            link: https://github.com/bresnow/remix.gun/tree/cnxt
+            label: Github
+
+Executive Summary:
+CNXT is a technology startup that specializes in issuing digital assets using secure web services. We believe that digital assets will play a significant role in the future of finance and commerce, and our goal is to provide a reliable and user-friendly platform for individuals and businesses to issue, manage, and trade digital assets.
+Business Model:
+Our business model is based on generating revenue through transaction fees on the digital assets issued on our platform. We also plan to offer premium services such as customized digital asset issuance and advanced portfolio management tools for a fee.
+Marketing Strategy:
+Our target market will be businesses and individuals who are interested in issuing digital assets for a variety of purposes, such as fundraising, loyalty programs, and digital collectibles. We will market our platform through online advertising, social media, and partnerships with industry leaders. Additionally, we will attend relevant conferences and events to network and showcase our platform.
+Technology:
+We will use blockchain technology to ensure the security and immutability of the digital assets issued on our platform. Our platform will have a user-friendly interface that will allow for easy issuance and management of digital assets. Additionally, we will incorporate web services to ensure that our platform is accessible to a wide range of users.
+Operations:
+Our team will consist of experienced developers and business professionals who will work together to design, develop, and launch our platform. We will also establish partnerships with relevant industry players to enhance the functionality and credibility of our platform.
+Financial Projections:
+We anticipate significant growth in the digital asset market in the coming years and we project that our platform will generate revenue of $10 million in the first year, $25 million in the second year and $50 million by the third year. We are seeking a seed funding of $1 million to cover the cost of development and initial operations.
+In conclusion, CNXT offers a reliable and user-friendly platform for issuing and managing digital assets. We are well-positioned to capitalize on the growing demand for digital assets and with the right funding and team in place, we believe that we can become a leading player in the digital asset space.

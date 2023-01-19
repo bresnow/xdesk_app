@@ -3,41 +3,51 @@ export type IContentEditable = {
   children: React.ReactNode;
   name: string;
   id: string;
-  edit?: boolean | undefined;
-  file?: boolean;
-} & React.HTMLAttributes<HTMLDivElement>;
+  edit?: boolean;
+} & Omit<React.HTMLAttributes<HTMLDivElement>, "contentEditable">;
 
 export const ContentEditable = ({
   children,
   name,
   id,
   edit,
-  file,
   ...props
 }: IContentEditable) => {
   let ref = React.useRef<HTMLDivElement>(null);
   React.useEffect(() => {
     if (ref.current && ref.current instanceof HTMLDivElement) {
       let el = ref.current;
-      let input = document.getElementById(`${name}-${id}`);
-      el.onload = ({ target, type }) => {
+      let input = document.getElementById(name);
+      el.onload = ({ target }) => {
         if (
           target instanceof HTMLDivElement &&
           input instanceof HTMLInputElement
         ) {
-          input.defaultValue = target.innerText;
+          target.innerText = input.defaultValue
+          console.log(input.value + " Loaded CONTENTEDIATBLE")
         }
       };
-      el.oninput = ({ target, type }) => {
+      el.onsubmit = ({ target, type }) => {
+        if (
+          target instanceof HTMLDivElement &&
+          input instanceof HTMLInputElement
+
+        ) {
+          target.innerText = input.value;
+          console.log(input.value + " SUBMITTING CONTENTEDIATBLE")
+        }
+      };
+      el.onchange = ({ target }) => {
         if (
           target instanceof HTMLDivElement &&
           input instanceof HTMLInputElement
         ) {
-          input.value = target.innerText;
+          target.innerText = input.value;
+          console.log(input.value + " CHANGE CONTENTEDIATBLE")
         }
       };
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [children]);
   return (
     <>
@@ -45,11 +55,12 @@ export const ContentEditable = ({
         ref={ref}
         {...props}
         contentEditable={edit}
-        suppressContentEditableWarning={true}
+        suppressContentEditableWarning={edit}
+
       >
         {children}
       </div>
-      <input id={`${name}-${id}`} name={name} type="hidden" />
+      <input id={name} name={name} type="hidden" />
     </>
   );
 };

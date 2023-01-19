@@ -22,7 +22,7 @@ type ReferrerPolicy =
 
 type CrossOrigin = "anonymous" | "use-credentials";
 
-type ScriptDescriptor = {
+export type ScriptDescriptor = {
   async?: boolean;
   crossOrigin?: CrossOrigin;
   defer?: boolean;
@@ -38,14 +38,13 @@ type ScriptDescriptor = {
 
 export type ExternalScriptsFunction = () => ScriptDescriptor[];
 /**
- * The guys at Remix are talented and great. But the scripts that dont fit my use cases or ,like LiveReload, are missinvg that extra Ooomph
  * Here you can add custom scripts and functions to your root route.
  * Optional: safely add sanitized innerHtml if script is a string markup
  * @param opts.manualInjection = In case you want to inject scripts manually instead of from handle
  * @returns Link tags and script tags[]
  */
 export function EnhancedScripts(opts?: {
-  manualInjection: ScriptDescriptor[];
+  manualInjection?: ScriptDescriptor[];
 }) {
   let { manualInjection: manualScripts } = opts || {};
   let matches = useMatches();

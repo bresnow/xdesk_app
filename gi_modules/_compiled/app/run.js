@@ -43,42 +43,25 @@ const BroadwayProxy = GObject.registerClass(
       this.port = this.port++;
     }
     broadwayLaunch() {
-      let _init = launch(["nohup", "gtk4-broadwayd", `--port=${this.port}`]);
-      if (_init.get_exit_status() !== 0) {
+      const _init = launch(["nohup", "gtk4-broadwayd", `--port=${this.port}`]);
+      if (_init.get_exit_status() !== void 0) {
         this.nextPort();
+        print("Getting Next Port" + this.port);
         this.broadwayLaunch();
       }
     }
     use(path, callback) {
       this.add_handler(path, callback);
     }
-    serve(callback) {}
+    serve(callback) {
+      callback();
+    }
   }
 );
-export function runServer() {
-  let server = new Soup.Server();
-  server.add_handler("/broadway.js", (_server, msg, _path, _query) => {
-    msg.set_status(200, null);
-    msg
-      .get_response_headers()
-      .set_content_type("text/javascript", { charset: "UTF-8" });
-    msg.get_response_body().append(broadwayScript);
-  });
-  server.add_handler("/hello", function (_server, msg, path, query) {
-    msg.set_status(200, null);
-    msg
-      .get_response_headers()
-      .set_content_type("text/html", { charset: "UTF-8" });
-    msg.get_response_body().append(indexHtml);
-  });
-  server.listen_local(1060, Soup.ServerListenOptions.IPV4_ONLY);
-  server.connect("request-started", (_server) => {
-    log("Server Request Started");
-    _server.get_uris().forEach((uri) => {
-      print("URI ON REQUEST\n" + uri);
-    });
-  });
-}
+const bw = new BroadwayProxy({});
+bw.serve(() => {
+  print("Starting" + bw.port);
+});
 function get_display_port() {
   return parseInt(env.BROADWAY_DISPLAY.replace(":", "")) + 8080;
 }

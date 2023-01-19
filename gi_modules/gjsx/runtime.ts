@@ -152,7 +152,7 @@ function isPromise(f: any) {
   }
   return true;
 }
-function styleObjectToCssData(styleAttr: Record<string, string>) {
+ function styleObjectToCssData(styleAttr: Record<string, string>) {
   if (typeof styleAttr === "object") {
     return Object.entries(styleAttr).reduce((acc, curr) => {
       let [key, value] = curr;
@@ -172,7 +172,7 @@ type WidgetConstructed = {
   attributes: Record<string, any>;
   children: WidgetConstructed[];
 };
-export default { installGlobals, builder, build, getObject, useBuilder, render, createWidget, isConstructor, templateRender, ...Utils };
+export default { styleObjectToCssData, installGlobals, builder, build, getObject, useBuilder, render, createWidget, isConstructor, templateRender, ...Utils };
 
 
 

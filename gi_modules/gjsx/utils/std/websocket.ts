@@ -28,7 +28,9 @@ export default class WebSocket {
 
         if (typeof protocols === "string") protocols = [protocols];
 
-        this._connect(protocols);
+        this._connect(protocols)
+        .then(()=>log("WebSocket connected"))
+        .catch((err)=> log(err));
     }
 
     get protocol() {
@@ -109,7 +111,7 @@ export default class WebSocket {
         this.emit("open");
     }
     emit(arg0: string) {
-        throw new Error("Method not implemented.");
+        throw new Error(arg0 + " Method not implemented.");
     }
 
     _onmessage(message: any) {

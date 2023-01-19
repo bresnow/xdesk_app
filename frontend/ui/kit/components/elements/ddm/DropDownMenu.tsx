@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 
 export interface DropDownMenu_Props {
-  //boolean to always open ddm (for presentation)
   forceOpen?: boolean;
   label?: string;
   withDivider?: boolean;
@@ -25,7 +24,7 @@ const DropDownMenu = (props: DropDownMenu_Props) => {
         <button
           type="button"
           onClick={() => setIsOpen(!isOpen)}
-          className={` ${
+          className={`${
             props.withBackground
               ? "border border-gray-300 bg-white dark:bg-gray-800 shadow-sm"
               : ""
@@ -46,7 +45,6 @@ const DropDownMenu = (props: DropDownMenu_Props) => {
             </svg>
           )}
         </button>
-      </div>
 
       {(props.forceOpen || isOpen) && (
         <div className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5">
@@ -60,9 +58,8 @@ const DropDownMenu = (props: DropDownMenu_Props) => {
           >
             {props.items.map((item) => {
               return (
-                <a
+                <div
                   key={item.label}
-                  href={item.link || "#"}
                   className={`${
                     item.icon ? "flex items-center" : "block"
                   } block px-4 py-2 text-md text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-100 dark:hover:text-white dark:hover:bg-gray-600`}
@@ -76,13 +73,14 @@ const DropDownMenu = (props: DropDownMenu_Props) => {
                       <span className="text-gray-400 text-xs">{item.desc}</span>
                     )}
                   </span>
-                </a>
+                </div>
               );
             })}
           </div>
         </div>
       )}
     </div>
+      </div>
   );
 };
 export default DropDownMenu;

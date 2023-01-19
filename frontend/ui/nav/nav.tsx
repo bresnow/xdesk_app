@@ -5,7 +5,7 @@ import React from "react";
 
 import type { IconCollection } from "../";
 import { HashtagLarge, PencilIcon, useUser } from "../";
-import { ContentForm, Button, Icon, Dialog } from "../";
+import { ContentForm, Button, SvgIcon, Dialog } from "../";
 
 export const NavList = () => {
   const user = useUser();

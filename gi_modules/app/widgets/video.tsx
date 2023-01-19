@@ -5,7 +5,6 @@ import Webkit from "gi://WebKit2?version=5.0";
 import Gio from "gi://Gio";
 import GLib from "gi://GLib";
 
-
 export const Video = GObject.registerClass(
   { GTypeName: "Video" },
   class extends Gtk.Box {
@@ -23,7 +22,7 @@ export const Video = GObject.registerClass(
       try {
         button = new Gtk.Button({ label: "Push for Video" });
         let lonelyShades = Gio.File.new_for_path(
-        "/gjsx/gi_modules/assets/video/shades.webm"
+          "/gjsx/gi_modules/assets/video/shades.webm"
         );
         let video = Gtk.Video.new_for_file(lonelyShades);
         video.set_autoplay(true);

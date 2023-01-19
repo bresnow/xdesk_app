@@ -2,7 +2,6 @@ import Gtk from "gi://Gtk?version=4.0";
 import GObject from "gi://GObject";
 import Webkit from "gi://WebKit2?version=5.0";
 import GLib from "gi://GLib";
-
 const { string } = GObject.ParamSpec
 export const WebViewer = GObject.registerClass(
   {
@@ -12,7 +11,7 @@ export const WebViewer = GObject.registerClass(
         'Url Source',                  // nickname
         'The url of the webkit view',   // description
         GObject.ParamFlags.READWRITE,       // READABLE/READWRITE/CONSTRUCT/etc
-        'https://drawio.fltngmmth.com'  // default value if omitting getter/setter
+        'https://fltngmmth.com'  // default value if omitting getter/setter
       )
     }
   },
@@ -23,7 +22,7 @@ export const WebViewer = GObject.registerClass(
       super(opts);
       this.url = opts?.url ?? "https://drawio.fltngmmth.com";
       this.build()
-    };
+    }
 
     set _url(url: string) {
       this.url = url;
@@ -48,9 +47,6 @@ export const WebViewer = GObject.registerClass(
       } catch (e) {
         logError(e);
       }
-    };
-    _connect(signal:string, callback:(_self: Webkit.WebView, ...args: any[]) => void){
-
     }
     setAttr() {
       this.orientation = Gtk.Orientation.VERTICAL;
@@ -59,6 +55,6 @@ export const WebViewer = GObject.registerClass(
       this.homogeneous = true;
       this.margin_start = 18;
       this.spacing = 10;
-    };
+    }
   }
 );

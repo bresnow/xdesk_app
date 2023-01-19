@@ -19,8 +19,8 @@ ACCOUNTS=[
 [DOCUMENTATION]
 ORG_NAME="Organization Name"
 ORG_DBA="Organization DBA"
-ORG_URL="https://www.domain.com"
-ORG_LOGO="https://www.domain.com/awesomelogo.png"
+ORG_URL="https://${Config.FRONTEND_DOMAIN}/"
+ORG_LOGO="https://${Config.FRONTEND_DOMAIN}/logo.png"
 ORG_DESCRIPTION="Description of issuer"
 ORG_PHYSICAL_ADDRESS="123 Sesame Street, New York, NY 12345, United States"
 ORG_PHYSICAL_ADDRESS_ATTESTATION="https://www.domain.com/address_attestation.jpg"
@@ -115,7 +115,7 @@ export function Toml(
 
   let headers = new Headers(responseInit.headers);
   if (!headers.has("Content-Type")) {
-    headers.set("Content-Type", "text/toml; charset=utf-8");
+    headers.set("Content-Type", "text/plain; charset=utf-8");
   }
 
   return new Response(content, {

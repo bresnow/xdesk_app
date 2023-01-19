@@ -10,9 +10,7 @@ export const CreateForm = () => {
     return (
         <div className='mt-10 font-sans antialiased bg-gradient-to-tr from-red-600  via-white to-transparent text-gray-900 leading-normal tracking-wider bg-cover'>
             <div className='p-5 font-sans antialiased bg-gradient-to-l from-transparent via-white to-blue-500 text-gray-900 leading-normal tracking-wider bg-cover'>
-                {' '}
                 <div className='p-5 font-sans antialiased bg-gradient-to-br from-slate-900 via-transparent to-red-600 text-gray-900 leading-normal tracking-wider bg-cover'>
-                    {/* <!-- Create --> */}
                     <section className='relative py-24'>
                         <picture className='pointer-events-none absolute inset-0 -z-10 dark:hidden'>
                             <img
@@ -52,7 +50,6 @@ export const CreateForm = () => {
                                             </svg>
                                             <p className='dark:text-jacarta-300 mx-auto max-w-xs text-xs'>
                                                 JPG, PNG, GIF, SVG, WEBP Max size: 100 MB
-                                                {/* MP4, WEBM, MP3, WAV, OGG, GLB, GLTF. */}
                                             </p>
                                         </div>
                                         <div className='absolute inset-4 cursor-pointer rounded opacity-0 group-hover:opacity-100'></div>

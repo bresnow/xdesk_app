@@ -15,5 +15,5 @@ export default function (tx: string) {
   const restored = new sdk.Transaction(tx, Network);
 
   restored.sign(keypair);
-  return server.submitTransaction(restored);
+  return  server.submitTransaction(restored);
 }

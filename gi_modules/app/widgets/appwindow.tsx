@@ -17,7 +17,7 @@ class Window extends Gtk.ApplicationWindow {
     this.set_decorated(false);
     this.maximize();
   }
-};
+}
 
 export const AppWindow = GObject.registerClass(
   { GTypeName: "AppWindow" },

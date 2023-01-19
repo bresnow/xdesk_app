@@ -56,7 +56,6 @@ app.use(
   })
 );
 app.use(express.static(publicPath, { maxAge: "5m" }));
-
 if (Config.env.NODE_ENV === "development") {
   app.all("*", async (req, res, next) => {
     try {
@@ -93,7 +92,7 @@ if (!fs.existsSync(radataDir)) {
   fs.mkdirpSync(radataDir);
 }
 const peer = `https://${Config.env.PEER_SOCKET_DOMAIN}/gun`
-console.log("PEER_SOCKET_", peer)
+
 const gun = Gun({
   peers: [peer],
   file: radataDir,
@@ -107,14 +106,6 @@ function purgeRequireCache(path) {
 
 const SECRET_KEY_ARRAY = Object.keys(Config.env);
 // this is a module I built that keeps the keypair in the vault context to encrypt and compress data to utf16 characters. Object values are almost 50% smaller
-await import("chainlocker");
-const { data } = Config;
-gun.keys(SECRET_KEY_ARRAY, (MasterKeyPair) => {
-  gun.vault(Config.env.ISSUER_ID, MasterKeyPair);
-  let locker = gun.locker([MasterKeyPair.pub]);
-  locker.put(data);
-});
-
 function getLoadContext() {
   return async function () {
     const MasterKeys = await gun.keys(SECRET_KEY_ARRAY)
