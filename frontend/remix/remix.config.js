@@ -3,7 +3,7 @@
 
 let config = {
   serverModuleFormat: "esm",
-serverDependenciesToBundle: [/^chainlocker/, /^dockerode/, /^appwrite*/],
+  serverDependenciesToBundle: [/^chainlocker/, /^dockerode/, /^appwrite*/, /^node-appwrite/],
   ignoredRouteFiles: ["**/.*", "./app/routes/files/**/*"],
   devServerPort: 8002,
   appDirectory: "app",

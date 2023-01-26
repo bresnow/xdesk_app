@@ -49,7 +49,7 @@ export const ContentForm = ({ title, action, method, button, inputs, onSubmit, h
   );
 };
 
-const ContractInput = ({ dropdown, header, description, edit, value, ...props }: ContractInput_ConstructOptions) => {
+export const ContractInput = ({ dropdown, header, description, edit, value, ...props }: ContractInput_ConstructOptions) => {
   return (
     <>
       <div>
@@ -67,10 +67,11 @@ const ContractInput = ({ dropdown, header, description, edit, value, ...props }:
       {  dropdown && <DropDownMenu {...dropdown} />}
       </div>
       {!dropdown && <ContentEditable
-        className={props.className ?? `border border-slate-800 rounded-xl p-1 border-1 focus:outline-none`}
+        className={props.className ?? `border border-slate-800 rounded-xl p-1 ${edit?"border-1" : "border-none"}focus:outline-none`}
+        edit={edit}
         {...props}
       >
-      <Text> {value}</Text>
+      {value}
       </ContentEditable>}
     </>
 

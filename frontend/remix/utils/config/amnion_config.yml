@@ -58,15 +58,21 @@ routes:
       sections:
         hero:
           title: Amnion
-          subtitle: Native-like app interfaces in the browser.
+          subtitle: Dynamic Application Interfaces
           heading: Distributed Interface Network 
-          image: "/images/interface/Tech.png"
+          images: 
+            foreground: 
+              src: "https://pixabay.com/get/gb9f5e0366b38e5204827a0aca1e0e55fba2a35ad797b57724384d05d0f37741858fd24036c17479a037d4bb01cc6d1af58836ecde2fe0e8e1df8294024209a0132cfea1f7d2bfd124bd58ba015ca8204_1920.jpg"
+            background:
+              src: /images/tech-generic-bg.svg
 
           text: |
-            Amnion is an open-source software framework and content management system that builds
-            native-like software interfaces in the browser. It combines the use of popular and obscure web technologies to create 
-            distributed networks that improve scalability and reduce dependence on centralized servers. 
-            What we produce is a dynamic, secure web experience that keeps the user in a single application context.
+            Amnion is an open-source software framework and content management system that builds a
+            native-like user experience in the browser. It uses the power of distributed networks and
+            "smart contracts" that ultimately take application data and use it as a tradeable asset.
+
+             
+      
 
 
         feature_with_images:
@@ -127,3 +133,22 @@ routes:
             service: "Smart Contract"
             img: '/images/interface/Concept.png'
             desc: "KLYSTAR token for GOD"
+        features_with_cards:
+          subtitle: Platform As An Asset
+          title: What We Do
+          text: |
+            Amnion is an open-source software framework and content management system that builds
+            native-like software interfaces in the browser.
+          cards: 
+           - icon: home
+             heading: Smart Contracts
+             link: /namespace
+             blurb:
+           - icon: user
+             heading: Smart Contracts
+             link: /builder/SmartContract/%23
+             blurb:             
+           - icon: home
+             heading: Smart Contracts
+             link: /namespace
+             blurb:

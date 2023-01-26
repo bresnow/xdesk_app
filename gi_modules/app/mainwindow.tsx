@@ -11,10 +11,12 @@ import cnxtLogo from "../assets/images/cnxt.png";
 //@ts-expect-error
 import bdsLogo from "../assets/images/bds-mark.png";
 import { WebViewer } from "./widgets/webviewer.js";
-import GObject from "gi://GObject";
+
 import { StackSwitch } from "./widgets/stackswitch.js";
+import GObject from "gi://GObject";
+import { WebSocket } from "./http/websocketserver.js";
 const Pango = imports.gi.Pango;
-const { styleObjectToCssData } = Gjsx;
+const { styleObjectToCssData, build, builder } = Gjsx;
 export const TextView = GObject.registerClass(
   {},
   class extends Gtk.Box {
@@ -66,11 +68,14 @@ export const TextView = GObject.registerClass(
         textbuffer.set_text(markup, markup.length);
       });
       radio_justifycenter.connect("clicked", async (_self) => {
-        const response = await fetch(
-          `https://api.c99.nl/randomperson?key=${env.C99_API_KEY}&gender=all&json`
-        );
-        const markup = JSON.stringify(await response.json(), null, 2);
-        textbuffer.set_text(markup, markup.length);
+        // let sock = new WebSocket(`ws://0.0.0.0:${env.PEER_SOCKET_PORT}/amnion`, ['socket'])
+        // sock.onopen = () => {
+        //   log("radio justified Socket opened")
+        // }
+        // sock.onmessage = (msg) => {
+        //   const markup = JSON.stringify(msg, null, 2);
+        //   textbuffer.set_text(markup, markup.length);
+        // }
       });
       radio_justifyright.connect("clicked", async (_self) => {
         const response = await fetch(
@@ -135,67 +140,18 @@ export const TextView = GObject.registerClass(
     }
   }
 );
+let stylo = {
+  padding: "15px",
+  background: "rgba(0, 0, 50, 0.8)",
+  color: "#fff",
+};
+
 export function MainWindow({ app }: { app: Gtk.Application }) {
-  const panel = [
-    {
-      name: "Bresnow Logo",
-      icon_path: bdsLogo,
-      clickHandler(_button: Gtk.Button): void {
-        genericClick(_button.get_parent(), "https://drawio.fltngmmth.com");
-      },
-    },
-    {
-      name: "CNXT",
-      icon_path: cnxtLogo,
-      clickHandler(_button: Gtk.Button) {
-        genericClick(
-          _button.get_parent(),
-          "http://stellar_quickstart_ephemeral:8000"
-        );
-      },
-    },
-    {
-      name: "Paid Media",
-      icon_path: paidlogo,
-      clickHandler: paidClick,
-    },
-  ];
   return (
     <AppWindow application={app}>
-      <BoxContainer
-        style={{
-          padding: "15px",
-          background: "rgba(0, 0, 50, 0.8)",
-          color: "#fff",
-        }}
-      >
-        <Gtk.Separator
-          style={{ margin: "30px" }}
-          orientation={Gtk.Orientation.VERTICAL}
-        />
-        <HeadLayout services={panel} />
-        <StackSwitch />
-        {/* <TextView>
-          <HeadLayout services={panel} />
-        </TextView> */}
+      <BoxContainer style={stylo}>
+        <TextView />
       </BoxContainer>
     </AppWindow>
   );
-}
-
-function paidClick(_button: Gtk.Button) {
-  const parent = _button.get_parent();
-  genericClick(parent, "http://front_dev:3333");
-}
-
-function genericClick(parent: Gtk.Widget, url: string) {
-  var box = new Gtk.Box();
-  let scroll = new Gtk.ScrolledWindow();
-  box.set_orientation(Gtk.Orientation.VERTICAL);
-  scroll.set_child(new WebViewer({ url }));
-  box.set_hexpand(true);
-  box.set_vexpand(true);
-  box.append(scroll);
-  scroll.show();
-  box.set_parent(parent);
 }

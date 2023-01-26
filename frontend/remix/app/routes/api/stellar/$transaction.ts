@@ -13,7 +13,7 @@ export async function action({ request, params }: ActionArgs) {
     };
     // Transaction will hold a built transaction we can resubmit if the result is unknown.
 
-    let {_submit,...options} = await FormEntry(request)
+    let {_submit,...options} = await FormEntry(request) ?? await request.json()
  
     let sourceAccount = await stellarServer.loadAccount(issuerKeys.publicKey())
     const op = operationBuilder(options as never)

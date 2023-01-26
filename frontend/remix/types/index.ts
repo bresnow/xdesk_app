@@ -1,6 +1,8 @@
 import { TagPreview } from "@ui/kit/components/pagesection/blog/BlogList";
 import "chainlocker"
 import { CallBack } from "chainlocker";
+import { icons } from '@ui/icon/icon.collection';
+
 import type {
   IGunInstance,
   IGun,
@@ -20,15 +22,16 @@ export interface IConfig {
   HORIZON_URL: string | "https://horizon-testnet.stellar.org";
   NETWORK_PASSPHRASE: "Public Global Stellar Network ; September 2015" | "Test SDF Network ; September 2015";
   WITHDRAW_ENDPOINT: string | undefined;
-  NODE_ENV: "production" | "development"| "test";
+  NODE_ENV: "production" | "development" | "test";
   PEER_SOCKET_DOMAIN: string | undefined;
+  RELAY_DOMAIN?: string | undefined;
   FRONTEND_DOMAIN: string | undefined;
   INTERFACE_DOMAIN: string | undefined;
   RADATA_PATH: string | undefined;
   ANCHORUSD_ISSUER: "GDUKMGUGDZQK6YHYA5Z6AY2G4XDSZPSZ3SW5UN3ARVMO6QSRDWP5YLEX" | "GCKFBEIYV2U22IO2BJ4KVJOIP7XPWQGQFKKWXR6DOSJBV7STMAQSMTGG"
   APPWRITE_PROJECT_ID: string;
-    APPWRITE_ENDPOINT: string 
-  
+  APPWRITE_ENDPOINT: string
+
 }
 export interface AppData {
   amnion_version: string;
@@ -41,14 +44,16 @@ export interface Routes {
 }
 
 export interface Index {
+  meta: Meta;
   sections: Sections;
 }
 
 export interface Sections {
   hero: Hero;
   feature_with_images: Featurewithimages;
-  feature_cards: {heading:string, description:string, iconPath:string}[]
+  feature_cards: { heading: string, description: string, iconPath: string }[]
   namespace_preview: TagPreview
+  features_with_cards: { subtitle: string; title: string; text: string; cards: { icon: keyof typeof icons;heading:string; link:string; blurb:string}[]}
 }
 
 export interface Featurewithimages {
@@ -61,13 +66,13 @@ export interface Featurewithimages {
 }
 
 export interface Links {
-  [key:string]: Link;
+  [key: string]: Link;
 }
 export interface Image {
   src: string;
-  className?:string;
-  width: string;
-  alt: string;
+  className?: string;
+  alt?: string;
+  style?:  React.CSSProperties 
 
 }
 export interface Link {
@@ -79,7 +84,7 @@ export interface Hero {
   title: string;
   subtitle: string;
   heading: string;
-  image: string;
+  images: { background: Image; foreground: Image };
   text: string;
 }
 

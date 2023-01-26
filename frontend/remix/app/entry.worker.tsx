@@ -3,6 +3,7 @@
 import { json } from '@remix-run/server-runtime';
 import { isResponse } from '@remix-run/server-runtime/dist/responses';
 import debug from '@utils/debug';
+import WebSocket from 'ws';
 let { log, error } = debug({ dev: true });
 export type {};
 declare let self: ServiceWorkerGlobalScope;
@@ -202,3 +203,4 @@ async function appHandleFetch(
 ): Promise<Response> {
   return isResponse(response) ? response : json(error, { status: 500 });
 }
+

@@ -5,7 +5,8 @@ import GLib from "gi://GLib";
 import Soup from "gi://Soup?version=3.0"
 import { MainWindow } from "./mainwindow.js";
 
-import { WebSocketServer } from './http/websocketserver.js';
+import { WebSocketServer, WebSocket } from './http/websocketserver.js';
+import GObject from 'gi://GObject';
 
 Gjsx.installGlobals()
 const { encode } = Gjsx
@@ -20,18 +21,15 @@ app.connect("activate", () => {
   if (
     dname === "Broadway" ||
     dname.toLowerCase() === env["GDK_BACKEND"]
-  ) {
-    Gjsx.render(<MainWindow app={app}  />);
+    ) {
+
+    Gjsx.render(<MainWindow app={app} />);
     log("Broadway Proxy Initiated For Application");
   } else {
     throw new Error(`The ${dname} display backend is not supported`);
   }
 });
 
-let wss = new WebSocketServer(8089)
-wss.passMsgData = (type, data) => {
-  log(`Received MESSAGE: ${type} ` + JSON.stringify(data, null, 2) )
-}
-wss.startListening()
+
 // Mainloop
 app.run([]);

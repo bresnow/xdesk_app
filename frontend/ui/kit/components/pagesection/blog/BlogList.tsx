@@ -38,7 +38,7 @@ const NameSpacePreviewMap = (props: Props) => {
               <NameSpaceCard
                 key={s?.title}
                 tags={s?.tags}
-                link={s?.link}
+                link={`/resource/redirect?path=${s?.link}`}
                 title={s?.title}
                 service={s?.service}
                 img={s?.img}

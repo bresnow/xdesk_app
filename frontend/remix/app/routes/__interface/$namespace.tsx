@@ -2,6 +2,7 @@ import { ScriptDescriptor } from "~/components/external-scripts";
 import { DataFunctionArgs, json } from "@remix-run/server-runtime";
 import React from "react";
 import { useLoaderData } from "@remix-run/react";
+
 import { Config } from "@utils/config";
 export interface NamespaceLoaderOptions {
   amnion: AmnionInterface;
@@ -21,13 +22,14 @@ export type AmnionInterface = {
   };
 };
 export const loader = async ({ params }: DataFunctionArgs) => {
-  let peer = Config.PEER_SOCKET_DOMAIN,
+  let peer = Config.RELAY_DOMAIN?? 'amnion-relay.fltngmmth.com',
     interfaceUrl = Config.INTERFACE_DOMAIN;
+
   return json<NamespaceLoaderOptions>({
     amnion: {
       namespace: `${params.namespace}`,
       websocket: {
-        url: `wss://namespace.fltngmmth.com/socket`,
+        url: `wss://${interfaceUrl}/socket`,
       },
       listeners: {
         close: {
@@ -58,12 +60,9 @@ export default function AmnionInterface() {
       console.log("silent alert: " + text);
       return true;
     };
-    const gun = Gun({
-      peer: [amnion.peer.url, window.location.origin + "/gun"],
-      localStorage: false,
-    });
-    gun.get("test/connection").on((data) => console.log(data));
     var url = window.location.toString();
+    var {origin} = window.location;
+    
     var query_string = url.split("?");
     if (query_string.length > 1) {
       var params = query_string[1].split("&");
@@ -78,7 +77,7 @@ export default function AmnionInterface() {
 
     var loc = amnion.websocket.url;
 
-    var ws = new WebSocket(loc, "broadway");
+    var ws = new WebSocket(loc, ["broadway"]);
     ws.binaryType = "arraybuffer";
     if (ws.OPEN) {
       console.log("OPEN", ws.OPEN);
@@ -104,6 +103,8 @@ export default function AmnionInterface() {
     ws.onerror = function (e) {
       console.error("WS ERROR", e);
     };
+
+
     var iOS = /(iPad|iPhone|iPod)/g.test(navigator.userAgent);
     if (iOS) {
       fakeInput = document.createElement("input");

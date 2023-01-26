@@ -135,7 +135,7 @@ export let loader: LoaderFunction = ({ params }) => {
 // }
 
 export default function ContractRoute() {
-  var { button, action, title, inputs, hidden } =
+  var { button, action, title, inputs } =
     useLoaderData<Asset_Issuer_Route>();
   React.useEffect(() => {});
 

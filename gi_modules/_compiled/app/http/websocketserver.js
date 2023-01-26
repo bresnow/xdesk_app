@@ -1,10 +1,120 @@
 import GObject from "gi://GObject";
 import Soup from "gi://Soup?version=3.0";
-const { boolean, double, jsobject } = GObject.ParamSpec;
-const { READWRITE } = GObject.ParamFlags;
+import GLib from "gi://GLib";
+const { boolean, double, string } = GObject.ParamSpec;
+const { READWRITE, READABLE } = GObject.ParamFlags;
+export const WebSocket = GObject.registerClass(
+  {
+    GTypeName: "WebSocket",
+    Properties: {
+      url: string("url", "url", "URL to connect to WebSocket", READWRITE, ""),
+      readyState: double(
+        "readyState",
+        "readyState",
+        "Ready State",
+        READABLE,
+        0,
+        3,
+        0
+      ),
+    },
+  },
+  class extends GObject.Object {
+    url;
+    readyState;
+    _connection;
+    onopen;
+    onmessage;
+    onerror;
+    onclose;
+    constructor(url, protocols) {
+      super();
+      const uri = GLib.Uri.parse(url, GLib.UriFlags.NONE);
+      this.url = uri.to_string();
+      this.readyState = 0;
+      if (typeof protocols === "string") {
+        protocols = [protocols];
+      }
+      const session = new Soup.Session();
+      const message = new Soup.Message({
+        method: "GET",
+        uri,
+      });
+      try {
+        session.websocket_connect_async(
+          message,
+          this.url,
+          protocols,
+          null,
+          null,
+          (_self, resp) => {
+            let connection = session.websocket_connect_finish(resp);
+            this._connect(connection);
+          }
+        );
+      } catch (error) {
+        this._onerror(error);
+      }
+    }
+    _connect(connection) {
+      this._connection = connection;
+      this._onopen();
+      connection.connect("closed", () => {
+        this._onclose();
+      });
+      connection.connect("error", (self, err) => {
+        this._onerror(err);
+      });
+      connection.connect("message", (self, type, message) => {
+        if (type === Soup.WebsocketDataType.TEXT) {
+          const data = new TextDecoder().decode(message.unref_to_array());
+          this._onmessage(data);
+        } else {
+          this._onmessage(message);
+        }
+      });
+    }
+    send(data) {
+      if (typeof data === "string") {
+        this._connection.send_message(
+          Soup.WebsocketDataType.TEXT,
+          new GLib.Bytes(new TextEncoder().encode(data))
+        );
+      } else {
+        this._connection.send_message(Soup.WebsocketDataType.BINARY, data);
+      }
+    }
+    close() {
+      this.readyState = 2;
+      this._connection.close(Soup.WebsocketCloseCode.NORMAL, null);
+    }
+    _onopen() {
+      this.readyState = 1;
+      if (typeof this.onopen === "function") {
+        this.onopen();
+      }
+    }
+    _onmessage(data) {
+      if (typeof this.onmessage === "function") {
+        this.onmessage(data);
+      }
+    }
+    _onclose() {
+      this.readyState = 3;
+      if (typeof this.onclose === "function") {
+        this.onclose();
+      }
+    }
+    _onerror(err) {
+      if (typeof this.onerror === "function") {
+        this.onerror(err);
+      }
+    }
+  }
+);
 export const WebSocketServer = GObject.registerClass(
   {
-    GTypeName: "SocketServer",
+    GTypeName: "WebSocketServer",
     Properties: {
       isListening: boolean(
         "isListening",
@@ -38,6 +148,12 @@ export const WebSocketServer = GObject.registerClass(
       if (this.isListening || !this.port) return;
       let isListening = false;
       this.add_handler("/", this._onDefaultAccess.bind(this));
+      this.add_websocket_handler(
+        "/socket",
+        null,
+        null,
+        this._onWsConnection.bind(this)
+      );
       this.add_websocket_handler(
         "/amnion",
         null,
@@ -82,6 +198,7 @@ export const WebSocketServer = GObject.registerClass(
         connection.close(Soup.WebsocketCloseCode.NORMAL, null);
       }
       this.remove_handler("/amnion");
+      this.remove_handler("/socket");
       this.remove_handler("/");
     }
     _onWsConnection(server, msg, path, connection) {
@@ -100,12 +217,22 @@ export const WebSocketServer = GObject.registerClass(
       this.wsConns = this.wsConns.filter((conn) => conn !== connection);
       log(`remaining WebSocket connections: ${this.wsConns.length}`);
     }
-    _onDefaultAccess(server, msg) {
-      msg.status_code = 404;
+    _onDefaultAccess(server, msg, path, query) {
+      msg.set_status(200, null);
+      msg
+        .get_response_headers()
+        .set_content_type("text/html", { charset: "UTF-8" });
+      msg.get_response_body().append(`
+<html>
+<body>
+Greetings, visitor... This is the namespace network point for ${msg.get_remote_host()}<br>
+</body>
+</html>
+`);
     }
   }
 );
-function parseData(dataType, bytes) {
+export function parseData(dataType, bytes) {
   if (dataType !== Soup.WebsocketDataType.TEXT) {
     log("ignoring non-text WebSocket message");
     return [false];

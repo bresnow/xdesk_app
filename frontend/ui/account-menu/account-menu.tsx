@@ -1,7 +1,7 @@
 import { useMatches, useLocation } from "@remix-run/react";
 import * as AriaKit from "ariakit";
-import { ContentEditable } from "../editable";
-import { SvgIcon, Avatar, Text, ProfilePic } from "../";
+import {  Avatar, Text } from "../";
+import IconSvg from "@ui/svg/logos/SvgIcon";
 export function useUser<UserData>() {
   const matches = useMatches();
   const match = matches
@@ -43,7 +43,7 @@ export const AccountMenu = () => {
               {user?.username ?? `@bresnow`}
             </Text>
           </div>
-          <SvgIcon name="dots" size="md" />
+          <IconSvg path="" size="md" />
         </div>
       </AriaKit.PopoverDisclosure>
       <AriaKit.Popover state={popover}>

@@ -14,41 +14,13 @@ export const ContentEditable = ({
   ...props
 }: IContentEditable) => {
   let ref = React.useRef<HTMLDivElement>(null);
+  let [value, setValue] = React.useState('')
   React.useEffect(() => {
     if (ref.current && ref.current instanceof HTMLDivElement) {
       let el = ref.current;
-      let input = document.getElementById(name);
-      el.onload = ({ target }) => {
-        if (
-          target instanceof HTMLDivElement &&
-          input instanceof HTMLInputElement
-        ) {
-          target.innerText = input.defaultValue
-          console.log(input.value + " Loaded CONTENTEDIATBLE")
-        }
-      };
-      el.onsubmit = ({ target, type }) => {
-        if (
-          target instanceof HTMLDivElement &&
-          input instanceof HTMLInputElement
-
-        ) {
-          target.innerText = input.value;
-          console.log(input.value + " SUBMITTING CONTENTEDIATBLE")
-        }
-      };
-      el.onchange = ({ target }) => {
-        if (
-          target instanceof HTMLDivElement &&
-          input instanceof HTMLInputElement
-        ) {
-          target.innerText = input.value;
-          console.log(input.value + " CHANGE CONTENTEDIATBLE")
-        }
-      };
+      setValue(el.innerText)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [children]);
+  }, [children, ref]);
   return (
     <>
       <div
@@ -60,7 +32,7 @@ export const ContentEditable = ({
       >
         {children}
       </div>
-      <input id={name} name={name} type="hidden" />
+      <input id={name} name={name} value={value} type="hidden" />
     </>
   );
 };

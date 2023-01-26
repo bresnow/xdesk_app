@@ -1,4 +1,5 @@
 import { useMatches } from "@remix-run/react"
+import React from "react";
 /**
  * 
  * @param id  Route Id or default to root
@@ -6,17 +7,16 @@ import { useMatches } from "@remix-run/react"
  * @returns Route data 
  */
 export function useRouteData<Type>(id?: string, opts?: { handleFallback: boolean }) {
-    let matches = useMatches()
+
     let _id = id ?? "root";
-    // search route loader first if ! then use the route handle
-    let match = matches.find((match, i) => {
-        if (match.id === _id) {
-            return match
-        }
-    })
-    let data = match?.data;
-    if (data === undefined && opts?.handleFallback && match?.handle !== undefined) {
-        data = match?.handle
+    const matchingRoutes = useMatches();
+    const route = React.useMemo(
+        () => matchingRoutes.find((route) => route.id === _id),
+        [matchingRoutes, _id]
+    );
+    let data = route?.data;
+    if (data === undefined && opts?.handleFallback && route?.handle !== undefined) {
+        data = route?.handle
     }
     return data as Type
 }

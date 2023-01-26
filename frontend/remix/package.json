@@ -38,6 +38,7 @@
         "jsesc": "^3.0.2",
         "lz-string": "^1.4.4",
         "morgan": "^1.10.0",
+        "node-appwrite": "^8.2.0",
         "prismjs": "^1.27.0",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
@@ -48,6 +49,7 @@
         "stellar-sdk": "^10.4.1",
         "stripe": "^11.5.0",
         "super-expressive": "^1.4.1",
+        "websocket": "^1.0.34",
         "zod": "^3.18.0",
         "zod-form-data": "^1.2.1"
     },
@@ -61,6 +63,7 @@
         "@types/prismjs": "^1.26.0",
         "@types/react": "^18.0.14",
         "@types/react-dom": "^18.0.5",
+        "@types/websocket": "^1.0.5",
         "@types/ws": "^8.5.4",
         "concurrently": "^7.3.0",
         "cross-env": "^7.0.3",

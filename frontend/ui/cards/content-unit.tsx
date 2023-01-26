@@ -1,8 +1,7 @@
 import { Link, useFetcher } from "@remix-run/react";
-import React from "react";
-import { Avatar, Button, Text } from "../";
+import { Avatar, Button, Text } from "..";
 
-export const Tweet = ({ tweet }: { tweet: any }) => {
+export const ContentUnit = ({  unit }: { unit: any }) => {
   const user = { username: "bresnow", name: "Bresnow" };
   const fetcher = useFetcher();
 
@@ -14,10 +13,10 @@ export const Tweet = ({ tweet }: { tweet: any }) => {
       <div className="flex gap-[14px]">
         {/* Left */}
         <div className="flex-none">
-          <Link to={`/${tweet.user.username}`}>
+          <Link to={`/${unit.user.path}`}>
             <Avatar
-              src={tweet.user.avatarUrl}
-              alt={tweet.user.username}
+              src={unit.user.brandUrl}
+              alt={unit.user.name}
               size="xs"
             />
           </Link>
@@ -26,11 +25,11 @@ export const Tweet = ({ tweet }: { tweet: any }) => {
         <div className="flex-1">
           <div className="flex justify-between">
             <div className="flex gap-2 text-lg">
-              <Link to={`/${tweet.user.username}`} className="flex gap-2">
+              <Link to={`/${unit.user.path}`} className="flex gap-2">
                 <span className="font-bold hover:underline">
-                  {tweet.user.name}
+                  {unit.user.name}
                 </span>
-                <Text color="gray">{"@" + tweet.user.username}</Text>
+                <Text color="gray">{"@" + unit.user.name}</Text>
               </Link>
               <Text color="gray">·</Text>
               <Text color="gray" className="hover:underline">
@@ -48,7 +47,7 @@ export const Tweet = ({ tweet }: { tweet: any }) => {
                 whiteSpace: "pre-wrap",
               }}
             >
-              {tweet.body}
+              {unit.body}
             </span>
           </div>
 
@@ -58,7 +57,7 @@ export const Tweet = ({ tweet }: { tweet: any }) => {
             method="post"
             className="my-1 flex justify-between text-gray-500"
           >
-            <input type="hidden" name="tweet" value={tweet.id} />
+            <input type="hidden" name="tweet" value={unit.id} />
             {/* Comments */}
             <span className="-ml-1 flex-1">
               <Button variant="ghost" color="primary" icon="comment" />
@@ -72,13 +71,13 @@ export const Tweet = ({ tweet }: { tweet: any }) => {
               <Button
                 type={user ? "submit" : "button"}
                 name="action"
-                value={tweet.is_liked ? "unlike" : "like"}
+                value={unit.is_liked ? "unlike" : "like"}
                 variant="ghost"
                 color="red"
-                icon={tweet.is_liked ? "like_fill" : "like"}
-                active={tweet.is_liked}
+                icon={unit.is_liked ? "like_fill" : "like"}
+                active={unit.is_liked}
               />
-              {tweet.num_likes}
+              {unit.num_likes}
             </span>
             {/* Share */}
             <span className="flex-1">

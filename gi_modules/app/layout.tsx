@@ -1,22 +1,23 @@
 import Gjsx from 'gi://Gjsx';
 import Gtk from "gi://Gtk?version=4.0";
 
+
 //test
 export type Services = {
   name: string;
   icon_path?: string;
   icon_name?: string;
-  clickHandler(button:Gtk.Button):void;
+  clickHandler(button: Gtk.Button): void;
 };
 
 const style = {
-  box: { 
-    padding: "15px", 
-    background: "rgba(0, 0, 50, 0.8)", 
-    color: "#fff", 
-    borderRadius: "15px" 
+  box: {
+    padding: "15px",
+    background: "rgba(0, 0, 50, 0.8)",
+    color: "#fff",
+    borderRadius: "15px"
   },
-  
+
 
 }
 export function HeadLayout({
@@ -30,7 +31,7 @@ export function HeadLayout({
   return (
     <Gtk.Box spacing={18} style={style.box} orientation={Gtk.Orientation.HORIZONTAL}>
       {services.map(
-        ({ name, icon_path,  clickHandler }, i) => {
+        ({ name, icon_path, clickHandler }, i) => {
           return (
             <Gtk.Button
               onClicked={clickHandler}
